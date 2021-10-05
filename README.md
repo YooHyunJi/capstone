@@ -10,7 +10,7 @@ Capstone Desgin Team3
 📌 환경세팅
 - npm 초기화
 ``` shell
-npm inint
+npm init
 ```
 - 라이브러리 설치
 ```
@@ -18,8 +18,5 @@ npm install
 ```
 - 실행 (capstone/web)
 ```
-npm start
-```
-```
-node app.js
+npm start 또는 node app.js
 ```
