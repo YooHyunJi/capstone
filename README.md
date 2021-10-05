@@ -7,7 +7,7 @@ Capstone Desgin Team3
 
 <br>
 
-📌 환경세팅
+📌 capstone/web 환경세팅
 - npm 초기화
 ``` shell
 npm init
@@ -16,7 +16,7 @@ npm init
 ```
 npm install
 ```
-- 실행 (capstone/web)
+- 실행
 ```
 npm start 또는 node app.js
 ```
