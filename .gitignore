@@ -66,3 +66,10 @@ web/.eslintcache
 # parcel-bundler cache (https://parceljs.org/)
 .cache
 .parcel-cache
+
+
+# MAD ds_store
+.DS_Store
+._.DS_Store
+**/.DS_Store
+**/._.DS_Store
