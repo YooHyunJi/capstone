@@ -1,7 +1,6 @@
 {
   "name": "node-web",
   "version": "1.0.0",
-  "description": "",
   "scripts": {
     "test": "mocha app.spec.js",
     "start": "node app.js"
@@ -15,5 +14,7 @@
     "morgan": "^1.10.0",
     "should": "^13.2.3",
     "supertest": "^6.1.6"
-  }
+  },
+  "main": "app.js",
+  "description": ""
 }
