@@ -1,9 +1,36 @@
 const express = require('express')
 const morgan = require('morgan'); // dev log
-const app = express()
 const port = 3000;
 
+// 라우터 가져오기
+const indexRouter = require('./routes/index');  // 첫 페이지 라우터
+const signupRouter = require('./routes/signup'); // 회원가입 라우터
+const loginRouter = require('./routes/login'); // 로그인 라우터
+const deleteUserRouter = require('./routes/deleteUser'); // 회원탈퇴 라우터
+const addCategoryRouter = require('./routes/addCategory'); // 카테고리 등록 라우터
+const deleteCategoryRouter = require('./routes/deleteCategory'); // 카테고리 삭제 라우터
+const updateCategoryRouter = require('./routes/updateCategory'); // 카테고리 수정 라우터
+const addMenuRouter = require('./routes/addMenu'); // 메뉴 등록 라우터
+const deleteMenuRouter = require('./routes/deleteMenu'); // 메뉴 삭제 라우터
+const updateMenuRouter = require('./routes/updateMenu'); // 메뉴 수정 라우터
+
+const app = express()
+
 app.use(morgan('dev'));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+
+// 라우터 로드 및 경로 지정
+app.use('/', indexRouter);
+app.use('/admin', signupRouter);
+app.use('/admin', loginRouter);
+app.use('/admin', deleteUserRouter);
+app.use('/admin', addCategoryRouter);
+app.use('/admin', deleteCategoryRouter);
+app.use('/admin', updateCategoryRouter);
+app.use('/admin', addMenuRouter);
+app.use('/admin', deleteMenuRouter);
+app.use('/admin', updateMenuRouter);
 
 // 메인
 app.get('/', (req, res) => {
