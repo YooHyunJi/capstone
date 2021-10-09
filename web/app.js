@@ -3,7 +3,6 @@ const morgan = require('morgan'); // dev log
 const port = 3000;
 
 // 라우터 가져오기
-const indexRouter = require('./routes/index');  // 첫 페이지 라우터
 const signupRouter = require('./routes/signup'); // 회원가입 라우터
 const loginRouter = require('./routes/login'); // 로그인 라우터
 const deleteUserRouter = require('./routes/deleteUser'); // 회원탈퇴 라우터
@@ -21,7 +20,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 // 라우터 로드 및 경로 지정
-app.use('/', indexRouter);
 app.use('/admin', signupRouter);
 app.use('/admin', loginRouter);
 app.use('/admin', deleteUserRouter);
