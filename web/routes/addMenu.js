@@ -12,7 +12,7 @@ router.post('/addMenu', function (req, res) {
     var menuDetail = req.body.menuDetail; // 메뉴 세부사항
     var menuPrice = req.body.menuPrice; // 메뉴 가격
     var categoryNo = req.body.categoryNo; // 카테고리 번호
-    var storeNo = req.body.storeNo; // 가게 번호
+    var storeNo = req.body.storeNo; // 매장 번호
     var query = 'INSERT INTO menu (menuName, menuDetail, menuPrice, categoryNo, storeNo) VALUES(?,?,?,?,?)'; // 카테고리 등록 쿼리문
 
     // DB에 메뉴 등록

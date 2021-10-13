@@ -9,7 +9,7 @@ connection.connect();
 
 router.post('/addCategory', function (req, res) {
     var categoryName = req.body.categoryName; // 카테고리명
-    var storeNo = req.body.storeNo; // 가게 번호
+    var storeNo = req.body.storeNo; // 매장 번호
     var query = 'INSERT INTO category (categoryName, storeNo) VALUES(?,?)'; // 카테고리 등록 쿼리문
 
     // DB에 카테고리 등록

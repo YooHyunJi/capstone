@@ -11,7 +11,7 @@ var moment = require('moment');
 
 router.post('/signup', function(req, res) {
     var storeId = req.body.storeId; // 아이디
-    var storeName = req.body.storeName; // 이름
+    var storeName = req.body.storeName; // 매장 이름
     var storePw = ''; // 비밀번호
     var salt = ''; // 암호화에 필요한 요소
     var storeTel = req.body.storeTel; // 연락처

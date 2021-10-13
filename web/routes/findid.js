@@ -1,5 +1,5 @@
 // 아이디 찾기
-// Author : Sumin, Created : 21.10.10
+// Author : Sumin, Created : 21.10.10, Last modified : 2021.10.13
 
 var express = require('express');
 var router = express.Router();
@@ -8,11 +8,11 @@ var connection = config.init();
 connection.connect();
 
 router.post('/findid', function (req, res) {
-    var storeName = req.body.storeName;  // 매장명
     var crn = req.body.crn; // 사업자번호
-    var query = 'SELECT storeId FROM store WHERE storeName = ? AND crn = ?'; // 아이디찾기 쿼리문
+    var managerTel = req.body.managerTel; // 매니저 연락처
+    var query = 'SELECT storeId FROM store WHERE crn = ? AND managerTel = ?'; // 아이디찾기 쿼리문
 
-    connection.query(query, [storeName, crn], function(err, result) {
+    connection.query(query, [crn, managerTel], function(err, result) {
         if(err) { // 에러 발생시
             console.log("error ocurred: ", err);
             res.json({"code": 404, "result": 'error occured'});
