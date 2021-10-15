@@ -3,21 +3,96 @@
 <head>
     <meta charset="UTF-8">
 </head>
+<style>
+table.type07 .writer {
+    width: 200px;
+    text-align: center;
+}
+table.type07 {
+  border-collapse: collapse;
+  text-align: left;
+  line-height: 1.5;
+  border: 1px solid #ccc;
+  margin: 20px 10px;
+}
+table.type07 thead {
+  border-right: 1px solid #ccc;
+  border-left: 1px solid #ccc;
+  background: rgba(59, 155, 142, 0.5);
+}
+table.type07 thead th {
+  padding: 10px;
+  font-weight: bold;
+  vertical-align: top;
+  color: #fff;
+}
+table.type07 tbody th {
+  width: 200px;
+  padding: 10px;
+  font-weight: bold;
+  vertical-align: top;
+  border-bottom: 1px solid #ccc;
+  background: rgba(241, 241, 241, 0.5);
+}
+table.type07 td {
+  width: 500px;
+  padding: 10px;
+  vertical-align: top;
+  border-bottom: 1px solid #ccc;
+}
+.by {
+    width: 20px;
+}
+</style>
 <body>
-    <h2>TEST PAGE</h2>
-    <h4>* 미디어파이프 사용할 때 자주 캐시를 지워주세용</h4>
+    <h2>제스처 인식 기능 개발 TEST</h2>
+    <li> 노드 서버 실행 필요 없음 </li>
+    <table class="type07">
+    <thead>
+    <tr>
+        <th scope="cols">파일 명</th>
+        <th scope="cols">내용</th>
+        <th class="writer">작성자</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <th scope="row">mp.html</th>
+        <td>미디어파이프 자바스크립트 예제(cdn 태그 이용)</td>
+        <td class="writer">주란</td>
+    </tr>
+    <tr>
+        <th scope="row">static.jr.html</th>
+        <td>정적 제스처 인식 구현</td>
+        <td class="writer">주란</td>
+    </tr>
+    <tr>
+        <th scope="row">handpose.html</th>
+        <td>미디어파이프 손 영상 위 메뉴판 레이아웃, 정적 제스처와 선택 모션 인식</td>
+        <td class="writer">현지</td>
+    </tr>
+    </tbody>
+    </table>
 
-    <li>
-        미디어파이프js 적용
-        <a href='/test/mp'>localhost/test/mp</a>
-    </li>
-    <li>
-        미디어파이프js 사용한 간단한 예제
-        <a href='/test/handpose'>localhost/test/handpose</a>
-    </li>
-    <li>
-        미디어파이프 & robotjs 모듈 이용한 마우스 커서 조작
-        <a href='/test/robot'>localhost/test/robot</a>
-    </li>
+    <li> 노드 서버 실행 필요</li>
+    <table class="type07">
+    <thead>
+    <tr>
+        <th scope="cols">링크</th>
+        <th scope="cols">내용</th>
+        <th class="writer">파일 명</th>
+        <th class="writer">작성자</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <th scope="row"><a href="/test/mouse_cursor"> /test/mouse_cursor</a></th>
+        <td>미디어파이프 포인트 이용하여 마우스 커서 조작(npm robotjs & socket.io 이용)</td>
+        <td class="writer">mouse_cursor.html</td>
+        <td class="writer">주란</td>
+    </tr>
+    
+    </tbody>
+    </table>
 </body>
 </html>
