@@ -16,6 +16,9 @@ const deleteMenuRouter = require('./routes/deleteMenu'); // 메뉴 삭제 라우
 const updateMenuRouter = require('./routes/updateMenu'); // 메뉴 수정 라우터
 const getOrderInfoRouter = require('./routes/getOrderInfo'); // 주문내역 조회 라우터
 const cancelOrderRouter = require('./routes/cancelOrder'); // 주문취소 라우터
+const getCategoriesRouter = require('./routes/getCategories'); // 전체 카테고리 조회 라우터
+const getMenusRouter = require('./routes/getMenus'); // 전체 메뉴 조회 라우터
+const getMenusByCategoryRouter = require('./routes/getMenusByCategory'); // 카테고리별 메뉴 조회 라우터
 
 const app = express()
 
@@ -37,6 +40,9 @@ app.use('/admin', deleteMenuRouter);
 app.use('/admin', updateMenuRouter);
 app.use('/admin', getOrderInfoRouter);
 app.use('/admin', cancelOrderRouter);
+app.use('/admin', getCategoriesRouter);
+app.use('/admin', getMenusRouter);
+app.use('/admin', getMenusByCategoryRouter);
 
 // 메인
 app.get('/', (req, res) => {

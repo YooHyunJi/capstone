@@ -14,7 +14,7 @@ router.post('/signup', function(req, res) {
     var storeName = req.body.storeName; // 매장 이름
     var storePw = ''; // 비밀번호
     var salt = ''; // 암호화에 필요한 요소
-    var storeTel = req.body.storeTel; // 연락처
+    var storeTel = req.body.storeTel; // 매장 연락처
     var storeLoc = req.body.storeLoc; // 위치
     var crn = req.body.crn; // 사업자번호
     var managerName = req.body.managerName // 관리자 이름

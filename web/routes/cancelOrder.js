@@ -21,9 +21,9 @@ router.post('/cancelOrder', function (req, res) {
         } else {
             console.log("select payment table success");
             
-            var paymentTime = moment().format("YYYY-MM-DD hh:mm:ss"); // 취소 완료 시간
-            var paymentMethod = result[0].paymentMethod;
-            var paymentPrice = result[0].paymentPrice;
+            var paymentTime = moment().format("YYYY-MM-DD hh:mm:ss"); // 결제 취소 완료 시간
+            var paymentMethod = result[0].paymentMethod; // 결제 수단(현금/카드)
+            var paymentPrice = result[0].paymentPrice; // 결제 가격(=취소될 금액)
 
             query = "UPDATE orders SET cancelYn = 'y' WHERE orderNo = ?;" +
                 "INSERT INTO payment (paymentType, paymentTime, paymentMethod, paymentPrice, storeNo, orderNo) VALUES(?,?,?,?,?,?)" // 주문취소 쿼리문
