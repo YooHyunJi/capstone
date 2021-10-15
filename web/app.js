@@ -1,6 +1,12 @@
 const express = require('express')
 const morgan = require('morgan'); // dev log
+var robot = require("robotjs");
+var io = require('socket.io')(server);
+
 const port = 3000;
+const app = express();
+var server = require('http').createServer(app);
+var io = require('socket.io')(server);
 
 // 라우터 가져오기
 const signupRouter = require('./routes/signup'); // 회원가입 라우터
@@ -19,8 +25,6 @@ const cancelOrderRouter = require('./routes/cancelOrder'); // 주문취소 라�
 const getCategoriesRouter = require('./routes/getCategories'); // 전체 카테고리 조회 라우터
 const getMenusRouter = require('./routes/getMenus'); // 전체 메뉴 조회 라우터
 const getMenusByCategoryRouter = require('./routes/getMenusByCategory'); // 카테고리별 메뉴 조회 라우터
-
-const app = express()
 
 app.use(morgan('dev'));
 app.use(express.json());
@@ -49,22 +53,23 @@ app.get('/', (req, res) => {
     res.sendFile(__dirname + "/public/main.html")
 });
 
-// 웹 서버에서 테스트
+// 미디어파이프 제스처 인식 테스트
 app.get('/test', (req, res) => {
   res.sendFile(__dirname + "/public/test.html")
 });
 app.get('/test/:id', (req, res) => {
-  var id = req.params.id;
   // node 실행하여 테스트가 필요한 경우 추가
-  switch (id) {
+
+  switch (req.params.id) {
     case 'handpose':
       res.sendFile(__dirname + "/public/test/handpose.html")
       break;
     case 'mp':
       res.sendFile(__dirname + "/public/test/mp.html");
       break;
-    
-    // case
+    case 'robot':
+      res.sendFile(__dirname + "/public/test/mouse-cursor.html")
+      break;
   }
 })
 
@@ -77,8 +82,26 @@ app.get('/order', (req, res) => {
   res.sendFile(__dirname + "/public/order/main.html")
 })
 
-app.listen(port, () => {
-  console.log(`Server is Running! http://localhost:${port}`)
+// socket & robotjs 마우스 커서 조작
+io.on('connection', (socket) => { // 소켓 연결이 들어오면 실행
+  // 클라이언트에서 수신받은 정보
+  socket.on('location', (msg) => {
+      // console.log('Message received: ' + msg);
+
+      var screenSize = robot.getScreenSize();
+      var height = (screenSize.height / 2) - 10;
+      var width = screenSize.width;
+
+      // 마우스 좌표
+      var x = (width - msg[0] * width); // 좌우반전
+      var y = msg[1] * height;
+
+      robot.moveMouse(x, y);
+  });
+});
+
+server.listen(3000, function() {
+  console.log(`Server is Running! http://localhost:${port}`);
 });
 
 // test

@@ -10,8 +10,8 @@
 
 <body>
   <div class="container">
-    <video class="input_video"></video>
-    <canvas class="output_canvas" width="1280px" height="720px"></canvas>
+    <video class="input_video" width="900px" height="500px"></video>
+    <canvas class="output_canvas" width="900px" height="500px"></canvas>
   </div>
 </body>
 </html>
@@ -27,9 +27,8 @@ function onResults(results) {
       results.image, 0, 0, canvasElement.width, canvasElement.height);
   if (results.multiHandLandmarks) {
     for (const landmarks of results.multiHandLandmarks) {
-      drawConnectors(canvasCtx, landmarks, HAND_CONNECTIONS,
-                     {color: '#00FF00', lineWidth: 5});
-      drawLandmarks(canvasCtx, landmarks, {color: '#FF0000', lineWidth: 2});
+      drawConnectors(canvasCtx, landmarks, HAND_CONNECTIONS, {color: '#4badb3', lineWidth: 5});
+      drawLandmarks(canvasCtx, landmarks, {color: '#e04e04', lineWidth: 2});
     }
   }
   canvasCtx.restore();

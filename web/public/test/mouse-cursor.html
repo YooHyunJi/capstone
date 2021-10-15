@@ -2,28 +2,46 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils/control_utils.js" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous"></script>
 </head>
+<!-- 웹캠 화면의 좌우 반전 -->
+  <style>
+    video{
+      transform: rotateY(180deg);
+      -webkit-transform:rotateY(180deg); /* Safari and Chrome */
+      -moz-transform:rotateY(180deg); /* Firefox */
+    }
+    canvas{
+      transform: rotateY(180deg);
+      -webkit-transform:rotateY(180deg); /* Safari and Chrome */
+      -moz-transform:rotateY(180deg); /* Firefox */
+    }
+  </style>
 <body>
-  <div class="container">
-    <video class="input_video" width="900px" height="500px"></video>
-    <canvas class="output_canvas" width="900px" height="500px"></canvas>
+<ul id="messages" type="none">
+        <li id="usercount"></li>
+    </ul>
+  <div class="container" >
+    <video class="input_video" style="display:none;"></video>
+    <canvas class="output_canvas" width="700px" height="400px"></canvas>
   </div>
 </body>
-</html>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils/control_utils.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script>
 
-<script type="module">
+var socket = io();
+
 const videoElement = document.getElementsByClassName('input_video')[0];
 const canvasElement = document.getElementsByClassName('output_canvas')[0];
 const canvasCtx = canvasElement.getContext('2d');
- 
+
 // check handpose
 const compareIndex = [[18, 4], [6, 8], [10, 12], [14, 16], [18, 20]]
-var open = [true, false, false, false, false]
-// const gesture = [[true, true, true, true, true, "Hi!"], [false, true, true, false, false, "Yeah!"], [true, true, false, false, true, "SpiderMan!"]]
+var open = [false, false, false, false, false]
 const gesture = [true, false, false, false, false, "Thumb"]
 
 function dist(x1, y1, x2, y2) { // 두 점 사이 거리 비교하여 손가락의 접힘 여부 판단
@@ -44,31 +62,28 @@ function onResults(results) {
       }
 
       // 지정된 제스처와 비교
-      for (var i=0; i<3; i++) {
-        var flag = true;
-        /* SpiderMan, Yeah, Hi
-        for (var j=0; j<5; j++) {
-          if (gesture[i][j] != open[j]) {
-            flag = false
-          }
-        } 
-        if (flag == true) { // 지정된 제스처와 동일할 때
-          console.log('result: ', gesture[i][5]);
+      var flag = true;
+      for (var i=0; i<5; i++) {
+        if (gesture[i] != open[i]) {
+          flag = false
         }
-       */
-
-        // thumb up / down
-        if (flag == true) { // 엄지만 펼쳤을 때
-          if(landmarks[0]['y'] > landmarks[4]['y']) {
-            console.log('up!');
-          } else {
-            console.log('down!');
-          }
+      }
+      if (flag == true) { // 지정된 제스처(thumb)와 동일할 때
+        if(landmarks[0]['y'] > landmarks[4]['y']) {
+          console.log('up!');
+        } else {
+          console.log('down!');
         }
       }
 
       drawConnectors(canvasCtx, landmarks, HAND_CONNECTIONS, {color: '#4badb3', lineWidth: 5});
       drawLandmarks(canvasCtx, landmarks, {color: '#e04e04', lineWidth: 2});
+
+      var x = landmarks[8]['x'];
+      var y = landmarks[8]['y'];
+      var location = [x, y];
+
+      socket.emit('location', location); // 소켓 이용하여 손가락 좌표 정보 전달
     }
   }
   canvasCtx.restore();
@@ -79,7 +94,7 @@ const hands = new Hands({locateFile: (file) => {
 }});
 
 hands.setOptions({
-  maxNumHands: 2,
+  maxNumHands: 1,
   minDetectionConfidence: 0.5,
   minTrackingConfidence: 0.5
 });
@@ -96,3 +111,4 @@ const camera = new Camera(videoElement, {
 
 camera.start();
 </script>
+</html>

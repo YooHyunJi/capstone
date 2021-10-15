@@ -1,9 +1,9 @@
-Capstone Desgin Team3
+Capstone Design Team3
 ---
 <br>
 
 🛠 개발환경
-- node
+- NodeJS
 
 <br>
 
