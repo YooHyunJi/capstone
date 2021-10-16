@@ -61,14 +61,8 @@ app.get('/test/:id', (req, res) => {
   // node 실행하여 테스트가 필요한 경우 추가
 
   switch (req.params.id) {
-    case 'handpose':
-      res.sendFile(__dirname + "/public/test/handpose.html")
-      break;
-    case 'mp':
-      res.sendFile(__dirname + "/public/test/mp.html");
-      break;
-    case 'robot':
-      res.sendFile(__dirname + "/public/test/mouse-cursor.html")
+    case 'mouse_cursor':
+      res.sendFile(__dirname + "/test/mouse_cursor.html")
       break;
   }
 })

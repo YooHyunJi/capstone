@@ -22,7 +22,7 @@ const canvasCtx = canvasElement.getContext('2d');
  
 // check handpose
 const compareIndex = [[18, 4], [6, 8], [10, 12], [14, 16], [18, 20]]
-var open = [true, false, false, false, false]
+var open = [false, false, false, false, false]
 // const gesture = [[true, true, true, true, true, "Hi!"], [false, true, true, false, false, "Yeah!"], [true, true, false, false, true, "SpiderMan!"]]
 const gesture = [true, false, false, false, false, "Thumb"]
 
@@ -43,10 +43,10 @@ function onResults(results) {
           open[i] = dist(landmarks[0]['x'], landmarks[0]['y'], landmarks[compareIndex[i][0]]['x'], landmarks[compareIndex[i][0]]['y']) < dist(landmarks[0]['x'], landmarks[0]['y'], landmarks[compareIndex[i][1]]['x'], landmarks[compareIndex[i][1]]['y'])
       }
 
-      // 지정된 제스처와 비교
+      // SpiderMan, Yeah, Hi
+      /*
       for (var i=0; i<3; i++) {
         var flag = true;
-        /* SpiderMan, Yeah, Hi
         for (var j=0; j<5; j++) {
           if (gesture[i][j] != open[j]) {
             flag = false
@@ -55,15 +55,19 @@ function onResults(results) {
         if (flag == true) { // 지정된 제스처와 동일할 때
           console.log('result: ', gesture[i][5]);
         }
-       */
+      } */
 
-        // thumb up / down
-        if (flag == true) { // 엄지만 펼쳤을 때
-          if(landmarks[0]['y'] > landmarks[4]['y']) {
-            console.log('up!');
-          } else {
-            console.log('down!');
-          }
+      // up & down
+      for(var i=0; i<5; i++) {
+        if(gesture[i] != open[i]) {
+          break;
+        }
+      }
+      if(i==5){
+        if(landmarks[0]['y'] > landmarks[4]['y']) {
+          console.log('up!');
+        } else {
+          console.log('down!');
         }
       }
 
