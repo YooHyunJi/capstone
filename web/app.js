@@ -23,11 +23,14 @@ const updateMenuRouter = require('./routes/updateMenu'); // 메뉴 수정 라우
 const getOrderInfoRouter = require('./routes/getOrderInfo'); // 주문내역 조회 라우터
 const cancelOrderRouter = require('./routes/cancelOrder'); // 주문취소 라우터
 
+const orderViewRouter = require('./routes/order/views.js'); // 주문 시스템 VIEWS 라우터
+const orderApiRouter = require('./routes/order'); // 주문 시스템 API 라우터 index.js
+
 app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-// 라우터 로드 및 경로 지정
+// admin 라우터 로드 및 경로 지정
 app.use('/admin', signupRouter);
 app.use('/admin', loginRouter);
 app.use('/admin', findidRouter);
@@ -42,9 +45,14 @@ app.use('/admin', updateMenuRouter);
 app.use('/admin', getOrderInfoRouter);
 app.use('/admin', cancelOrderRouter);
 
+// order view 라우터
+app.use('/order', orderViewRouter);
+// order API 라우터
+app.use('/api/order', orderApiRouter);
+
 // 메인
 app.get('/', (req, res) => {
-    res.sendFile(__dirname + "/public/main.html")
+    res.sendFile(__dirname + "/public/main.html");
 });
 
 // 미디어파이프 제스처 인식 테스트
@@ -66,9 +74,9 @@ app.get('/admin', (req, res) => {
     res.sendFile(__dirname + "/public/admin/main.html")
 })
 // 주문 시스템
-app.get('/order', (req, res) => {
-  res.sendFile(__dirname + "/public/order/main.html")
-})
+// app.get('/order', (req, res) => {
+//   res.sendFile(__dirname + "/public/order/main.html")
+// })
 
 // socket & robotjs 마우스 커서 조작
 io.on('connection', (socket) => { // 소켓 연결이 들어오면 실행
@@ -88,7 +96,7 @@ io.on('connection', (socket) => { // 소켓 연결이 들어오면 실행
   });
 });
 
-server.listen(3000, function() {
+server.listen(port, function() {
   console.log(`Server is Running! http://localhost:${port}`);
 });
 

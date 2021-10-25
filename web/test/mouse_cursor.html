@@ -22,7 +22,7 @@
     </ul>
   <div class="container" >
     <video class="input_video" style="display:none;"></video>
-    <canvas class="output_canvas" width="700px" height="400px"></canvas>
+    <canvas class="output_canvas" width="1200px" height="700px"></canvas>
   </div>
 </body>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -34,6 +34,8 @@
 <script>
 
 var socket = io();
+
+// const mpHands = window;
 
 const videoElement = document.getElementsByClassName('input_video')[0];
 const canvasElement = document.getElementsByClassName('output_canvas')[0];
@@ -89,6 +91,9 @@ function onResults(results) {
   canvasCtx.restore();
 }
 
+/* const hands = new Hands({locateFile: (file) => {
+  return `https://cdn.jsdelivr.net/npm/@mediapipe/hand@${mpHands.VERSION}/${file}`;
+}}); */
 const hands = new Hands({locateFile: (file) => {
   return `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`;
 }});
