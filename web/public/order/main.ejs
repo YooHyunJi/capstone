@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <h1>ORDER PAGE</h1>
+    <!--
+    <ul id="category">카테고리
+        <% if(locals.categoryList){ %>
+            <% categoryList.forEach(function(category){ %>
+                <% if(category.categoryNo == 1) { %>
+                    <% let no = category.categoryNo; %>
+                <li style="color:cadetblue;"> No<%= category.categoryNo %>. <%= category.categoryName %></li>
+                <% } else { %>
+                <li> No<a><%= category.categoryNo %></a>. <%= category.categoryName %></li>
+                <% } %>
+            <% }) %>
+        <% } %>
+    </ul>
+    -->
+
+    카테고리
+    <ul id="categoryList">
+    </ul>
+
+    메뉴
+    <ul id="menuList">
+    </ul>
+
+    장바구니
+    <ul id="shoppingBasket">
+    </ul>
+</body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script type="text/javascript">
+    const baseUrl = $(location).attr('protocol') + '//' + $(location).attr('host');
+    const storeNo = location.href.split(baseUrl + "/order/")[1];
+
+    getCategoryByStoreNo(storeNo);
+    getMenuByCategoryNo();
+
+    $("#category").on("click","li", function(e){ 
+        alert($(this).text());
+    });
+
+    function getCategoryByStoreNo(storeNo) {
+        $.ajax({
+            url: baseUrl + '/api/order/category/' + storeNo,
+            type: 'GET',
+            dataType : 'json', 
+            success: function (result) {
+                $.each(result, function(index, data){
+                    $('#categoryList').append($('<li />', {
+                        id: data.categoryNo,
+                        text: data.categoryName,
+                        click: function() {
+                            getMenuByCategoryNo(data.categoryNo);
+                        }
+                    }));
+                });
+            }, error: function (error) {
+                console.log(error);
+            }
+        });
+    }
+
+    function getMenuByCategoryNo(categoryNo) {
+        $.ajax({
+            url: baseUrl + '/api/order/menu/' + storeNo + '/' + categoryNo,
+            type: 'GET',
+            dataType : 'json', 
+            success: function (result) {
+                $('#menuList').empty();
+                $.each(result, function(index, data){
+                    $('#menuList').append($('<li />', {
+                        id: data.menuNo,
+                        text: data.menuName,
+                        click: function () {
+                            
+                        }
+                    }));
+                });
+            }, error: function (error) {
+                console.log(error);
+            }
+        });
+    }
+</script>
+</html>
