@@ -3,7 +3,7 @@
 
 var express = require('express');
 var router = express.Router();
-var config = require('../config/db_config');
+var config = require('../../config/db_config');
 var connection = config.init();
 connection.connect();
 
@@ -12,9 +12,9 @@ router.post('/getMenusByCategory', function (req, res) {
     var query = 'SELECT categoryName, menuName, menuPrice FROM category, menu WHERE category.categoryNo = ? AND menu.categoryNo = category.categoryNo'; // 카테고리별 메뉴 조회 쿼리문
 
     // DB에서 조회
-    connection.query(query, categoryNo, function (error, result) {
-        if(error) { // 에러 발생시
-            console.log("error ocurred: ", error);
+    connection.query(query, categoryNo, function (err, result) {
+        if(err) { // 에러 발생시
+            console.log("error ocurred: ", err);
             res.json({ "code": 400, "result": "error ocurred" })
         } else {
             console.log("get menus by category success");

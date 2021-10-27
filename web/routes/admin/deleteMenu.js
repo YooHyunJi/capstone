@@ -3,7 +3,7 @@
 
 var express = require('express');
 var router = express.Router();
-var config = require('../config/db_config');
+var config = require('../../config/db_config');
 var connection = config.init();
 connection.connect();
 
@@ -12,9 +12,9 @@ router.post('/deleteMenu', function (req, res) {
     var query = 'DELETE FROM menu WHERE menuNo = ?'; // 메뉴 삭제 쿼리문
 
     // DB에서 메뉴 삭제
-    connection.query(query, menuNo, function (error, result) {
-        if(error) { // 에러 발생시
-            console.log("error ocurred: ", error);
+    connection.query(query, menuNo, function (err, result) {
+        if(err) { // 에러 발생시
+            console.log("error ocurred: ", err);
             res.json({ "code": 400, "result": "error ocurred" })
         } else {
             console.log("delete menu success");

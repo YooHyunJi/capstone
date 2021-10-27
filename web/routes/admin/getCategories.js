@@ -3,18 +3,18 @@
 
 var express = require('express');
 var router = express.Router();
-var config = require('../config/db_config');
+var config = require('../../config/db_config');
 var connection = config.init();
 connection.connect();
 
 router.post('/getCategories', function (req, res) {
-    var storeNo = req.body.storeNo; // 매장 번호
+    var storeNo = req.session.user.storeNo; // 매장 번호
     var query = 'SELECT categoryNo, categoryName FROM category WHERE storeNo = ?'; // 카테고리 조회 쿼리문
 
     // DB에서 조회
-    connection.query(query, storeNo, function (error, result) {
-        if(error) { // 에러 발생시
-            console.log("error ocurred: ", error);
+    connection.query(query, storeNo, function (err, result) {
+        if(err) { // 에러 발생시
+            console.log("error ocurred: ", err);
             res.json({ "code": 400, "result": "error ocurred" })
         } else {
             console.log("get categories success");

@@ -3,7 +3,7 @@
 
 var express = require('express');
 var router = express.Router();
-var config = require('../config/db_config');
+var config = require('../../config/db_config');
 var connection = config.init();
 connection.connect();
 

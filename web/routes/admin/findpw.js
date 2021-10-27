@@ -3,8 +3,8 @@
 
 var express = require('express');
 var router = express.Router();
-var transporter = require('../config/email_config');
-var config = require('../config/db_config');
+var transporter = require('../../config/email_config');
+var config = require('../../config/db_config');
 var crypto = require('crypto');
 var connection = config.init();
 connection.connect();

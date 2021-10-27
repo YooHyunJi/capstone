@@ -2,6 +2,7 @@ const express = require('express')
 const morgan = require('morgan'); // dev log
 var robot = require("robotjs");
 var io = require('socket.io')(server);
+var session = require('express-session');
 
 const port = 3000;
 const app = express();
@@ -9,26 +10,35 @@ var server = require('http').createServer(app);
 var io = require('socket.io')(server);
 
 // 라우터 가져오기
-const signupRouter = require('./routes/signup'); // 회원가입 라우터
-const loginRouter = require('./routes/login'); // 로그인 라우터
-const findidRouter = require('./routes/findid'); // 아이디찾기 라우터
-const findpwRouter = require('./routes/findpw'); // 비밀번호찾기 라우터
-const deleteUserRouter = require('./routes/deleteUser'); // 회원탈퇴 라우터
-const addCategoryRouter = require('./routes/addCategory'); // 카테고리 등록 라우터
-const deleteCategoryRouter = require('./routes/deleteCategory'); // 카테고리 삭제 라우터
-const updateCategoryRouter = require('./routes/updateCategory'); // 카테고리 수정 라우터
-const addMenuRouter = require('./routes/addMenu'); // 메뉴 등록 라우터
-const deleteMenuRouter = require('./routes/deleteMenu'); // 메뉴 삭제 라우터
-const updateMenuRouter = require('./routes/updateMenu'); // 메뉴 수정 라우터
-const getOrderInfoRouter = require('./routes/getOrderInfo'); // 주문내역 조회 라우터
-const cancelOrderRouter = require('./routes/cancelOrder'); // 주문취소 라우터
-const getCategoriesRouter = require('./routes/getCategories'); // 전체 카테고리 조회 라우터
-const getMenusRouter = require('./routes/getMenus'); // 전체 메뉴 조회 라우터
-const getMenusByCategoryRouter = require('./routes/getMenusByCategory'); // 카테고리별 메뉴 조회 라우터
+// 관리자 시스템
+const signupRouter = require('./routes/admin/signup'); // 회원가입 라우터
+const loginRouter = require('./routes/admin/login'); // 로그인 라우터
+const findidRouter = require('./routes/admin/findid'); // 아이디찾기 라우터
+const findpwRouter = require('./routes/admin/findpw'); // 비밀번호찾기 라우터
+const deleteUserRouter = require('./routes/admin/deleteUser'); // 회원탈퇴 라우터
+const addCategoryRouter = require('./routes/admin/addCategory'); // 카테고리 등록 라우터
+const deleteCategoryRouter = require('./routes/admin/deleteCategory'); // 카테고리 삭제 라우터
+const updateCategoryRouter = require('./routes/admin/updateCategory'); // 카테고리 수정 라우터
+const addMenuRouter = require('./routes/admin/addMenu'); // 메뉴 등록 라우터
+const deleteMenuRouter = require('./routes/admin/deleteMenu'); // 메뉴 삭제 라우터
+const updateMenuRouter = require('./routes/admin/updateMenu'); // 메뉴 수정 라우터
+const getOrderInfoRouter = require('./routes/admin/getOrderInfo'); // 주문내역 조회 라우터
+const cancelOrderRouter = require('./routes/admin/cancelOrder'); // 주문취소 라우터
+const getCategoriesRouter = require('./routes/admin/getCategories'); // 전체 카테고리 조회 라우터
+const getMenusRouter = require('./routes/admin/getMenus'); // 전체 메뉴 조회 라우터
+const getMenusByCategoryRouter = require('./routes/admin/getMenusByCategory'); // 카테고리별 메뉴 조회 라우터
 
 app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+
+// 세션
+app.use(session({
+  key: "user",
+  secret: process.env.SESSION_SECRET,
+  resave: false,
+  saveUninitialized: false
+}));
 
 // 라우터 로드 및 경로 지정
 app.use('/admin', signupRouter);
@@ -74,6 +84,12 @@ app.get('/admin', (req, res) => {
 // 주문 시스템
 app.get('/order', (req, res) => {
   res.sendFile(__dirname + "/public/order/main.html")
+})
+app.get('/user', (req, res) => {
+  res.sendFile(__dirname + "/js/user.js")
+})
+app.get('/menu', (req, res) => {
+  res.sendFile(__dirname + "/public/admin/menu.html")
 })
 
 // socket & robotjs 마우스 커서 조작

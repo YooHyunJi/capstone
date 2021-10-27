@@ -3,7 +3,7 @@
 
 var express = require('express');
 var router = express.Router();
-var config = require('../config/db_config');
+var config = require('../../config/db_config');
 var crypto = require('crypto');
 var connection = config.init();
 connection.connect();
@@ -29,21 +29,27 @@ router.post('/login', function (req, res) {
     })
 
     connection.query(query, storeId, function (err, result) {
-        var message = 'error';
-
         if (err) { // 에러 발생시
             console.log(err);
-            res.json({'code': 404, 'message': message});
+            res.json({'code': 404});
         } else {
             crypto.pbkdf2(storePw, salt, 100, 64, 'sha512', (err, key) => {
                 var hashPw = key.toString('base64');
+                if (hashPw != result[0].storePw) { // password가 다를 경우
+                    res.json({'code': 208, 'result': 'Password is not correct'});
+                } else {  // 로그인에 성공했을 경우
+                    // 세션에 추가
+                    if (req.session.user) { 
+                        console.log('세션 이미 존재'); 
+                    } else { 
+                        req.session.user = { 
+                            "storeNo": result[0].storeNo, 
+                            "storeId": result[0].storeId
+                        }
+                        console.log('세션 저장 완료')
+                    }
 
-                if (hashPw != result[0].storePw) { //password가 다를 경우
-                    message = 'Password is not correct';
-                    res.json({'code': 208, 'message': message});
-                } else {  //로그인에 성공했을 경우
-                    message = 'login success. Welcome ' + result[0].storeName;
-                    res.json({'code': 200, 'name': result[0].storeName, 'message': message});
+                    res.json({'code': 200, 'storeId': req.session.user.storeId, 'result': 'Welcome ' + result[0].storeName});
                 }
             })
         }

@@ -3,7 +3,7 @@
 
 var express = require('express');
 var router = express.Router();
-var config = require('../config/db_config');
+var config = require('../../config/db_config');
 var connection = config.init();
 connection.connect();
 
@@ -12,9 +12,9 @@ router.post('/deleteUser', function (req, res) {
     var query = 'DELETE FROM store WHERE storeId = ?' // 회원탈퇴 쿼리문
 
     // DB 에서 사용자 정보 삭제
-    connection.query(query, storeId, function (error, result) {
-        if(error) { // 에러 발생시
-            console.log("error ocurred: ", error);
+    connection.query(query, storeId, function (err, result) {
+        if(err) { // 에러 발생시
+            console.log("error ocurred: ", err);
             res.json({ "code": 400, "result": "error ocurred" })
         } else {
             console.log("delete user success");
