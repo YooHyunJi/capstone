@@ -13,6 +13,7 @@ var io = require('socket.io')(server);
 // 관리자 시스템
 const signupRouter = require('./routes/admin/signup'); // 회원가입 라우터
 const loginRouter = require('./routes/admin/login'); // 로그인 라우터
+const logoutRouter = require('./routes/admin/logout'); // 로그아웃 라우터
 const findidRouter = require('./routes/admin/findid'); // 아이디찾기 라우터
 const findpwRouter = require('./routes/admin/findpw'); // 비밀번호찾기 라우터
 const deleteUserRouter = require('./routes/admin/deleteUser'); // 회원탈퇴 라우터
@@ -47,6 +48,7 @@ app.use(session({
 // 관리자 시스템
 app.use('/admin', signupRouter);
 app.use('/admin', loginRouter);
+app.use('/admin', logoutRouter);
 app.use('/admin', findidRouter);
 app.use('/admin', findpwRouter);
 app.use('/admin', deleteUserRouter);
@@ -90,11 +92,14 @@ app.get('/test/:id', (req, res) => {
 app.get('/admin', (req, res) => {
     res.sendFile(__dirname + "/public/admin/main.html")
 })
+app.get('/menu', (req, res) => {
+  res.sendFile(__dirname + "/public/admin/menu.html")
+})
 app.get('/user', (req, res) => {
   res.sendFile(__dirname + "/js/user.js")
 })
-app.get('/menu', (req, res) => {
-  res.sendFile(__dirname + "/public/admin/menu.html")
+app.get('/store', (req, res) => {
+  res.sendFile(__dirname + "/js/store.js")
 })
 
 // 주문 시스템

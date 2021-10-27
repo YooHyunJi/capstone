@@ -6,18 +6,13 @@
     <title>테스트용 메뉴조회 페이지</title>
 </head>
 <body>
+    메뉴
+    <ul id="menuList">
+    </ul>
     <button onclick="getMenus()">메뉴 조회</button>
+    <button onclick="logout()">로그아웃</button>
 </body>
-<script type="text/javascript">
-    function getMenus() {
-        $.ajax({
-        type: 'POST',
-        url: '/admin/getMenus',
-        contentType: 'application/json',
-        data: JSON.stringify({}),
-        success: function (json) {
-        }
-    })    
-    }
+<script type="text/javascript" src="/user"></script>
+<script src="/store"></script>
 </script>
 </html>

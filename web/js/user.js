@@ -1,3 +1,6 @@
+// 회원 관리
+// Author : Sumin, Created : 2021.10.26
+
 function login() {
     let storeId = $('#storeId').val();
     let storePw = $('#storePw').val();
@@ -18,6 +21,18 @@ function login() {
                 alert(json.storeId + '님 ' + '환영합니다!');
                 location.href="/menu";
             }
+        }
+    })
+}
+
+function logout() {
+    // 로그아웃 서버와 통신
+    $.ajax({
+        type: 'GET',
+        url: '/admin/logout',
+        success: function (json) {
+            console.log('로그아웃 성공');
+            location.href="/admin";
         }
     })
 }
