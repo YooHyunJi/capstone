@@ -27,12 +27,9 @@ router.post('/addMenu', upload.single('menuImg'), function (req, res) {
     var menuName = req.body.menuName; // 메뉴명
     var menuDetail = req.body.menuDetail; // 메뉴 세부사항
     var menuPrice = req.body.menuPrice; // 메뉴 가격
-    let menuImg = readImageFile(__dirname + '/../../uploads/' + fileName); // 메뉴 이미지
+    var menuImg = readImageFile(__dirname + '/../../uploads/' + fileName); // 메뉴 이미지
     var categoryNo = req.body.categoryNo; // 카테고리 번호
-    //var storeNo = req.session.user.storeNo; // 매장 번호
-    //var query = `INSERT INTO menu (menuName, menuDetail, menuPrice, menuImg, categoryNo, storeNo) VALUES(?,?,?,?,?,${req.session.user.storeNo})`; // 카테고리 등록 쿼리문
-    var query = 'INSERT INTO menu (menuName, menuDetail, menuPrice, menuImg, categoryNo, storeNo) VALUES(?,?,?,?,?,5)';
-
+    var query = `INSERT INTO menu (menuName, menuDetail, menuPrice, menuImg, categoryNo, storeNo) VALUES(?,?,?,?,?,${req.session.user.storeNo})`;
     // DB에 메뉴 등록
     connection.query(query, [menuName, menuDetail, menuPrice, menuImg, categoryNo], function (err, result) {
         if(err) { // 에러 발생시
@@ -49,7 +46,7 @@ router.post('/addMenu', upload.single('menuImg'), function (req, res) {
 // 서버에서 이미지를 읽어오는 메서드
 function readImageFile(file){
     const bitmap = fs.readFileSync(file);
-    const buf = new Buffer.from(bitmap)
+    const buf = new Buffer.from(bitmap);
     return buf
 }
 

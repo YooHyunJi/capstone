@@ -7,18 +7,18 @@ var config = require('../../config/db_config');
 var connection = config.init();
 connection.connect();
 
-router.post('/getCategories', function (req, res) {
-    var storeNo = req.session.user.storeNo; // 매장 번호
-    var query = 'SELECT categoryNo, categoryName FROM category WHERE storeNo = ?'; // 카테고리 조회 쿼리문
+router.get('/getAllCategories', function (req, res) {
+    var query = `SELECT categoryNo, categoryName FROM category WHERE storeNo = ${req.session.user.storeNo}`; // 카테고리 조회 쿼리문
 
     // DB에서 조회
-    connection.query(query, storeNo, function (err, result) {
+    connection.query(query, function (err, result) {
         if(err) { // 에러 발생시
             console.log("error ocurred: ", err);
             res.json({ "code": 400, "result": "error ocurred" })
         } else {
             console.log("get categories success");
-            res.json({"code": 200, "result": "get categories success", "menus": result})
+            console.log(query);
+            res.json({"code": 200, "result": "get categories success", "categories": result})
         }
     })
 

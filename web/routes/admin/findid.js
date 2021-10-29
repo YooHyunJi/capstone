@@ -20,7 +20,7 @@ router.post('/findid', function (req, res) {
             if (result.length == 0) {   // 가입하지 않은 사용자인 경우
                 res.json({"code": 204, "result": "never registered"});
             } else { // ID를 찾은 경우
-                res.json({"code": 200, "id": result[0].storeId});
+                res.json({"code": 200, "storeId": result[0].storeId});
             }
         }
     })

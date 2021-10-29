@@ -11,7 +11,7 @@ var moment = require('moment');
 router.post('/cancelOrder', function (req, res) {
     var storeNo = req.session.user.storeNo; // 매장 번호
     var orderNo = req.body.orderNo; // 주문 번호
-    var paymentType = "주문 취소"; // 결제 타입(주문 결제/주문 취소)
+    var paymentType = "주문취소"; // 결제 타입(주문결제/주문취소)
 
     var query = "SELECT paymentMethod, paymentPrice FROM payment WHERE orderNo = ?";
     connection.query(query, orderNo, function (err, result) {
@@ -25,7 +25,7 @@ router.post('/cancelOrder', function (req, res) {
             var paymentMethod = result[0].paymentMethod; // 결제 수단(현금/카드)
             var paymentPrice = result[0].paymentPrice; // 결제 가격(=취소될 금액)
 
-            query = "UPDATE orders SET cancelYn = 'y' WHERE orderNo = ?;" +
+            query = "UPDATE orders SET cancelYn = 'Y' WHERE orderNo = ?;" +
                 "INSERT INTO payment (paymentType, paymentTime, paymentMethod, paymentPrice, storeNo, orderNo) VALUES(?,?,?,?,?,?)" // 주문취소 쿼리문
 
             // DB에 주문 상태변경 및 결제 취소 정보 추가

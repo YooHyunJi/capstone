@@ -9,11 +9,10 @@ connection.connect();
 
 router.post('/addCategory', function (req, res) {
     var categoryName = req.body.categoryName; // 카테고리명
-    var storeNo = req.session.user.storeNo; // 매장 번호
-    var query = 'INSERT INTO category (categoryName, storeNo) VALUES(?,?)'; // 카테고리 등록 쿼리문
+    var query = `INSERT INTO category (categoryName, storeNo) VALUES(?,${req.session.user.storeNo})`; // 카테고리 등록 쿼리문
 
     // DB에 카테고리 등록
-    connection.query(query, [categoryName, storeNo], function (err, result) {
+    connection.query(query, categoryName, function (err, result) {
         if(err) { // 에러 발생시
             console.log("error ocurred: ", err);
             res.json({ "code": 400, "result": "error ocurred" })

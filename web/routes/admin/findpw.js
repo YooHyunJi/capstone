@@ -68,7 +68,7 @@ router.post('/findpw', function (req, res) {
                 transporter.sendMail(mail, function (error) {
                     if (error) { // 에러 발생시
                         console.log("error ocurred: ", error);
-                        res.json({ "code": 400, "result": "error ocurred" });
+                        res.json({ "code": 404, "result": "error ocurred" });
                     }
                     else { // 메일 전송 성공시
                         console.log("findpw success");

@@ -8,8 +8,9 @@ var connection = config.init();
 connection.connect();
 
 router.post('/deleteUser', function (req, res) {
-    var storeId = req.body.storeId; // 아이디
-    var query = 'DELETE FROM store WHERE storeId = ?' // 회원탈퇴 쿼리문
+    //비밀번호 확인 필요
+    //var storePw = req.session.user.storePw; // 비밀번호
+    var query = `DELETE FROM store WHERE storeId = ${req.session.user.storeId}` // 회원탈퇴 쿼리문
 
     // DB 에서 사용자 정보 삭제
     connection.query(query, storeId, function (err, result) {

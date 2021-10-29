@@ -7,12 +7,11 @@ var config = require('../../config/db_config');
 var connection = config.init();
 connection.connect();
 
-router.post('/getOrderInfo', function (req, res) {
-    var storeNo = req.session.user.storeNo; // 매장 번호
-    var query = 'SELECT orderNo, orderTime, orderStatus, customerTel, totalPrice, cancelYn FROM orders WHERE storeNo = ?'; // 주문 조회 쿼리문
+router.get('/getAllOrders', function (req, res) {
+    var query = `SELECT orderNo, DATE_FORMAT(orderTime, '%Y-%m-%d %H:%m:%s') AS orderTime, orderStatus, customerTel, totalPrice, cancelYn FROM orders WHERE storeNo = ${req.session.user.storeNo}`; // 주문 조회 쿼리문
 
     // DB에서 조회
-    connection.query(query, storeNo, function (err, result) {
+    connection.query(query, function (err, result) {
         if(err) { // 에러 발생시
             console.log("error ocurred: ", err);
             res.json({ "code": 400, "result": "error ocurred" })

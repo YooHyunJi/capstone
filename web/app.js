@@ -23,10 +23,10 @@ const updateCategoryRouter = require('./routes/admin/updateCategory'); // 카테
 const addMenuRouter = require('./routes/admin/addMenu'); // 메뉴 등록 라우터
 const deleteMenuRouter = require('./routes/admin/deleteMenu'); // 메뉴 삭제 라우터
 const updateMenuRouter = require('./routes/admin/updateMenu'); // 메뉴 수정 라우터
-const getOrderInfoRouter = require('./routes/admin/getOrderInfo'); // 주문내역 조회 라우터
+const getAllOrdersRouter = require('./routes/admin/getAllOrders'); // 주문내역 조회 라우터
 const cancelOrderRouter = require('./routes/admin/cancelOrder'); // 주문취소 라우터
-const getCategoriesRouter = require('./routes/admin/getCategories'); // 전체 카테고리 조회 라우터
-const getMenusRouter = require('./routes/admin/getMenus'); // 전체 메뉴 조회 라우터
+const getAllCategoriesRouter = require('./routes/admin/getAllCategories'); // 전체 카테고리 조회 라우터
+const getAllMenusRouter = require('./routes/admin/getAllMenus'); // 전체 메뉴 조회 라우터
 const getMenusByCategoryRouter = require('./routes/admin/getMenusByCategory'); // 카테고리별 메뉴 조회 라우터
 
 const orderViewRouter = require('./routes/order/views.js'); // 주문 시스템 VIEWS 라우터
@@ -58,10 +58,10 @@ app.use('/admin', updateCategoryRouter);
 app.use('/admin', addMenuRouter);
 app.use('/admin', deleteMenuRouter);
 app.use('/admin', updateMenuRouter);
-app.use('/admin', getOrderInfoRouter);
+app.use('/admin', getAllOrdersRouter);
 app.use('/admin', cancelOrderRouter);
-app.use('/admin', getCategoriesRouter);
-app.use('/admin', getMenusRouter);
+app.use('/admin', getAllCategoriesRouter);
+app.use('/admin', getAllMenusRouter);
 app.use('/admin', getMenusByCategoryRouter);
 
 // order view 라우터
@@ -92,14 +92,20 @@ app.get('/test/:id', (req, res) => {
 app.get('/admin', (req, res) => {
     res.sendFile(__dirname + "/public/admin/main.html")
 })
-app.get('/menu', (req, res) => {
-  res.sendFile(__dirname + "/public/admin/menu.html")
+app.get('/adminTest', (req, res) => {
+  res.sendFile(__dirname + "/public/admin/adminTest.html")
 })
 app.get('/user', (req, res) => {
   res.sendFile(__dirname + "/js/user.js")
 })
-app.get('/store', (req, res) => {
-  res.sendFile(__dirname + "/js/store.js")
+app.get('/category', (req, res) => {
+  res.sendFile(__dirname + "/js/category.js")
+})
+app.get('/menu', (req, res) => {
+  res.sendFile(__dirname + "/js/menu.js")
+})
+app.get('/order', (req, res) => {
+  res.sendFile(__dirname + "/js/order.js")
 })
 
 // 주문 시스템
