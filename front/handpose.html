@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils@0.1/camera_utils.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils@0.1/control_utils.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils@0.2/drawing_utils.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands@0.1/hands.js" crossorigin="anonymous"></script>
+
+  <!-- 웹캠 화면의 좌우 반전 -->
+  <style>
+    html, body{
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      -ms-overflow-style: none;
+    }
+    
+    ::-webkit-scrollbar{ display:none; }
+
+    #container{
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      float: left;
+    }
+
+    video{
+      transform: rotateY(180deg);
+      -webkit-transform:rotateY(180deg); /* Safari and Chrome */
+      -moz-transform:rotateY(180deg); /* Firefox */
+      visibility: hidden;
+      width: 0;
+      outline: none;
+      border: none;
+    }
+    
+    canvas{
+      transform: rotateY(180deg);
+      -webkit-transform:rotateY(180deg); /* Safari and Chrome */
+      -moz-transform:rotateY(180deg); /* Firefox */
+      position:fixed;
+      /* background-color: rgb(224, 224, 224); */
+      width: 100%;
+      height: 100%;
+    }
+
+    #categoryList{
+      color: rgba(255, 255, 255, 0.7);
+      position: relative;
+      width: 100%;
+      height: 100px;
+      float: left;
+      list-style: none;
+      padding: 0px;
+      margin: 0px;
+      overflow: auto;
+      white-space: nowrap;
+    }
+
+    .category{
+      background: linear-gradient( -45deg, rgba(54, 146, 134, 0.5), rgba(54, 146, 134, 0.55));
+      position: relative;
+      width: 22%;
+      height: 100px;
+      text-align: center;
+      line-height: 100px;
+      display: inline-block;
+    }
+
+    #section{
+      height: calc(100% - 100px);
+    }
+
+    #menuList{
+      /* background-color: rgb(214, 156, 156); */
+      position: relative;
+      width: 60%;
+      float: left;
+      height: 100%;
+    }
+
+    .menu{
+      background: linear-gradient( -45deg, rgba(220, 220, 220, 0.5), rgba(241, 241, 241, 0.5));
+      position: relative;
+      float: left;
+      width: 33.3%;
+      height: 300px;
+      text-align: center;
+      border: none;
+    }
+
+    .menuImg{
+      width: 80%;
+      position: relative;
+      margin-top: 20px;
+      margin-bottom: -20px;
+    }
+
+    .menuTitle{
+      width: 80%;
+      line-height: 30px;
+      position: relative;
+      line-height: 50px;
+      margin: 0 auto;
+      margin-top: 20px;
+    }
+
+    .menuPrice{
+      width: 80%;
+      line-height: 30px;
+      position: relative;
+      line-height: 30px;
+      margin: 0 auto;
+    }
+
+    #bag{
+      position: relative;
+      float: left;
+      width: 40%;
+      height: 100%;
+    }
+
+    #orderList{
+      position: relative;
+      float: left;
+      width: 80%;
+      height: 100%;
+      background-color: rgba(214, 230, 227, 0.5);
+      overflow: scroll;
+      font-size: 10px;
+    }
+
+    .orderMenu{
+      position: relative;
+      float: left;
+      width: 100%;
+      height: 20%;
+      background: linear-gradient(to bottom,  rgba(189, 209, 206, 0.3), rgba(189, 209, 206, 0.5));
+    }
+
+    .orderMenu div{
+      position: relative;
+      float: left;
+      width: 25%;
+      text-align: center;
+      line-height: 150px;
+    }
+
+    #orderControl{
+      position: relative;
+      float: left;
+      width: 20%;
+      height: 100%;
+    }
+
+    #orderListUp{
+      position: relative;
+      float: left;
+      width: 100%;
+      height: 25%;
+      background: linear-gradient(to bottom,  rgba(179, 179, 179, 0.3), rgba(161, 161, 161, 0.3));
+      text-align: center;
+      border: none;
+      padding: 0px;
+    }
+
+    #orderListUp:active{
+      background: linear-gradient(to bottom,  rgba(139, 139, 139, 0.3), rgba(116, 116, 116, 0.3));
+    }
+
+    #orderListDown{
+      position: relative;
+      float: left;
+      width: 100%;
+      height: 25%;
+      background: linear-gradient(to bottom,  rgba(179, 179, 179, 0.3), rgba(161, 161, 161, 0.3));
+      text-align: center;
+      border: none;
+      padding: 0px;
+    }
+
+    #orderListDown:active{
+      background: linear-gradient(to bottom,  rgba(139, 139, 139, 0.3), rgba(116, 116, 116, 0.3));
+    }
+
+    #orderButton{
+      position: relative;
+      float: left;
+      width: 100%;
+      height: 50%;
+      background-color: rgba(59, 155, 142, 0.5);
+      text-align: center;
+      border: none;
+      padding: 0px;
+    }
+
+    #orderButton:active{
+      background-color: rgba(38, 99, 91, 0.5);
+    }
+
+    #modal{
+      display: none;
+      width: 70%;
+      height: 70%;
+      background-color: #f7f7f7;
+      border-radius: 5px;
+      text-align: center;
+    }
+
+    #payments{
+      width: 90%;
+      /* background-color: thistle; */
+      display: inline-block;
+      text-align: center;
+      margin-top: 80px;
+    }
+
+    .payment{
+      width: 21%;
+      height: 300px;
+      background-color: rgb(74, 155, 155);
+      color: white;
+      float: left;
+      text-align: center;
+      line-height: 300px;
+      margin: 0 2%;
+    }
+
+    #totalPrice{
+      display: inline-block;
+      width: 80%;
+      height: 50px;
+      line-height: 50px;
+      font-size: 20px;
+      margin-top: 30px;
+      /* background-color: tomato; */
+    }
+
+    #modalClose{
+      width: 90%;
+      height: 60px;
+      display: inline-block;
+      background-color:rgb(216, 216, 216);
+      line-height: 60px;
+      text-align: center;
+    }
+
+    
+  </style>
+
+</head>
+<body>
+  <canvas class="output_canvas" width="1280px" height="720px"></canvas>
+
+  <div id="container">
+    <video class="input_video"></video>
+
+    <ul id="categoryList">
+      <li class="category"> COFFEE
+      <li class="category"> TEA
+      <li class="category"> ADE
+      <li class="category"> JUICE
+      <li class="category"> BAKERY
+      <li class="category"> SMOOTHIE
+    </ul>
+
+    <div id="section">
+      <div id="menuList">
+        <div class="menu" onclick="gestureButtonClick();">
+          <img class="menuImg" src="/Users/hyunji/Desktop/공부하자/2021_2/Capstone디자인/capstone/test_image/하마.png" alt=" hippo">
+          <h4 class="menuTitle">  HIPPO1 </h4>
+          <h4 class="menuPrice"> ₩5,000 </h4>
+        </div> 
+        <div class="menu" onclick="gestureButtonClick();">
+          <img class="menuImg" src="/Users/hyunji/Desktop/공부하자/2021_2/Capstone디자인/capstone/test_image/라오니.png" alt=" laon">
+          <h4 class="menuTitle">  BEAR1 </h4>
+          <h4 class="menuPrice"> ₩9,000 </h4>
+        </div> 
+        <div class="menu" onclick="gestureButtonClick();">
+          <img class="menuImg" src="/Users/hyunji/Desktop/공부하자/2021_2/Capstone디자인/capstone/test_image/하마.png" alt=" hippo">
+          <h4 class="menuTitle">  HIPPO2 </h4>
+          <h4 class="menuPrice"> ₩5,000 </h4>
+        </div> 
+        <div class="menu" onclick="gestureButtonClick();">
+          <img class="menuImg" src="/Users/hyunji/Desktop/공부하자/2021_2/Capstone디자인/capstone/test_image/라오니.png" alt=" laon">
+          <h4 class="menuTitle">  BEAR2 </h4>
+          <h4 class="menuPrice"> ₩9,000 </h4>
+        </div> 
+        <div class="menu" onclick="gestureButtonClick();">
+          <img class="menuImg" src="/Users/hyunji/Desktop/공부하자/2021_2/Capstone디자인/capstone/test_image/하마.png" alt=" hippo">
+          <h4 class="menuTitle">  HIPPO3 </h4>
+          <h4 class="menuPrice"> ₩5,000 </h4>
+        </div>
+        <div class="menu" onclick="gestureButtonClick();">
+          <img class="menuImg" src="/Users/hyunji/Desktop/공부하자/2021_2/Capstone디자인/capstone/test_image/라오니.png" alt=" laon">
+          <h4 class="menuTitle">  BEAR3 </h4>
+          <h4 class="menuPrice"> ₩9,000 </h4>
+        </div> 
+        <div class="menu" onclick="gestureButtonClick();">
+          <img class="menuImg" src="/Users/hyunji/Desktop/공부하자/2021_2/Capstone디자인/capstone/test_image/라오니.png" alt=" laon">
+          <h4 class="menuTitle">  BEAR4 </h4>
+          <h4 class="menuPrice"> ₩9,000 </h4>
+        </div> 
+      </div>
+
+      <div id="bag">
+        <div id="orderList">
+          <div class="orderMenu">
+              <div class="orderMenuName">  AMERICANO(ICE) </div>
+              <div class="orderMenuPrice"> 3,000 </div>
+              <div class="orderQuantity">
+                <div class="orderMenuQuantityDec"> ▼ </div>
+                <div class="orderMenuQuantity"> 3 </div>
+                <div class="orderMenuQuantityInc"> ▲ </div>
+              </div>
+              <div class="orderMenuCancel"> CANCEL </div>
+          </div>
+          <div class="orderMenu">
+              <div class="orderMenuName"> LATTE(HOT) </div>
+              <div class="orderMenuPrice"> 4,000 </div>
+              <div class="orderQuantity">
+                <div class="orderMenuQuantityDec"> ▼ </div>
+                <div class="orderMenuQuantity"> 2 </div>
+                <div class="orderMenuQuantityInc"> ▲ </div>
+              </div>
+              <div class="orderMenuCancel"> CANCEL </div>
+          </div>
+          <div class="orderMenu">
+              <div class="orderMenuName">  STRAWBERRY JUICE </div>
+              <div class="orderMenuPrice"> 7,000 </div>
+              <div class="orderQuantity">
+                <div class="orderMenuQuantityDec"> ▼ </div>
+                <div class="orderMenuQuantity"> 1 </div>
+                <div class="orderMenuQuantityInc"> ▲ </div>
+              </div>
+              <div class="orderMenuCancel"> CANCEL </div>
+          </div>
+          <div class="orderMenu">
+              <div class="orderMenuName">  CHEESE CAKE </div>
+              <div class="orderMenuPrice"> 6,000 </div>
+              <div class="orderQuantity">
+                <div class="orderMenuQuantityDec"> ▼ </div>
+                <div class="orderMenuQuantity"> 1 </div>
+                <div class="orderMenuQuantityInc"> ▲ </div>
+              </div>
+              <div class="orderMenuCancel"> CANCEL </div>
+          </div>
+          <div class="orderMenu">
+              <div class="orderMenuName">  BAGLE </div>
+              <div class="orderMenuPrice"> 3,500 </div>
+              <div class="orderQuantity">
+                <div class="orderMenuQuantityDec"> ▼ </div>
+                <div class="orderMenuQuantity"> 1 </div>
+                <div class="orderMenuQuantityInc"> ▲ </div>
+              </div>
+              <div class="orderMenuCancel"> CANCEL </div>
+          </div>
+          <div class="orderMenu">
+              <div class="orderMenuName">  VANILA LATTE(HOT) </div>
+              <div class="orderMenuPrice"> 4,500 </div>
+              <div class="orderQuantity">
+                <div class="orderMenuQuantityDec"> ▼ </div>
+                <div class="orderMenuQuantity"> 1 </div>
+                <div class="orderMenuQuantityInc"> ▲ </div>
+              </div>
+              <div class="orderMenuCancel"> CANCEL </div>
+          </div>
+          <div class="orderMenu">
+              <div class="orderMenuName">  AMERICANO(HOT) </div>
+              <div class="orderMenuPrice"> 3,000 </div>
+              <div class="orderQuantity">
+                <div class="orderMenuQuantityDec"> ▼ </div>
+                <div class="orderMenuQuantity"> 4 </div>
+                <div class="orderMenuQuantityInc"> ▲ </div>
+              </div>
+              <div class="orderMenuCancel"> CANCEL </div>
+          </div>
+          <div class="orderMenu">
+              <div class="orderMenuName">  CAPPUCHINO </div>
+              <div class="orderMenuPrice"> 4,500 </div>
+              <div class="orderQuantity">
+                <div class="orderMenuQuantityDec"> ▼ </div>
+                <div class="orderMenuQuantity"> 1 </div>
+                <div class="orderMenuQuantityInc"> ▲ </div>
+              </div>
+              <div class="orderMenuCancel"> CANCEL </div>
+          </div>
+          <div class="orderMenu">
+              <div class="orderMenuName">  CHOCOLATE </div>
+              <div class="orderMenuPrice"> 4,500 </div>
+              <div class="orderQuantity">
+                <div class="orderMenuQuantityDec"> ▼ </div>
+                <div class="orderMenuQuantity"> 1 </div>
+                <div class="orderMenuQuantityInc"> ▲ </div>
+              </div>
+              <div class="orderMenuCancel"> CANCEL </div>
+          </div>
+          <div class="orderMenu">
+              <div class="orderMenuName">  BREAD </div>
+              <div class="orderMenuPrice"> 2,000 </div>
+              <div class="orderQuantity">
+                <div class="orderMenuQuantityDec"> ▼ </div>
+                <div class="orderMenuQuantity"> 1 </div>
+                <div class="orderMenuQuantityInc"> ▲ </div>
+              </div>
+              <div class="orderMenuCancel"> CANCEL </div>
+          </div>
+        </div>
+        
+        <div id="orderControl">
+          <button id="orderListUp" onclick="orderScroll(this.id);"> ▲ </button>
+          <button id="orderListDown" onclick="orderScroll(this.id);"> ▼ </button>
+          <button id="orderButton"> ORDER </button>
+        </div>
+      </div>    
+    </div>
+
+    <div id="modal">
+      <div id="payments">
+        <div class="payment">신용카드</div>
+        <div class="payment">카카오페이</div>
+        <div class="payment">페이코</div>
+        <div class="payment">삼성페이</div>
+      </div><br>
+      <div id="totalPrice">총 결제 금액 12,500원</div>
+      <a><div id="modalClose">이전 단계</div></a>
+    </div>
+  </div>
+
+
+</body>
+</html>
+
+<script>
+  function modal(id) {
+    var zIndex = 9999;
+    var modal = document.getElementById(id);
+
+    // 모달 div 뒤에 희끄무레한 레이어
+    var bg = document.createElement('div');
+    bg.setStyle({
+        position: 'fixed',
+        zIndex: zIndex,
+        left: '0px',
+        top: '0px',
+        width: '100%',
+        height: '100%',
+        overflow: 'auto',
+        // 레이어 색갈은 여기서 바꾸면 됨
+        backgroundColor: 'rgba(0,0,0,0.4)'
+    });
+    document.body.append(bg);
+
+    // 닫기 버튼 처리, 시꺼먼 레이어와 모달 div 지우기
+    modal.querySelector('.modal_close_btn').addEventListener('click', function() {
+        bg.remove();
+        modal.style.display = 'none';
+    });
+
+    modal.setStyle({
+        position: 'fixed',
+        display: 'block',
+        boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)',
+
+        // 시꺼먼 레이어 보다 한칸 위에 보이기
+        zIndex: zIndex + 1,
+
+        // div center 정렬
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        msTransform: 'translate(-50%, -50%)',
+        webkitTransform: 'translate(-50%, -50%)'
+    });
+  }
+
+  // Element 에 style 한번에 오브젝트로 설정하는 함수 추가
+  Element.prototype.setStyle = function(styles) {
+    for (var k in styles) this.style[k] = styles[k];
+    return this;
+  };
+
+  document.getElementById('orderButton').addEventListener('click', function() {
+     // 모달창 띄우기
+     modal('modal');
+    });
+
+
+  function gestureButtonClick(){
+    // document.getElementById('btn1').click();
+    console.log(document.getElementsByClassName('menuTitle').text());
+  }
+
+  function orderScroll(clicked_id){
+    const orderList = document.getElementById('orderList');
+    const clickedButton = document.getElementById(clicked_id);
+
+    if(clicked_id == 'orderListUp'){
+      orderList.scrollBy(0, -80);
+    }
+
+    else{
+      orderList.scrollBy(0, 80);
+    }
+
+    clickedButton
+}
+</script>
+
+<script type="module">
+const videoElement = document.getElementsByClassName('input_video')[0];
+const canvasElement = document.getElementsByClassName('output_canvas')[0];
+const canvasCtx = canvasElement.getContext('2d');
+ 
+// check handpose
+const compareIndex = [[18, 4], [6, 8], [10, 12], [14, 16], [18, 20]]
+var open = [false, false, false, false, false]
+const gesture = [[true, true, true, true, true, "HI"], [false, false, false, false, false, "주먹쥠"], [true, false, false, false, false, "엄지만 펴짐"]]
+
+function dist(x1, y1, x2, y2) { // 두 점 사이의 거리를 반환
+  return Math.sqrt(Math.pow(x1-x2, 2)) + Math.sqrt(Math.pow(y1-y2, 2));
+}
+
+function getAngle(x1, y1, x2, y2){ // 두 점 사이의 각도를 반환
+  var rad = Math.atan2(y2-y1, x2-x1);
+  return (rad*180 / Math.PI);
+}
+
+function handHover(x1, y1){
+  hand_x = -(x1 * window.width);
+  hand_y = y1 * window.height;
+}
+
+function sleep(ms) {
+  const wakeUpTime = Date.now() + ms;
+  while (Date.now() < wakeUpTime) {}
+}
+
+function onResults(results) {
+  canvasCtx.save();
+  canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
+  // canvas 웹캠 이미지 삭제
+  // canvasCtx.drawImage(
+  //     results.image, 0, 0, canvasElement.width, canvasElement.height);
+
+  var print_x, print_y;
+  var middle;
+      
+  if (results.multiHandLandmarks) {
+    for (const landmarks of results.multiHandLandmarks) { // landmarks.length == 21 (0-20)
+      // 현재 사용자의 손 상태 판별
+      for (var i=0; i<5; i++) {
+        // true 펼쳐짐, false 접힘
+          open[i] = dist(landmarks[0]['x'], landmarks[0]['y'], landmarks[compareIndex[i][0]]['x'], landmarks[compareIndex[i][0]]['y']) 
+                  < dist(landmarks[0]['x'], landmarks[0]['y'], landmarks[compareIndex[i][1]]['x'], landmarks[compareIndex[i][1]]['y'])
+      }
+
+      // 지정된 제스처와 비교
+      for (var i=0; i<3; i++) {
+        var flag = true;
+        for (var j=0; j<5; j++) {
+          if (gesture[i][j] != open[j]) {
+            flag = false
+          }
+        }
+        if (flag == true) { // 지정된 제스처와 동일할 때
+          // 선택 모션을 취할 때(움켜쥐는 모션)
+          if(i==1){
+            // gestureButtonClick();
+            // console.log((1 - landmarks[9]['x']), landmarks[9]['y']);
+            // alert('선택되었습니다' + '\n' + (1 - landmarks[9]['x']) + '\n' + landmarks[9]['y']);
+            console.log('선택되었습니다' + '\nx좌표 : ' + (1 - landmarks[9]['x']) * window.innerWidth + '\ny좌표 : ' + landmarks[9]['y'] * window.innerHeight);
+            // sleep(500);
+          }
+
+          // 엄지를 제외한 손가락을 모두 접은 제스처일 때(엄지만 편 상태)
+          else if(i==2){
+            // 엄지 손가락 끝이 새끼 손가락 끝보다 위쪽에 있으면 'Good'으로 인식
+            if (getAngle(landmarks[4]['x'], landmarks[4]['y'],landmarks[20]['x'], landmarks[20]['y'])>0){
+              console.log('GOOD');
+              // sleep(500);
+            }
+            // 엄지 손가락 끝이 새끼 손가락 끝보다 아래쪽에 있으면 'Bad'으로 인식
+            else{
+              console.log('BAD');
+              // sleep(500);
+            }
+          }
+          else{
+            console.log(gesture[i][5]);
+          }
+        }
+      }
+      drawConnectors(canvasCtx, landmarks, HAND_CONNECTIONS, {color: '#f0c697', lineWidth: 20});
+      drawLandmarks(canvasCtx, landmarks, {color: '#f5c9a9', lineWidth: 10});
+    }
+  }
+  canvasCtx.restore();
+}
+
+const hands = new Hands({locateFile: (file) => {
+  return `https://cdn.jsdelivr.net/npm/@mediapipe/hands@0.1/${file}`;
+}});
+
+hands.setOptions({
+  maxNumHands: 1,
+  minDetectionConfidence: 0.5,
+  minTrackingConfidence: 0.5
+});
+
+hands.onResults(onResults);
+
+const camera = new Camera(videoElement, {
+  onFrame: async () => {
+    await hands.send({image: videoElement});
+  },
+  width: 1280,
+  height: 720
+});
+
+camera.start();
+</script>

@@ -29,5 +29,8 @@
     "supertest": "^6.1.6"
   },
   "main": "app.js",
+  "directories": {
+    "test": "test"
+  },
   "description": ""
 }
