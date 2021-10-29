@@ -29,62 +29,148 @@
     </ul>
 
     장바구니
-    <ul id="shoppingBasket">
+    <ul id="shoppingCart">
     </ul>
+    <p>총 금액: <a id="totalPrice">00</a>원</p>
+    <button>결제</button>
 </body>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script type="text/javascript">
     const baseUrl = $(location).attr('protocol') + '//' + $(location).attr('host');
     const storeNo = location.href.split(baseUrl + "/order/")[1];
 
-    getCategoryByStoreNo(storeNo);
-    getMenuByCategoryNo();
+    var totalPrice = 0;
+    var shoppingCartList = {};
+    // shoppingBasketList[storeNo] = {
+    //    menuName: '아메리카노',
+    //    menuPrice: 1000,
+    //    totalPrice: 1000 * 3
+    //    count: 3,
+    //}
 
-    $("#category").on("click","li", function(e){ 
-        alert($(this).text());
-    });
-
-    function getCategoryByStoreNo(storeNo) {
-        $.ajax({
-            url: baseUrl + '/api/order/category/' + storeNo,
-            type: 'GET',
-            dataType : 'json', 
-            success: function (result) {
-                $.each(result, function(index, data){
-                    $('#categoryList').append($('<li />', {
-                        id: data.categoryNo,
-                        text: data.categoryName,
-                        click: function() {
-                            getMenuByCategoryNo(data.categoryNo);
-                        }
-                    }));
-                });
-            }, error: function (error) {
-                console.log(error);
-            }
+    // 접속 시 카테고리 리스트와 첫 카테고리에 대한 메뉴 리스트
+    $.ajax({
+        url: baseUrl + '/api/order/main/' + storeNo,
+        type: 'GET', 
+        dataType: 'json', 
+        success: function(result) {
+            addCategoryList(result.category);
+            addMenuList(result.menu);
+        }, error: function(error) {
+            console.log(error);
+        }
+    })
+    
+    // 카테고리 리스트
+    function addCategoryList(result) { 
+        $('#categoryList').empty();
+        $.each(result, function(index, data){
+            $('#categoryList').append($('<li />', {
+                id: data.categoryNo,
+                text: data.categoryName,
+                click: function() {
+                    getMenuByCategoryNo(data.categoryNo);
+                }
+            }));
         });
     }
 
+    // 메뉴 리스트
+    function addMenuList(result) {
+        $('#menuList').empty();
+        $.each(result, function(index, data){
+            $('#menuList').append($('<li />', {
+                id: data.menuNo,
+                text: data.menuName + ' ' + data.menuPrice,
+                click: function () {
+                    addShoppingCart(data.menuNo, data.menuName, data.menuPrice);
+                }
+            }));
+        });
+    }
+
+    // 카테고리별 메뉴 리스트
     function getMenuByCategoryNo(categoryNo) {
         $.ajax({
-            url: baseUrl + '/api/order/menu/' + storeNo + '/' + categoryNo,
+            url: baseUrl + '/api/order/menu/' + categoryNo,
             type: 'GET',
             dataType : 'json', 
             success: function (result) {
-                $('#menuList').empty();
-                $.each(result, function(index, data){
-                    $('#menuList').append($('<li />', {
-                        id: data.menuNo,
-                        text: data.menuName,
-                        click: function () {
-                            
-                        }
-                    }));
-                });
+                addMenuList(result);
             }, error: function (error) {
                 console.log(error);
             }
         });
     }
+
+    // 장바구니 정보 저장
+    const addShoppingCart = (menuNo, menuName, menuPrice) => {
+        
+        if (menuNo in shoppingCartList) { // 이미 추가된 메뉴일 때
+            shoppingCartList[menuNo]['count'] += 1;
+            shoppingCartList[menuNo]['totalPrice'] = shoppingCartList[menuNo]['count'] * shoppingCartList[menuNo]['menuPrice'];
+            console.log(shoppingCartList);
+        } else {
+            // 장바구니 dict
+            shoppingCartList[menuNo] = {
+                'menuNo': menuNo,
+                'menuName': menuName,
+                'count': 1,
+                'menuPrice': menuPrice,
+                'totalPrice': 1
+            }
+            console.log(shoppingCartList);
+        }
+
+        return shoppingCartList[menuNo]['count'], shoppingCartList[menuNo]['menuPrice'];
+    }
+
+    // 장바구니 리스트 추가
+    const addShoppingCartList = (menuNo, menuName, menuPrice) => {
+        $('#shoppingCart').append($('<li />', {
+            id: menuNo,
+            text: menuName + ' ' + menuPrice
+        }).append($('<button />', {
+            text: 'up',
+            click: function() {
+                totalPrice += menuPrice;
+                changeTotalPrice(totalPrice);
+            }
+        })).append($('<a />', {
+            text: 1, 
+        })).append($('<button />', {
+            text: 'down',
+            click: function() {
+                totalPrice -= menuPrice;
+                if (totalPrice < 0) {
+                    alert('잘못된 접근입니다!');
+                    $(this).parent().remove();
+                } else {
+                    $('#totalPrice').text(totalPrice);
+                }
+            }
+        })).append($('<button />', {
+            text: '취소',
+            click: function() {
+                $(this).parent().remove();
+                totalPrice -= parseInt(menuPrice);
+                changeTotalPrice(totalPrice);
+            }
+        })));
+        
+        totalPrice += parseInt(menuPrice);
+        changeTotalPrice(totalPrice);
+    }
+
+    // 총 가격 조정
+    function changeTotalPrice(totalPrice) {
+        if (totalPrice < 0) {
+            alert('잘못된 접근입니다!');
+            $(this).parent().remove();
+        } else {
+            $('#totalPrice').text(totalPrice);
+        }
+    }
+
 </script>
 </html>

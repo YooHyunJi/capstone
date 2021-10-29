@@ -106,9 +106,6 @@ app.get('/store', (req, res) => {
 app.get('/order', (req, res) => {
   res.sendFile(__dirname + "/public/order/main.html")
 })
-// app.get('/order', (req, res) => {
-//   res.sendFile(__dirname + "/public/order/main.html")
-// })
 
 // socket & robotjs 마우스 커서 조작
 io.on('connection', (socket) => { // 소켓 연결이 들어오면 실행
