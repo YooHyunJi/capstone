@@ -8,8 +8,7 @@ const db_info = {
 	dev:{
 		host: 'localhost',
 		user: 'root',
-		// password: process.env.DB_SECRET, 
-		password: '0000', 
+		password: process.env.DB_SECRET,
 		database: 'capstone',
 		multipleStatements: true
     },
