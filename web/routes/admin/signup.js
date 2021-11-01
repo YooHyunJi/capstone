@@ -39,6 +39,7 @@ router.post('/signup', function(req, res) {
                         storePw = key.toString('base64');
                         // user정보 DB에 저장
                         connection.query(query, [storeId, storeName, storePw, salt, storeTel, storeLoc, crn, managerName, managerTel, regDate], function (error, result) {
+                            console.log(query);
                             if (error) { // 에러 발생시
                                 console.log("error ocurred: ", error);
                                 res.json({ "code" : 400, "result": "error ocurred" })

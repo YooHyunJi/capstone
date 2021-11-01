@@ -8,11 +8,11 @@ var connection = config.init();
 connection.connect();
 
 router.post('/getMenusByCategory', function (req, res) {
-    var categoryNo = req.body.categoryNo; // 카테고리 번호
-    var query = 'SELECT categoryName, menuName, menuPrice FROM category, menu WHERE category.categoryNo = ? AND menu.categoryNo = category.categoryNo'; // 카테고리별 메뉴 조회 쿼리문
+    var categoryName = req.body.categoryName; // 카테고리 번호
+    var query = 'SELECT menuNo, categoryName, menuName, menuPrice, menuDetail FROM category, menu WHERE category.categoryName = ? AND menu.categoryNo = category.categoryNo'; // 카테고리별 메뉴 조회 쿼리문
 
     // DB에서 조회
-    connection.query(query, categoryNo, function (err, result) {
+    connection.query(query, categoryName, function (err, result) {
         if(err) { // 에러 발생시
             console.log("error ocurred: ", err);
             res.json({ "code": 400, "result": "error ocurred" })

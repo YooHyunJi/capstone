@@ -17,7 +17,6 @@ router.get('/getAllCategories', function (req, res) {
             res.json({ "code": 400, "result": "error ocurred" })
         } else {
             console.log("get categories success");
-            console.log(query);
             res.json({"code": 200, "result": "get categories success", "categories": result})
         }
     })

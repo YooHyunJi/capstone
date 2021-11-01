@@ -4,7 +4,7 @@
 function signup() {
     let storeId = $('#storeId').val(); // 아이디
     let storePw = $('#storePw').val(); // 비밀번호
-    let storePwCheck = $('#storePwCheck').val(); // 비밀번호 확인
+    let storePwValid = $('#storePwValid').val(); // 비밀번호 확인
     let storeName = $('#storeName').val(); // 매장명
     let storeTel = $('#storeTel').val(); // 매장 연락처
     let storeLoc = $('#storeLoc').val(); // 매장 위치
@@ -12,8 +12,12 @@ function signup() {
     let managerName = $('#managerName').val(); // 점주 이름
     let managerTel = $('#managerTel').val(); // 점주 연락처
 
-    if (!storeId || !storePw || !storePwCheck || !storeName || !storeTel || !storeLoc || !crn || !managerName || !managerTel) { // 입력 확인
+    if (!storeId || !storePw || !storePwValid || !storeName || !storeTel || !storeLoc || !crn || !managerName || !managerTel) { // 입력 확인
         alert('미입력');
+        return;
+    }
+    if (storePw != storePwValid) {
+        alert('비밀번호, 비밀번호 확인 불일치');
         return;
     }
     // 회원가입 서버와 통신
@@ -21,15 +25,13 @@ function signup() {
         type: 'POST',
         url: '/admin/signup',
         contentType: 'application/json',
-        data: JSON.stringify({'storeId': storeId, 'storePw': storePw, 
-                            'storePwCheck': storePwCheck, 'storeName': storeName, 
-                            'storeTel': storeTel, 'storeLoc': storeLoc,
-                            'crn': crn, 'managerName': managerName, 'managerTel': managerTel}),
+        data: JSON.stringify({'storeId': storeId, 'storeName': storeName, 'storePw': storePw, 'storeTel': storeTel, 'storeLoc': storeLoc,'crn': crn, 'managerName': managerName, 'managerTel': managerTel}),
         success: function (result) {
             if (result.code == 204)
                 alert('중복된 아이디입니다.');
             else if (result.code == 200) {
                 alert('가입 성공!');
+                location.href="/login";
             }
         }
     })    
@@ -53,7 +55,7 @@ function login() {
                 alert('아이디 또는 패스워드가 맞지 않습니다.');
             else if (result.code == 200) {
                 alert(result.storeId + '님 ' + '환영합니다!');
-                location.href="/adminTest";
+                location.href="/mainLogin";
             }
         }
     })
@@ -66,7 +68,7 @@ function logout() {
         url: '/admin/logout',
         success: function (result) {
             console.log('로그아웃 성공');
-            location.href="/admin";
+            location.href="/login";
         }
     })
 }
@@ -118,12 +120,23 @@ function findPw() {
             }
         }
     })
+}
 
-    function deleteUser() {
-        // 회원탈퇴
-    }
-
-    function updateUserInfo() {
-        // 회원정보수정
-    }
+function deleteUser() {
+    let storePw = $('#storePw').val();
+    // 회원탈퇴
+    $.ajax({
+        type: 'POST',
+        url: '/admin/deleteUser',
+        contentType: 'application/json',
+        data: JSON.stringify({'storePw': storePw}),
+        success: function (result) {
+            if (result.code == 208) {
+                alert('비밀번호가 맞지 않습니다.');
+            }
+            else if (result.code == 200) {
+                alert('비밀번호 일치');
+            }
+        }
+    })
 }

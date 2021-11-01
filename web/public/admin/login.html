@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <style>
+      html, body{
+      width: 100%;
+      height: 100%;
+      margin: 0;
+    }
+      
+    #header{
+        width: 100%;
+        height: 150px;
+        background-color: rgb(220, 220, 220);
+        float: left;
+        text-align: center;
+    }
+
+    #logo{
+        width: 150px;
+        font-size: 50px;
+        text-align: center;
+        line-height: 150px;
+        display: inline-block;
+        color: rgb(94, 94, 94);
+        margin-left: 200px;
+    }
+
+    #session{
+        width: 150px;
+        height: 150px;
+        /* background-color: seashell; */
+        float: right;
+        margin-right: 50px;
+        padding-top: 15px;
+    }
+
+    #session a{
+        width: 150px;
+        height: 30px;
+        text-decoration: none;
+        color: white;
+        line-height: 33px;
+        font-size: 15px;
+    }
+
+    #session a div{
+        width: 150px;
+        height: 30px;
+        margin-top: 20px;
+        background-color: rgb(153, 153, 153);
+        text-align: center;
+    }
+
+    #section{
+        float: left;
+        width: 100%;
+        /* background-color: rgba(205, 213, 216, 0.39); */
+        text-align: center;
+    }
+
+    #loginArea{
+        width: 700px;
+        height: 400px;
+        /* background-color: rgba(126, 124, 143, 0.514); */
+        display: inline-block;
+        margin-top: 60px;
+    }
+
+    #loginArea form{
+        background-color: rgb(244, 244, 244);
+        width: 600px;
+        height: 350px;
+        border-radius: 30px;
+        display: inline-block;
+        margin-top: 25px;
+        text-align: center;
+    }
+
+    #loginArea form h1{
+        color: rgb(99, 99, 99);
+        line-height: 100px;
+        text-align: center;
+        margin-bottom: 0px;
+    }
+
+    #loginArea form label{
+        width: 100px;
+        font-size: 15px;
+        line-height: 20px;
+        text-align: center;
+        float: left;
+        margin: 5px -20px 0 80px;
+    }
+
+    #loginArea form input{
+        height: 20px;
+        width: 200px;
+        float: left;
+        outline: 0.5px solid rgb(236, 236, 236);
+    }
+
+    #loginArea form input:focus{
+        outline: 0.5px solid rgba(135, 192, 184, 0.541);
+        border-radius: 3px;
+    }
+
+    #loginArea form input[value="LOGIN"]{
+        display: block;
+        width: 80px;
+        height: 90px;
+        float: left;
+        margin: -64px 0 0 30px;
+        font-size: 15px;
+        border: none;
+        border-radius: 10px;
+        background-color: rgb(200, 200, 200);
+        color: white;
+        cursor: pointer;
+    }
+
+    #loginArea form input[value="JOIN"]{
+        width: 360px;
+        height: 40px;
+        font-size: 15px;
+        border: none;
+        border-radius: 10px;
+        background-color: rgb(200, 200, 200);
+        color: white;
+        cursor: pointer;
+        margin-left: 120px;
+    }
+  </style>
+</head>
+
+<body>
+    <div id="header">
+        <div id="logo">LOGO</div>
+        <div id="session">
+            <a href="/login"><div class="session__button">LOG IN</div></a>
+            <a href="/join"><div class="session__button">JOIN</div></a>
+        </div>
+    </div>
+
+    <div id="section">
+        <div id="loginArea">
+            <!--로그인 폼-->
+            <form name="login_form" action="#" method="post">
+                <h1>LOGIN</h1><br>
+                <label>ID</label><input type="text" id= "storeId" name="storeId"><br><br><br>
+                <label>PW</label><input type="password" id= "storePw" name="storePw">
+                <input type="button" value="LOGIN" onclick="login()"><br><br><br> <!--로그인 과정 진행-->
+                <input type="button" value="JOIN" onclick="location.href='/join'"> <!--회원가입 폼으로 이동-->
+            </form>
+        </div>
+    </div>
+</body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script type="text/javascript" src="/user"></script>
+</html>

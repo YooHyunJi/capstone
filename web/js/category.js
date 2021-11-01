@@ -1,5 +1,8 @@
 // 카테고리 관리
 // Author : Sumin, Created : 2021.10.27
+$(document).ready(function () {
+    getAllCategories();
+})
 
 function getAllCategories() {
     // 전체 카테고리 조회 서버와 통신
@@ -8,7 +11,15 @@ function getAllCategories() {
         url: '/admin/getAllCategories',
         success: function (result) {
             for(let i=0; i<result.categories.length; i++) {
-                console.log(result.categories[i].categoryName);
+                let categoryNo=i+1;
+                $('#categoryList').append(
+                    `<tr class="category">
+                    <td>`+categoryNo+`</td>
+                    <td>${result.categories[i].categoryName}</td>
+                    <td class="changeStatus">수정</td>
+                    <td class="orderCancel" onclick="deleteCategory('${result.categories[i].categoryNo}')">삭제</td>
+                    </tr>`
+                )
             }
         }
     })  
@@ -35,8 +46,21 @@ function addCategory() {
     })  
 }
 
-function deleteCategory() {
-
+function deleteCategory(categoryNo) {
+    if (confirm("정말 삭제하시겠습니까? 해당 카테고리의 메뉴도 함께 삭제됩니다.") == true) { // 카테고리 삭제 확인
+        $.ajax({
+            type: 'POST',
+            url: 'admin/deleteCategory',
+            contentType: 'application/json', 
+            data: JSON.stringify({'categoryNo': categoryNo}),
+            success: function (result) {
+                if (result.code == 200)
+                    alert('삭제되었습니다.');
+            }
+        });
+    } else {// 카테고리 삭제 취소
+        return;
+    }
 }
 
 function updateCategory() {

@@ -28,6 +28,7 @@ const cancelOrderRouter = require('./routes/admin/cancelOrder'); // 주문취소
 const getAllCategoriesRouter = require('./routes/admin/getAllCategories'); // 전체 카테고리 조회 라우터
 const getAllMenusRouter = require('./routes/admin/getAllMenus'); // 전체 메뉴 조회 라우터
 const getMenusByCategoryRouter = require('./routes/admin/getMenusByCategory'); // 카테고리별 메뉴 조회 라우터
+const updateUserInfoRouter = require('./routes/admin/updateUserInfo'); // 회원정보수정 라우터
 
 const orderViewRouter = require('./routes/order/views.js'); // 주문 시스템 VIEWS 라우터
 const orderApiRouter = require('./routes/order'); // 주문 시스템 API 라우터 index.js
@@ -63,6 +64,7 @@ app.use('/admin', cancelOrderRouter);
 app.use('/admin', getAllCategoriesRouter);
 app.use('/admin', getAllMenusRouter);
 app.use('/admin', getMenusByCategoryRouter);
+app.use('/admin', updateUserInfoRouter);
 
 // order view 라우터
 app.use('/order', orderViewRouter);
@@ -95,8 +97,38 @@ app.get('/admin', (req, res) => {
 app.get('/adminTest', (req, res) => {
   res.sendFile(__dirname + "/public/admin/adminTest.html")
 })
+app.get('/join', (req, res) => {
+  res.sendFile(__dirname + "/public/admin/join.html")
+})
+app.get('/login', (req, res) => {
+  res.sendFile(__dirname + "/public/admin/login.html")
+})
+app.get('/mainLogin', (req, res) => {
+  res.sendFile(__dirname + "/public/admin/main_login.html")
+})
+app.get('/mainLogout', (req, res) => {
+  res.sendFile(__dirname + "/public/admin/main_logout.html")
+})
+app.get('/manage_order', (req, res) => {
+  res.sendFile(__dirname + "/public/admin/manage_order.html")
+})
+app.get('/manage_store', (req, res) => {
+  res.sendFile(__dirname + "/public/admin/manage_store.html")
+})
+app.get('/manage_category', (req, res) => {
+  res.sendFile(__dirname + "/public/admin/manage_category.html")
+})
+app.get('/manage_menu', (req, res) => {
+  res.sendFile(__dirname + "/public/admin/manage_menu.html")
+})
+app.get('/deleteAccount', (req, res) => {
+  res.sendFile(__dirname + "/public/admin/deleteAccount.html")
+})
 app.get('/user', (req, res) => {
   res.sendFile(__dirname + "/js/user.js")
+})
+app.get('/store', (req, res) => {
+  res.sendFile(__dirname + "/js/store.js")
 })
 app.get('/category', (req, res) => {
   res.sendFile(__dirname + "/js/category.js")
