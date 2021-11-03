@@ -82,7 +82,6 @@ app.get('/test', (req, res) => {
 });
 app.get('/test/:id', (req, res) => {
   // node 실행하여 테스트가 필요한 경우 추가
-
   switch (req.params.id) {
     case 'mouse_cursor':
       res.sendFile(__dirname + "/test/mouse_cursor.html")
@@ -144,9 +143,16 @@ app.get('/mp', (req, res) => {
 })
 
 // 주문 시스템
+app.use(express.static('public')); // 이미지(ex)
 app.get('/order', (req, res) => {
   res.sendFile(__dirname + "/public/order/main.html")
-})
+});
+app.get('/cookie', (req, res) => {
+  res.sendFile(__dirname + "/js/cookie.js")
+});
+app.get('/orderjs', (req, res) => {
+  res.sendFile(__dirname + "/js/order/order.js")
+});
 
 // socket & robotjs 마우스 커서 조작
 io.on('connection', (socket) => { // 소켓 연결이 들어오면 실행

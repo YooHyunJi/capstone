@@ -154,6 +154,82 @@
         cursor: pointer;
     }
 
+    .modal{
+      display: none;
+      width: 70%;
+      height: 70%;
+      background-color: rgb(61, 61, 61);
+      border-radius: 10px;
+    }
+
+    #modalClose{
+      width: 20px;
+      height: 20px;
+      line-height: 20px;
+      text-align: center;
+      cursor: pointer;
+      font-size: 20px;
+      background-color: rgb(202, 22, 22);
+      border-radius: 50%;
+      margin: 10px;
+    }
+
+    #deleteArea{
+        background-color: rgb(255, 255, 255);
+        text-align: center;
+        float: left;
+        width: 100%;
+        height: 100%;
+    }
+
+    #deleteArea form{
+        /* background-color: rgb(192, 212, 212); */
+        text-align: center;
+        float: left;
+        width: 100%;
+        height: 100%;
+    }
+
+    #deleteArea form h2{
+        color: rgb(99, 99, 99);
+        line-height: 80px;
+        width: 100%;
+    }
+
+    #deleteArea form label{
+        width: 100%;
+        font-size: 15px;
+        line-height: 20px;
+        text-align: center;
+        float: left;
+        line-height: 50px;
+    }
+
+    #deleteArea form input{
+        height: 30px;
+        width: 200px;
+        outline: 0.5px solid rgb(236, 236, 236);
+        display: inline-block;
+        line-height: 50px;
+        margin-bottom: 80px;
+    }
+
+    #deleteArea form input:focus{
+        outline: 0.5px solid rgba(135, 192, 184, 0.541);
+        border-radius: 3px;
+    }
+
+    #deleteArea form input[value="회원 탈퇴"]{
+        width: 300px;
+        line-height: 40px;
+        height: 40px;
+        font-size: 15px;
+        border: none;
+        border-radius: 10px;
+        background-color: rgb(200, 200, 200);
+        color: white;
+        cursor: pointer;
+    }
   </style>
 </head>
 
@@ -174,7 +250,7 @@
                 <li><a class="nav-li" href="manage_menu.html">메뉴 관리</a></li>
             </ul>
 
-            <div id="deleteAccount" onclick="location.href='deleteAccount.html'">회원 탈퇴</div>
+            <div id="deleteAccount">회원 탈퇴</div>
         </div>
         <div id="mode">
             <div id="modifyArea">
@@ -193,7 +269,74 @@
             </div>
         </div>
     </div>
+
+    <div id="deleteAccountModal" class="modal">
+        <a><div id="modalClose"></div></a>
+        <div id="deleteArea">
+            <!--회원 탈퇴 폼-->
+            <form name="delete_account_form" action="#" method="post">
+                <br><br>
+                <h2>회원 탈퇴</h2><br>
+                <label>본인 확인을 위해 비밀번호를 입력해주세요</label><input type="password" name="store_pw">
+                <br>
+                <input type="button" value="회원 탈퇴" onclick="alert('회원 탈퇴가 완료되었습니다'); location.href='main_logout.html'">
+            </form>
+        </div>
+    </div>
 </body>
 
-<script></script>
+<script>
+    // Element 에 style 한번에 오브젝트로 설정하는 함수 추가
+    Element.prototype.setStyle = function(styles) {
+        for (var k in styles) this.style[k] = styles[k];
+        return this;
+    };
+    
+    function modal(id) {
+    var zIndex = 9999;
+    var modal = document.getElementById(id);
+
+    // 모달 div 뒤에 희끄무레한 레이어
+    var bg = document.createElement('div');
+    bg.setStyle({
+        position: 'fixed',
+        zIndex: zIndex,
+        left: '0px',
+        top: '0px',
+        width: '100%',
+        height: '100%',
+        overflow: 'auto',
+        // 레이어 색갈은 여기서 바꾸면 됨
+        backgroundColor: 'rgba(0,0,0,0.4)'
+    });
+    document.body.append(bg);
+
+    // 닫기 버튼 처리, 시꺼먼 레이어와 모달 div 지우기
+    modal.querySelector('#modalClose').addEventListener('click', function() {
+        bg.remove();
+        modal.style.display = 'none';
+    });
+
+    modal.setStyle({
+        position: 'fixed',
+        display: 'block',
+        boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)',
+
+        // 시꺼먼 레이어 보다 한칸 위에 보이기
+        zIndex: zIndex + 1,
+
+        // div center 정렬
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        msTransform: 'translate(-50%, -50%)',
+        webkitTransform: 'translate(-50%, -50%)'
+    });
+  }
+
+  document.getElementById('deleteAccount').addEventListener('click', function() {
+     // 모달창 띄우기
+     modal('deleteAccountModal');
+  });
+</script>
 </html>
