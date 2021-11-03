@@ -16,8 +16,8 @@ function getAllCategories() {
                     `<tr class="category">
                     <td>`+categoryNo+`</td>
                     <td>${result.categories[i].categoryName}</td>
-                    <td class="changeStatus">수정</td>
-                    <td class="orderCancel" onclick="deleteCategory('${result.categories[i].categoryNo}')">삭제</td>
+                    <td class="modifyCategory">수정</td>
+                    <td class="deleteCategory" onclick="deleteCategory('${result.categories[i].categoryNo}')">삭제</td>
                     </tr>`
                 )
             }
@@ -29,6 +29,7 @@ function addCategory() {
     let categoryName = $('#categoryName').val();
     if (!categoryName) {
         alert('미입력');
+        location.href="/manage_category";
         return;
     }
     // 카테고리 등록 서버와 통신
@@ -42,6 +43,7 @@ function addCategory() {
                 alert('카테고리 등록 성공');
             else if (result.code == 400)
                 alert('카테고리 등록 실패');
+                location.href="/manage_category";
         }
     })  
 }
@@ -56,9 +58,11 @@ function deleteCategory(categoryNo) {
             success: function (result) {
                 if (result.code == 200)
                     alert('삭제되었습니다.');
+                location.href="/manage_category";
             }
         });
     } else {// 카테고리 삭제 취소
+        location.href="/manage_category";
         return;
     }
 }

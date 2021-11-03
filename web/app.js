@@ -138,6 +138,9 @@ app.get('/menu', (req, res) => {
 app.get('/order', (req, res) => {
   res.sendFile(__dirname + "/js/order.js")
 })
+app.get('/modal', (req, res) => {
+  res.sendFile(__dirname + "/js/modal.js")
+})
 app.get('/mp', (req, res) => {
   res.sendFile(__dirname + "/test/mouse_cursor.html")
 })

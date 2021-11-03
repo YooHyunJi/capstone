@@ -129,17 +129,94 @@
         font-weight: 400;
     }
 
-    .changeStatus{
+    .modifyCategory{
         background-color: rgb(130, 189, 189);
         color: white;
         font-weight: 400;
         cursor: pointer;
     }
 
-    .orderCancel{
+    .deleteCategory{
         background-color: rgb(190, 190, 190);
         color: white;
         font-weight: 400;
+        cursor: pointer;
+    }
+
+    .modal{
+      display: none;
+      width: 70%;
+      height: 70%;
+      background-color: rgb(61, 61, 61);
+      border-radius: 10px;
+    }
+
+    .modalClose{
+      width: 20px;
+      height: 20px;
+      line-height: 20px;
+      text-align: center;
+      cursor: pointer;
+      font-size: 20px;
+      background-color: rgb(202, 22, 22);
+      border-radius: 50%;
+      margin: 10px;
+    }
+
+    .categoryFormArea{
+        background-color: rgb(255, 255, 255);
+        text-align: center;
+        float: left;
+        width: 100%;
+        height: 100%;
+    }
+
+    .categoryFormArea form{
+        /* background-color: rgb(192, 212, 212); */
+        text-align: center;
+        float: left;
+        width: 100%;
+        height: 100%;
+    }
+
+    .categoryFormArea form h2{
+        color: rgb(99, 99, 99);
+        line-height: 80px;
+        width: 100%;
+    }
+
+    .categoryFormArea form label{
+        width: 100%;
+        font-size: 15px;
+        line-height: 20px;
+        text-align: center;
+        float: left;
+        line-height: 50px;
+    }
+
+    .categoryFormArea form input{
+        height: 30px;
+        width: 200px;
+        outline: 0.5px solid rgb(236, 236, 236);
+        display: inline-block;
+        line-height: 50px;
+        margin-bottom: 80px;
+    }
+
+    .categoryFormArea form input:focus{
+        outline: 0.5px solid rgba(135, 192, 184, 0.541);
+        border-radius: 3px;
+    }
+
+    .categoryFormArea form input[value="회원 탈퇴"]{
+        width: 300px;
+        line-height: 40px;
+        height: 40px;
+        font-size: 15px;
+        border: none;
+        border-radius: 10px;
+        background-color: rgb(200, 200, 200);
+        color: white;
         cursor: pointer;
     }
 
@@ -163,7 +240,7 @@
                 <li><a class="nav-li" href="/manage_menu">메뉴 관리</a></li>
             </ul>
 
-            <div id="addCategory" onclick="location.href='/adminTest'">+ 새 카테고리 추가</div>
+            <div id="addCategory" onclick="modal('addCategoryModal')">+ 새 카테고리 추가</div>
         </div>
         <div id="mode">
             <table id="categoryList">
@@ -174,7 +251,26 @@
             </table>
         </div>
     </div>
+
+    <!-- Modal -->
+    <!-- 카테고리 추가 modal -->
+    <div id="addCategoryModal" class="modal">
+        <a><div class="modalClose"></div></a>
+        <div class="categoryFormArea">
+            <!--회원 탈퇴 폼-->
+            <form name="add_category_form" action="#" method="post">
+                <br><br>
+                <h2>새 카테고리 추가</h2><br>
+                <label>카테고리 이름</label><input type="text" id="categoryName" name="categoryName"><br>
+                <br>
+                <input type="button" value="새 카테고리 추가" onclick="addCategory()">
+            </form>
+        </div>
+    </div>
+
+
 </body>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script type="text/javascript" src="/category"></script>
+<script src="/modal"></script>
 </html>

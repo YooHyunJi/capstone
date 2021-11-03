@@ -29,9 +29,9 @@ function getAllMenus() {
                     <td>${result.menus[i].categoryName}</td>
                     <td>${result.menus[i].menuName}</td>
                     <td>${result.menus[i].menuPrice}</td>
-                    <td>${result.menus[i].menuDetail}</td>
-                    <td class="changeStatus">수정</td>
-                    <td class="orderCancel" onclick="deleteMenu('${result.menus[i].menuNo}')">삭제</td>
+                    <td class="menuDetail" onclick="getMenuDetail('${result.menus[i].categoryName}', '${result.menus[i].menuName}', '${result.menus[i].menuPrice}', '${result.menus[i].menuDetail}')">${result.menus[i].menuDetail}</td>
+                    <td class="modifyMenu" onclick="setValuesBeforeUpdateMenu('${result.menus[i].menuNo}', '${result.menus[i].menuName}', '${result.menus[i].menuPrice}', '${result.menus[i].menuDetail}')">수정</td>
+                    <td class="deleteMenu" onclick="deleteMenu('${result.menus[i].menuNo}')">삭제</td>
                     </tr>`
                 )
             }
@@ -41,6 +41,7 @@ function getAllMenus() {
 
 function getAllCategoryNames() {
     $('#category').empty();
+    $('#selectCategory').empty();
     $.ajax({
         type: 'GET',
         url: '/admin/getAllCategoryNames',
@@ -48,6 +49,13 @@ function getAllCategoryNames() {
             for (let i=0; i<result.categories.length; i++) {
                 $('#categoryList').append(
                     `<p class="category" onclick="getMenusByCategory('${result.categories[i].categoryName}')">${result.categories[i].categoryName}</p>`
+                )
+                $('#selectCategory').append(
+                    `<option value="${result.categories[i].categoryName}">${result.categories[i].categoryName}</option>`
+                )
+
+                $('#select_category').append(
+                    `<option value="${result.categories[i].categoryName}">${result.categories[i].categoryName}</option>`
                 )
             }
         }
@@ -80,9 +88,9 @@ function getMenusByCategory(categoryName) {
                     <td>${result.menus[i].categoryName}</td>
                     <td>${result.menus[i].menuName}</td>
                     <td>${result.menus[i].menuPrice}</td>
-                    <td>${result.menus[i].menuDetail}</td>
-                    <td class="changeStatus">수정</td>
-                    <td class="orderCancel" onclick="deleteMenu('${result.menus[i].menuNo}')">삭제</td>
+                    <td class="menuDetail" onclick="getMenuDetail('${result.menus[i].categoryName}', '${result.menus[i].menuName}', '${result.menus[i].menuPrice}', '${result.menus[i].menuDetail}')">${result.menus[i].menuDetail}</td>
+                    <td class="modifyMenu" onclick="setValuesBeforeUpdateMenu('${result.menus[i].menuNo}', '${result.menus[i].menuName}', '${result.menus[i].menuPrice}', '${result.menus[i].menuDetail}')">수정</td>
+                    <td class="deleteMenu" onclick="deleteMenu('${result.menus[i].menuNo}')">삭제</td>
                     </tr>`
                 )
             }
@@ -90,12 +98,30 @@ function getMenusByCategory(categoryName) {
     });
 }
 
+function getMenuDetail(categoryName, menuName, menuPrice, menuDetail) {
+    modal('menuDetailModal');
+
+    $('#menuFormArea').empty(); // 초기화
+    $('#menuFormArea').append(
+        `<img src="img/img2.png" alt="img2" class="menu_img">
+        <span class="detailList">카테고리</span><span class="category_no">`+categoryName+`</span><br><br><br><br>
+        <span class="detailList">이름</span><span class="menu_name">`+menuName+`</span><br><br><br><br>
+        <span class="detailList">가격</span><span class="menu_price">`+menuPrice+`</span><br><br><br><br>
+        <span class="detailList">상세 정보</span><span class="menu_detail">`+menuDetail+`</span>`
+    )
+}
+
 function menuImgPreview(id, file) {
     id.src=URL.createObjectURL(file);
 }
 
 function addMenu() {
-    var form = $('#fileForm')[0];
+    /*if (!$('#add_menu_form')) {
+        alert('미입력');
+        return;
+    }*/ // 미입력 처리 필요
+
+    var form = $('#add_menu_form')[0];
     var formData = new FormData(form);
 
     $.ajax({
@@ -103,7 +129,14 @@ function addMenu() {
         url: 'admin/addMenu',
         data: formData,
         processData: false,
-        contentType: false
+        contentType: false,
+        success: function (result) {
+            if (result.code == 200)
+                alert('메뉴 추가 성공');
+            else
+                alert('메뉴 추가 실패');
+                location.href="/manage_menu";
+        }
     });
 }
 
@@ -117,14 +150,42 @@ function deleteMenu(menuNo) {
             success: function (result) {
                 if (result.code == 200)
                     alert('삭제되었습니다.');
+                location.href="/manage_menu";
             }
         });
     } else {// 메뉴 삭제 취소
+        location.href="/manage_menu";
         return;
     }
     
 }
 
+function setValuesBeforeUpdateMenu(menuNo, menuName, menuPrice, menuDetail) {
+    modal('modifyMenuModal');
+
+    $('#menu_no').val(menuNo);
+    $('#menu_name').val(menuName);
+    $('#menu_price').val(menuPrice);
+    $('#menu_detail').val(menuDetail);
+
+}
+
 function updateMenu() {
-    
+    var form = $('#modify_menu_form')[0];
+    var formData = new FormData(form);
+
+    $.ajax({
+        type: 'post',
+        url: 'admin/updateMenu',
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function (result) {
+            if (result.code == 200)
+                alert('메뉴 수정 성공');
+            else
+                alert('메뉴 수정 실패');
+            location.href="/manage_menu";
+        }
+    });
 }

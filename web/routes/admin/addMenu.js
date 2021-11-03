@@ -28,17 +28,30 @@ router.post('/addMenu', upload.single('menuImg'), function (req, res) {
     var menuDetail = req.body.menuDetail; // 메뉴 세부사항
     var menuPrice = req.body.menuPrice; // 메뉴 가격
     var menuImg = readImageFile(__dirname + '/../../uploads/' + fileName); // 메뉴 이미지
-    var categoryNo = req.body.categoryNo; // 카테고리 번호
-    var query = `INSERT INTO menu (menuName, menuDetail, menuPrice, menuImg, categoryNo, storeNo) VALUES(?,?,?,?,?,${req.session.user.storeNo})`;
-    // DB에 메뉴 등록
-    connection.query(query, [menuName, menuDetail, menuPrice, menuImg, categoryNo], function (err, result) {
-        if(err) { // 에러 발생시
+    var categoryName = req.body.selectCategory; // 카테고리 번호
+    var query = `SELECT categoryNo FROM category WHERE storeNo = ${req.session.user.storeNo} AND categoryName = ?`;
+
+    connection.query(query, categoryName, function (err, result) {
+      console.log(query);
+      if(err) { // 에러 발생시
             console.log("error ocurred: ", err);
-            res.json({ "code": 400, "result": "error ocurred" })
+            res.json({ "code": 404, "result": "error ocurred" })
         } else {
-            console.log("add menu success");
-            res.json({"code": 200, "result": "add menu success"})
-        }
+            var categoryNo = result[0].categoryNo;
+            query = `INSERT INTO menu (menuName, menuDetail, menuPrice, menuImg, categoryNo, storeNo) VALUES(?,?,?,?,?,${req.session.user.storeNo})`;
+            
+            // DB에 메뉴 등록
+            connection.query(query, [menuName, menuDetail, menuPrice, menuImg, categoryNo], function (err, result) {
+              console.log(query);
+              if(err) { // 에러 발생시
+                    console.log("error ocurred: ", err);
+                    res.json({ "code": 400, "result": "error ocurred" })
+                } else {
+                    console.log("add menu success");
+                    res.json({"code": 200, "result": "add menu success"})
+              }
+            })
+      }
     })
 
 });

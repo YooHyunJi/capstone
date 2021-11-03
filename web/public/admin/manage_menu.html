@@ -94,7 +94,7 @@
         display: block;
     }
 
-    #addCategory{
+    #addMenu{
         width: 200px;
         height: 45px;
         float: right;
@@ -147,18 +147,139 @@
         font-weight: 400;
     }
 
-    .changeStatus{
+    .menuDetail{
+        cursor: pointer;
+    }
+
+    .modifyMenu{
         background-color: rgb(130, 189, 189);
         color: white;
         font-weight: 400;
         cursor: pointer;
     }
 
-    .orderCancel{
+    .deleteMenu{
         background-color: rgb(190, 190, 190);
         color: white;
         font-weight: 400;
         cursor: pointer;
+    }
+
+    .modal{
+      display: none;
+      width: 70%;
+      height: 70%;
+      background-color: rgb(61, 61, 61);
+      border-radius: 10px;
+    }
+
+    .modalClose{
+      width: 20px;
+      height: 20px;
+      line-height: 20px;
+      text-align: center;
+      cursor: pointer;
+      font-size: 20px;
+      background-color: rgb(202, 22, 22);
+      border-radius: 50%;
+      margin: 10px;
+    }
+
+    .menuFormArea{
+        background-color: rgb(255, 255, 255);
+        text-align: center;
+        float: left;
+        width: 100%;
+        height: 100%;
+    }
+
+    .menuFormArea form{
+        /* background-color: rgb(192, 212, 212); */
+        text-align: center;
+        float: left;
+        width: 100%;
+        height: 100%;
+    }
+
+    .menuFormArea form h2{
+        color: rgb(99, 99, 99);
+        line-height: 30px;
+        width: 100%;
+        margin: 20px 0;
+        margin-top: 0px;
+    }
+
+    .menuFormArea form label{
+        font-size: 15px;
+        text-align: left;
+        float: left;
+        line-height: 31px;
+        width: 80px;
+        margin-left: 20%;
+        margin-bottom: 20px;
+    }
+
+    .menuFormArea form input[type="text"], input[type="number"], input[type="file"]{
+        height: 22px;
+        width: 200px;
+        float: right;
+        line-height: 22px;
+        margin-bottom: 0px;
+        margin-right: 20%;
+        padding: 0;
+    }
+
+    .menuFormArea form select{
+        height: 25px;
+        width: 202px;
+        float: right;
+        outline: 0.5px solid rgb(236, 236, 236);
+        line-height: 30px;
+        margin-bottom: 20px;
+        margin-right: 20%;
+    }
+
+    .menuFormArea form input:focus{
+        border: none;
+        outline: 0.5px solid rgb(135, 192, 184);
+    }
+
+    .menuFormArea form input[value="새 메뉴 추가"], input[value="메뉴 수정"]{
+        width: 300px;
+        line-height: 40px;
+        height: 40px;
+        font-size: 15px;
+        border: none;
+        border-radius: 10px;
+        background-color: rgb(200, 200, 200);
+        color: white;
+        cursor: pointer;
+        margin: 0 calc(50% - 150px);
+    }
+
+    .menuFormArea span{
+        text-align: left;
+        height: 20px;
+    }
+
+    .menu_img{
+        width: 40%;
+        margin: 5%;
+        float: left;
+    }
+    
+    .detailList{
+        float: left;
+        width: 10%;
+        float: left;
+        margin-top: 5%;
+    }
+
+    .category_no, .menu_name, .menu_price, .menu_detail{
+        width: 30%;
+        margin-top: 5%;
+        margin-right: 5%;
+        float: right;
     }
 
   </style>
@@ -180,8 +301,7 @@
                 <li><a class="nav-li" href="/manage_category">카테고리 관리</a></li>
                 <li><a class="nav-li" href="/manage_menu">메뉴 관리</a></li>
             </ul>
-
-            <div id="addCategory" onclick="location.href='/adminTest'">+ 새 메뉴 추가</div>
+            <div id="addMenu" onclick="modal('addMenuModal')">+ 새 메뉴 추가</div>
         </div>
         <div id="mode">
             <div id="categoryList">
@@ -198,7 +318,63 @@
             </table>
         </div>
     </div>
+
+    <!-- Modal -->
+    <!-- 메뉴추가 modal -->
+    <div id="addMenuModal" class="modal">
+        <a><div class="modalClose"></div></a>
+        <div class="menuFormArea">
+            <!--메뉴 등록 폼-->
+            <form id="add_menu_form" name="add_menu_form" action="#" method="post">
+                <br><br>
+                <h2>새 메뉴 추가</h2><br>
+                <label>카테고리</label>
+                <select id= "selectCategory" name="selectCategory">
+                </select>
+                <br><br><br>
+                <label>이름</label><input type="text" id="menuName" name="menuName"><br><br><br>
+                <label>가격</label><input type="text" id="menuPrice" name="menuPrice"><br><br><br>
+                <label>상세 정보</label><input type="text" id="menuDetail" name="menuDetail"><br><br><br>
+                <label>메뉴 이미지</label><input type="file" id="menuImg" name="menuImg" onchange="menuImgPreview(add_menuImg_frame, event.target.files[0])"><br> <!-- 메뉴 이미지에 대한 컬럼이 부재하여 임의로 menu_img로 설정 -->
+                <br>
+                <img id="add_menuImg_frame" src="" width="300px" height="300px"/><br>
+                <input type="button" value="새 메뉴 추가" onclick="addMenu()">
+            </form>
+        </div>
+    </div>
+
+    <!-- 메뉴상세 modal -->
+    <div id="menuDetailModal" class="modal">
+        <a><div class="modalClose"></div></a>
+        <div class="menuFormArea" id="menuFormArea">
+        </div>
+    </div>
+
+    <!-- 메뉴수정 modal -->
+    <div id="modifyMenuModal" class="modal">
+        <a><div class="modalClose"></div></a>
+        <div class="menuFormArea">
+            <!--메뉴 수정 폼-->
+            <form id="modify_menu_form" name="modify_menu_form" action="#" method="post">
+                <br><br>
+                <h2>메뉴 수정</h2><br>
+                <label>카테고리</label>
+                <select id= "select_category" name="select_category">
+                </select>
+                <br><br><br>
+                <label>메뉴 번호</label><input type="text" id="menu_no" name="menu_no"><br><br><br> <!-- 안보이게 하거나 수정불가하게 만들기-->
+                <label>이름</label><input type="text" id="menu_name" name="menu_name"><br><br><br>
+                <label>가격</label><input type="text" id="menu_price" name="menu_price"><br><br><br>
+                <label>상세 정보</label><input type="text" id="menu_detail" name="menu_detail"><br><br><br>
+                <label>메뉴 이미지</label><input type="file" id="menu_img" name="menu_img" onchange="menuImgPreview(modify_menuImg_frame, event.target.files[0])"><br> <!-- 메뉴 이미지에 대한 컬럼이 부재하여 임의로 menu_img로 설정 -->
+                <br>
+                <img id="modify_menuImg_frame" src="" width="300px" height="300px"/><br>
+                <input type="button" value="메뉴 수정" onclick="updateMenu()">
+            </form>
+        </div>
+    </div>
 </body>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script type="text/javascript" src="/menu"></script>
+<script src="/modal"></script>
 </html>
