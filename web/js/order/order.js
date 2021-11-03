@@ -18,6 +18,69 @@ $(document).ready(function() {
         }
     })
 
+    if (getCookie("shoppingCart")) {
+        let shoppingCartList = JSON.parse((getCookie("shoppingCart")));
+        $('#orderList').empty();
+        for (key in shoppingCartList) {
+            $('#orderList').append($('<div />', {
+                class: 'orderMenu',
+                id: key
+            }).append($('<div />', {
+                class: 'orderMenuName',
+                text: shoppingCartList[key]["menuName"]
+            })).append($('<div />', {
+                class: 'orderMenuPrice',
+                text: shoppingCartList[key]["totalPrice"],
+                id: 'price' + key
+            })).append($('<div />', {
+                class: 'orderQuantity',
+            }).append($('<div />', {
+                text: '▼',
+                class: 'orderMenuQuantityDec',
+                click: function() {
+                    if (orderMenuDec($(this).parent().parent().attr('id'), shoppingCartList)[0] == false) {
+                        if (delete shoppingCartList[$(this).parent().parent().attr('id')]) {
+                            $(this).parent().parent().remove();
+                            deleteCookie("shoppingCart"); // 쿠키에 변경 사항 새로 저장
+                            setCookie("shoppingCart", JSON.stringify(shoppingCartList), 1);
+                            console.log(shoppingCartList);
+                        }
+                    } else {
+                        $('#cntNum' + $(this).parent().parent().attr('id')).text(shoppingCartList[$(this).parent().parent().attr('id')]["count"]);
+                        $('#price' + $(this).parent().parent().attr('id')).text(shoppingCartList[$(this).parent().parent().attr('id')]["totalPrice"]);
+                        deleteCookie("shoppingCart");
+                        setCookie("shoppingCart", JSON.stringify(shoppingCartList), 1);    
+                    }
+                }
+            })).append($('<div />', {
+                text: shoppingCartList[key]["count"],
+                class: 'orderMenuQuantity',
+                id: "cntNum" + key
+            })).append($('<div />', {
+                text: '▲',
+                class: 'orderMenuQuantityInc',
+                id: 'orderMenuIc',
+                click: function() {
+                    shoppingCartList = orderMenuInc($(this).parent().parent().attr('id'), shoppingCartList);
+                    $('#cntNum' + $(this).parent().parent().attr('id')).text(shoppingCartList[$(this).parent().parent().attr('id')]["count"]);
+                    $('#price' + $(this).parent().parent().attr('id')).text(shoppingCartList[$(this).parent().parent().attr('id')]["totalPrice"]);
+                    deleteCookie("shoppingCart");
+                    setCookie("shoppingCart", JSON.stringify(shoppingCartList), 1);
+                }
+            }))).append($('<div />', {
+                class: 'orderMenuCancel', 
+                text: 'CANCEL',
+                click: function() {
+                    if (delete shoppingCartList[$(this).parent().attr('id')]) {
+                        $(this).parent().remove();
+                        deleteCookie("shoppingCart"); 
+                        setCookie("shoppingCart", JSON.stringify(shoppingCartList), 1);
+                    }
+                }
+            })));
+        }
+    }
+
     // 카테고리 리스트
     function addCategoryList(result) { 
         $('#categoryList').empty();
@@ -96,24 +159,34 @@ $(document).ready(function() {
         $('#orderList').empty();
         for (key in shoppingCartList) {
             $('#orderList').append($('<div />', {
-                class: 'orderMenu'
+                class: 'orderMenu',
+                id: key
             }).append($('<div />', {
                 class: 'orderMenuName',
                 text: shoppingCartList[key]["menuName"]
             })).append($('<div />', {
                 class: 'orderMenuPrice',
-                text: shoppingCartList[key]["totalPrice"]
+                text: shoppingCartList[key]["totalPrice"],
+                id: 'price' + key
             })).append($('<div />', {
                 class: 'orderQuantity',
             }).append($('<div />', {
                 text: '▼',
                 class: 'orderMenuQuantityDec',
                 click: function() {
-                    shoppingCartList[key]["count"] -= 1;
-                    shoppingCartList[key]["totalPrice"] -= shoppingCartList[key]["menuPrice"];
-                    deleteCookie("shoppingCart");
-                    $('#cntNum' + key).text(shoppingCartList[key]["count"]);
-                    setCookie("shoppingCart", JSON.stringify(shoppingCartList), 1);
+                    if (orderMenuDec($(this).parent().parent().attr('id'), shoppingCartList)[0] == false) {
+                        if (delete shoppingCartList[$(this).parent().parent().attr('id')]) {
+                            $(this).parent().parent().remove();
+                            deleteCookie("shoppingCart"); // 쿠키에 변경 사항 새로 저장
+                            setCookie("shoppingCart", JSON.stringify(shoppingCartList), 1);
+                            console.log(shoppingCartList);
+                        }
+                    } else {
+                        $('#cntNum' + $(this).parent().parent().attr('id')).text(shoppingCartList[$(this).parent().parent().attr('id')]["count"]);
+                        $('#price' + $(this).parent().parent().attr('id')).text(shoppingCartList[$(this).parent().parent().attr('id')]["totalPrice"]);
+                        deleteCookie("shoppingCart");
+                        setCookie("shoppingCart", JSON.stringify(shoppingCartList), 1);    
+                    }
                 }
             })).append($('<div />', {
                 text: shoppingCartList[key]["count"],
@@ -122,10 +195,11 @@ $(document).ready(function() {
             })).append($('<div />', {
                 text: '▲',
                 class: 'orderMenuQuantityInc',
+                id: 'orderMenuIc',
                 click: function() {
-                    shoppingCartList[key]["count"] += 1;
-                    shoppingCartList[key]["totalPrice"] += shoppingCartList[key]["menuPrice"];
-                    $('#cntNum' + key).text(shoppingCartList[key]["count"]);
+                    shoppingCartList = orderMenuInc($(this).parent().parent().attr('id'), shoppingCartList);
+                    $('#cntNum' + $(this).parent().parent().attr('id')).text(shoppingCartList[$(this).parent().parent().attr('id')]["count"]);
+                    $('#price' + $(this).parent().parent().attr('id')).text(shoppingCartList[$(this).parent().parent().attr('id')]["totalPrice"]);
                     deleteCookie("shoppingCart");
                     setCookie("shoppingCart", JSON.stringify(shoppingCartList), 1);
                 }
@@ -133,50 +207,32 @@ $(document).ready(function() {
                 class: 'orderMenuCancel', 
                 text: 'CANCEL',
                 click: function() {
-                    $(this).parent().remove();
-                    delete shoppingCartList[key];
-                    deleteCookie("shoppingCart"); // 쿠키에 변경 사항 새로 저장
-                    setCookie("shoppingCart", JSON.stringify(shoppingCartList), 1);
+                    if (delete shoppingCartList[$(this).parent().attr('id')]) {
+                        $(this).parent().remove();
+                        deleteCookie("shoppingCart"); 
+                        setCookie("shoppingCart", JSON.stringify(shoppingCartList), 1);
+                    }
                 }
             })));
         }
     }
 
-    // 장바구니 리스트 추가
-    const addShoppingCartList = (menuNo, menuName, menuPrice) => {
-        $('#shoppingCart').append($('<li />', {
-            id: menuNo,
-            text: menuName + ' ' + menuPrice
-        }).append($('<button />', {
-            text: 'up',
-            click: function() {
-                totalPrice += menuPrice;
-                changeTotalPrice(totalPrice);
-            }
-        })).append($('<a />', {
-            text: 1, 
-        })).append($('<button />', {
-            text: 'down',
-            click: function() {
-                totalPrice -= menuPrice;
-                if (totalPrice < 0) {
-                    alert('잘못된 접근입니다!');
-                    $(this).parent().remove();
-                } else {
-                    $('#totalPrice').text(totalPrice);
-                }
-            }
-        })).append($('<button />', {
-            text: '취소',
-            click: function() {
-                $(this).parent().remove();
-                totalPrice -= parseInt(menuPrice);
-                changeTotalPrice(totalPrice);
-            }
-        })));
-        
-        totalPrice += parseInt(menuPrice);
-        changeTotalPrice(totalPrice);
+
+    // 장바구니 div에서 개수 감소
+    const orderMenuDec = (menuNo, shoppingCartDict) => {
+        if (shoppingCartDict[menuNo]["count"] == 1) {
+            return [false, ];
+        } else {
+            shoppingCartDict[menuNo]["count"] -= 1;
+            shoppingCartDict[menuNo]["totalPrice"] -= shoppingCartDict[menuNo]["menuPrice"];
+            return [true, shoppingCartDict];
+        }
+    }
+    // 장바구니 div에서 개수 증가
+    const orderMenuInc = (menuNo, shoppingCartDict) => {
+        shoppingCartDict[menuNo]["count"] += 1;
+        shoppingCartDict[menuNo]["totalPrice"] += shoppingCartDict[menuNo]["menuPrice"];
+        return shoppingCartDict;
     }
 
     // 총 가격 조정
