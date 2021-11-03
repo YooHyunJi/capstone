@@ -281,6 +281,10 @@
         margin-right: 5%;
         float: right;
     }
+    
+    .menu_no, .menu_no_input{
+        display: none;
+    }
 
   </style>
 </head>
@@ -358,16 +362,15 @@
             <form id="modify_menu_form" name="modify_menu_form" action="#" method="post">
                 <br><br>
                 <h2>메뉴 수정</h2><br>
+                <label class="menu_no">메뉴 번호</label><input type="text" class="menu_no_input" id="menu_no" name="menu_no"><br>
                 <label>카테고리</label>
                 <select id= "select_category" name="select_category">
                 </select>
                 <br><br><br>
-                <label>메뉴 번호</label><input type="text" id="menu_no" name="menu_no"><br><br><br> <!-- 안보이게 하거나 수정불가하게 만들기-->
                 <label>이름</label><input type="text" id="menu_name" name="menu_name"><br><br><br>
                 <label>가격</label><input type="text" id="menu_price" name="menu_price"><br><br><br>
                 <label>상세 정보</label><input type="text" id="menu_detail" name="menu_detail"><br><br><br>
-                <label>메뉴 이미지</label><input type="file" id="menu_img" name="menu_img" onchange="menuImgPreview(modify_menuImg_frame, event.target.files[0])"><br> <!-- 메뉴 이미지에 대한 컬럼이 부재하여 임의로 menu_img로 설정 -->
-                <br>
+                <label>메뉴 이미지</label><input type="file" id="menu_img" name="menu_img" onchange="menuImgPreview(modify_menuImg_frame, event.target.files[0])"><br>
                 <img id="modify_menuImg_frame" src="" width="300px" height="300px"/><br>
                 <input type="button" value="메뉴 수정" onclick="updateMenu()">
             </form>

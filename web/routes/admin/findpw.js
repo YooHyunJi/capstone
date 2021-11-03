@@ -3,11 +3,11 @@
 
 var express = require('express');
 var router = express.Router();
-var transporter = require('../../config/email_config');
 var config = require('../../config/db_config');
 var crypto = require('crypto');
 var connection = config.init();
 connection.connect();
+var nodemailer = require('nodemailer');
 
 router.post('/findpw', function (req, res) {
     var storeId = req.body.storeId; // 매장 아이디
@@ -55,13 +55,20 @@ router.post('/findpw', function (req, res) {
                         });
                     })
                 })
+                var transporter = nodemailer.createTransport({
+                    service: 'gmail',
+                    auth: {
+                      user: 'airosk.official@gmail.com',
+                      pass: process.env.EMAIL_SECRET
+                    }
+                  });
 
                 // 메일 양식
                 let mail = {
-                    from: '@gmail.com', // 보내는 사람 이메일 TODO
+                    from: 'airosk.official@gmail.com', // 보내는 사람 이메일 TODO
                     to: email, // 받는 사람 이메일
-                    subject: '비접촉 키오스크 임시 비밀번호 정보입니다', // 메일 제목
-                    text: '안녕하세요. 비접촉 키오스크 입니다.\n임시비밀번호는 ' + randomPw + '입니다.' // 메일 내용
+                    subject: '에어로스크 임시 비밀번호 정보입니다', // 메일 제목
+                    text: '안녕하세요. 에어로스크 입니다.\n임시비밀번호는 ' + randomPw + '입니다.' // 메일 내용
                 }
 
                 // 메일 전송

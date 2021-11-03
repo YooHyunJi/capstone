@@ -16,7 +16,7 @@ function getAllCategories() {
                     `<tr class="category">
                     <td>`+categoryNo+`</td>
                     <td>${result.categories[i].categoryName}</td>
-                    <td class="modifyCategory">수정</td>
+                    <td class="modifyCategory" onclick="setValuesBeforeUpdateCategory('${result.categories[i].categoryNo}', '${result.categories[i].categoryName}')">수정</td>
                     <td class="deleteCategory" onclick="deleteCategory('${result.categories[i].categoryNo}')">삭제</td>
                     </tr>`
                 )
@@ -43,7 +43,7 @@ function addCategory() {
                 alert('카테고리 등록 성공');
             else if (result.code == 400)
                 alert('카테고리 등록 실패');
-                location.href="/manage_category";
+            location.href="/manage_category";
         }
     })  
 }
@@ -67,6 +67,34 @@ function deleteCategory(categoryNo) {
     }
 }
 
-function updateCategory() {
+function setValuesBeforeUpdateCategory(categoryNo, categoryName) {
+    modal('modifyCategoryModal');
 
+    $('#category_no').val(categoryNo);
+    $('#category_name').val(categoryName);
+}
+
+function updateCategory() {
+    let categoryNo = $('#category_no').val();
+    let categoryName = $('#category_name').val();
+
+    if(!categoryName) {
+        alert('미입력');
+        location.href="/manage_category";
+        return;
+    }
+
+    $.ajax({
+        type: 'POST',
+        url: 'admin/updateCategory',
+        contentType: 'application/json', 
+        data: JSON.stringify({'category_name': categoryName, 'category_no': categoryNo}),
+        success: function (result) {
+            if (result.code == 200)
+                alert('수정되었습니다.');
+            else
+                alert('수정 실패');
+            location.href="/manage_category";
+        }
+    });
 }

@@ -135,7 +135,7 @@ function addMenu() {
                 alert('메뉴 추가 성공');
             else
                 alert('메뉴 추가 실패');
-                location.href="/manage_menu";
+            location.href="/manage_menu";
         }
     });
 }

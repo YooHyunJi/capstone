@@ -8,8 +8,8 @@ var connection = config.init();
 connection.connect();
 
 router.post('/updateCategory', function (req, res) {
-    var categoryNo = req.body.categoryNo; // 카테고리 번호
-    var categoryName = req.body.categoryName; // 카테고리명
+    var categoryNo = req.body.category_no; // 카테고리 번호
+    var categoryName = req.body.category_name; // 카테고리명
     var query = 'UPDATE category SET categoryName = ? WHERE categoryNo = ?'; // 카테고리 수정 쿼리문
 
     // DB에서 카테고리 정보 수정

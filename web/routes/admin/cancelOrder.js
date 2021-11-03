@@ -25,8 +25,8 @@ router.post('/cancelOrder', function (req, res) {
             var paymentMethod = result[0].paymentMethod; // 결제 수단(현금/카드)
             var paymentPrice = result[0].paymentPrice; // 결제 가격(=취소될 금액)
 
-            query = "UPDATE orders SET cancelYn = 'Y' WHERE orderNo = ?;" +
-                "INSERT INTO payment (paymentType, paymentTime, paymentMethod, paymentPrice, storeNo, orderNo) VALUES(?,?,?,?,?,?)" // 주문취소 쿼리문
+            query = "UPDATE orders SET cancelYn = 'Y' WHERE orderNo = ?;" + // 주문상태 변경
+                "INSERT INTO payment (paymentType, paymentTime, paymentMethod, paymentPrice, storeNo, orderNo) VALUES(?,?,?,?,?,?)" // payment테이블에 결제취소 정보 삽입
 
             // DB에 주문 상태변경 및 결제 취소 정보 추가
             connection.query(query, [orderNo, paymentType, paymentTime, paymentMethod, paymentPrice, storeNo, orderNo], function (err, result) {

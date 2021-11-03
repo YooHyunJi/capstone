@@ -33,11 +33,13 @@ function updateUserInfo() {
 
     if (!storePw || !storePwValid || !storeName || !storeTel || !storeLoc || !crn || !managerName || !managerTel) { // 입력 확인
         alert('미입력');
+        location.href="/manage_store";
         return;
     }
 
     if (storePw != storePwValid) {
         alert('비밀번호, 비밀번호 확인 불일치');
+        location.href="/manage_store";
         return;
     }
 
@@ -51,6 +53,10 @@ function updateUserInfo() {
             if (result.code == 200) {
                 alert('수정되었습니다.');
             }
+            else {
+                alert('수정 실패');
+            }
+            location.href="/manage_store";
         }
     })
 }

@@ -113,20 +113,34 @@
     }
 
     th{
-        background-color: rgb(200, 200, 200);
+        background-color: rgb(130, 189, 189);
         color: white;
         font-weight: 400;
     }
 
-    .changeStatus{
+    .finishedOrder td{
+        background-color: rgb(190, 190, 190);
+        color: white;
+    }
+
+    .preparingOrder{
+        background-color: rgb(238, 238, 238);
+    }
+
+    .canceledOrder td{
+        background-color: rgb(190, 190, 190);
+        color: white;
+    }
+
+    .changeStatusBtn{
         background-color: rgb(130, 189, 189);
         color: white;
         font-weight: 400;
         cursor: pointer;
     }
 
-    .orderCancel{
-        background-color: rgb(190, 190, 190);
+    .orderCancelBtn{
+        background-color: rgb(226, 125, 9);
         color: white;
         font-weight: 400;
         cursor: pointer;
@@ -167,5 +181,6 @@
     </div>
 </body>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="http://code.jquery.com/jquery-latest.js"></script>
 <script type="text/javascript" src="/order"></script>
 </html>

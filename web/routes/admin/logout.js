@@ -6,7 +6,7 @@ var router = express.Router();
 
 router.get('/logout', function (req, res) {
     req.session.destroy(function(){
-        req.session;
+        req.session.user;
     });
     console.log('로그아웃 성공');
 });

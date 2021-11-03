@@ -29,6 +29,7 @@ const getAllCategoriesRouter = require('./routes/admin/getAllCategories'); // �
 const getAllMenusRouter = require('./routes/admin/getAllMenus'); // 전체 메뉴 조회 라우터
 const getMenusByCategoryRouter = require('./routes/admin/getMenusByCategory'); // 카테고리별 메뉴 조회 라우터
 const updateUserInfoRouter = require('./routes/admin/updateUserInfo'); // 회원정보수정 라우터
+const changeOrderStatusRouter = require('./routes/admin/changeOrderStatus'); // 주문상태변경 라우터
 
 const orderViewRouter = require('./routes/order/views.js'); // 주문 시스템 VIEWS 라우터
 const orderApiRouter = require('./routes/order'); // 주문 시스템 API 라우터 index.js
@@ -65,6 +66,7 @@ app.use('/admin', getAllCategoriesRouter);
 app.use('/admin', getAllMenusRouter);
 app.use('/admin', getMenusByCategoryRouter);
 app.use('/admin', updateUserInfoRouter);
+app.use('/admin', changeOrderStatusRouter);
 
 // order view 라우터
 app.use('/order', orderViewRouter);
@@ -92,9 +94,6 @@ app.get('/test/:id', (req, res) => {
 // 관리 시스템 controller
 app.get('/admin', (req, res) => {
     res.sendFile(__dirname + "/public/admin/main.html")
-})
-app.get('/adminTest', (req, res) => {
-  res.sendFile(__dirname + "/public/admin/adminTest.html")
 })
 app.get('/join', (req, res) => {
   res.sendFile(__dirname + "/public/admin/join.html")
@@ -141,7 +140,7 @@ app.get('/order', (req, res) => {
 app.get('/modal', (req, res) => {
   res.sendFile(__dirname + "/js/modal.js")
 })
-app.get('/mp', (req, res) => {
+app.get('/mp', (req, res) => { // 임시
   res.sendFile(__dirname + "/test/mouse_cursor.html")
 })
 
