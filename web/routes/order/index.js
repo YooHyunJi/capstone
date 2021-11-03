@@ -10,8 +10,8 @@ router.get('/category/:storeNo', ctrl.getCategoryByStoreNo);
 router.get('/menu/:categoryNo', ctrl.getMenuByCategoryNo);
 
 // shopping cart
-router.post('/cart/add', ctrl.addShoppingCart);
-router.get('/cart/delete', ctrl.deleteShoppingCart);
+// router.post('/cart/add', ctrl.addShoppingCart);
+// router.get('/cart/delete', ctrl.deleteShoppingCart);
 
 // add order info
 router.post('/add', ctrl.addOrder);

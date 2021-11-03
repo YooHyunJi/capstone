@@ -1,176 +1,472 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
+  <meta charset="utf-8">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils@0.1/camera_utils.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils@0.1/control_utils.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils@0.2/drawing_utils.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands@0.1/hands.js" crossorigin="anonymous"></script>
+  <style>
+    html, body{
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      -ms-overflow-style: none;
+    }
+    
+    ::-webkit-scrollbar{ display:none; }
+
+    #container{
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      float: left;
+    }
+
+    video{
+      transform: rotateY(180deg);
+      -webkit-transform:rotateY(180deg); /* Safari and Chrome */
+      -moz-transform:rotateY(180deg); /* Firefox */
+      visibility: hidden;
+      width: 0;
+      outline: none;
+      border: none;
+    }
+    
+    canvas{
+      transform: rotateY(180deg);
+      -webkit-transform:rotateY(180deg); /* Safari and Chrome */
+      -moz-transform:rotateY(180deg); /* Firefox */
+      position:fixed;
+      /* background-color: rgb(224, 224, 224); */
+      width: 100%;
+      height: 100%;
+    }
+
+    #categoryList{
+      color: rgba(255, 255, 255, 0.7);
+      position: relative;
+      width: 100%;
+      height: 100px;
+      float: left;
+      list-style: none;
+      padding: 0px;
+      margin: 0px;
+      overflow: auto;
+      white-space: nowrap;
+    }
+
+    .category{
+      background: linear-gradient( -45deg, rgba(54, 146, 134, 0.5), rgba(54, 146, 134, 0.55));
+      position: relative;
+      width: 22%;
+      height: 100px;
+      text-align: center;
+      line-height: 100px;
+      display: inline-block;
+    }
+
+    #section{
+      height: calc(100% - 100px);
+    }
+
+    #menuList{
+      /* background-color: rgb(214, 156, 156); */
+      position: relative;
+      width: 60%;
+      float: left;
+      height: 100%;
+    }
+
+    .menu{
+      background: linear-gradient( -45deg, rgba(220, 220, 220, 0.5), rgba(241, 241, 241, 0.5));
+      position: relative;
+      float: left;
+      width: 33.3%;
+      height: 300px;
+      text-align: center;
+      border: none;
+    }
+
+    .menuImg{
+      width: 80%;
+      position: relative;
+      margin-top: 20px;
+      margin-bottom: -20px;
+    }
+
+    .menuTitle{
+      width: 80%;
+      line-height: 30px;
+      position: relative;
+      line-height: 50px;
+      margin: 0 auto;
+      margin-top: 20px;
+    }
+
+    .menuPrice{
+      width: 80%;
+      line-height: 30px;
+      position: relative;
+      line-height: 30px;
+      margin: 0 auto;
+    }
+
+    #bag{
+      position: relative;
+      float: left;
+      width: 40%;
+      height: 100%;
+    }
+
+    #orderList{
+      position: relative;
+      float: left;
+      width: 80%;
+      height: 100%;
+      background-color: rgba(214, 230, 227, 0.5);
+      overflow: scroll;
+      font-size: 10px;
+    }
+
+    .orderMenu{
+      position: relative;
+      float: left;
+      width: 100%;
+      height: 20%;
+      background: linear-gradient(to bottom,  rgba(189, 209, 206, 0.3), rgba(189, 209, 206, 0.5));
+    }
+
+    .orderMenu div{
+      position: relative;
+      float: left;
+      width: 25%;
+      text-align: center;
+      line-height: 150px;
+    }
+
+    #orderControl{
+      position: relative;
+      float: left;
+      width: 20%;
+      height: 100%;
+    }
+
+    #orderListUp{
+      position: relative;
+      float: left;
+      width: 100%;
+      height: 25%;
+      background: linear-gradient(to bottom,  rgba(179, 179, 179, 0.3), rgba(161, 161, 161, 0.3));
+      text-align: center;
+      border: none;
+      padding: 0px;
+    }
+
+    #orderListUp:active{
+      background: linear-gradient(to bottom,  rgba(139, 139, 139, 0.3), rgba(116, 116, 116, 0.3));
+    }
+
+    #orderListDown{
+      position: relative;
+      float: left;
+      width: 100%;
+      height: 25%;
+      background: linear-gradient(to bottom,  rgba(179, 179, 179, 0.3), rgba(161, 161, 161, 0.3));
+      text-align: center;
+      border: none;
+      padding: 0px;
+    }
+
+    #orderListDown:active{
+      background: linear-gradient(to bottom,  rgba(139, 139, 139, 0.3), rgba(116, 116, 116, 0.3));
+    }
+
+    #orderButton{
+      position: relative;
+      float: left;
+      width: 100%;
+      height: 50%;
+      background-color: rgba(59, 155, 142, 0.5);
+      text-align: center;
+      border: none;
+      padding: 0px;
+    }
+
+    #orderButton:active{
+      background-color: rgba(38, 99, 91, 0.5);
+    }
+
+    #modal{
+      display: none;
+      width: 70%;
+      height: 70%;
+      background-color: #f7f7f7;
+      border-radius: 5px;
+      text-align: center;
+    }
+
+    #payments{
+      width: 90%;
+      /* background-color: thistle; */
+      display: inline-block;
+      text-align: center;
+      margin-top: 80px;
+    }
+
+    .payment{
+      width: 21%;
+      height: 300px;
+      background-color: rgb(74, 155, 155);
+      color: white;
+      float: left;
+      text-align: center;
+      line-height: 300px;
+      margin: 0 2%;
+    }
+
+    #totalPrice{
+      display: inline-block;
+      width: 80%;
+      height: 50px;
+      line-height: 50px;
+      font-size: 20px;
+      margin-top: 30px;
+      /* background-color: tomato; */
+    }
+
+    #modalClose{
+      width: 90%;
+      height: 60px;
+      display: inline-block;
+      background-color:rgb(216, 216, 216);
+      line-height: 60px;
+      text-align: center;
+    }
+  </style>
 </head>
 <body>
-    <h1>ORDER PAGE</h1>
-    <!--
-    <ul id="category">카테고리
-        <% if(locals.categoryList){ %>
-            <% categoryList.forEach(function(category){ %>
-                <% if(category.categoryNo == 1) { %>
-                    <% let no = category.categoryNo; %>
-                <li style="color:cadetblue;"> No<%= category.categoryNo %>. <%= category.categoryName %></li>
-                <% } else { %>
-                <li> No<a><%= category.categoryNo %></a>. <%= category.categoryName %></li>
-                <% } %>
-            <% }) %>
-        <% } %>
-    </ul>
-    -->
+  <canvas class="output_canvas" width="1280px" height="720px"></canvas>
 
-    카테고리
+  <div id="container">
+    <video class="input_video"></video>
+
     <ul id="categoryList">
+        <!--
+        <li class="category"> COFFEE
+        <li class="category"> TEA
+        <li class="category"> ADE
+        <li class="category"> JUICE
+        <li class="category"> BAKERY
+        <li class="category"> SMOOTHIE
+          -->
     </ul>
 
-    메뉴
-    <ul id="menuList">
-    </ul>
+    <div id="section">
+      <div id="menuList">
 
-    장바구니
-    <ul id="shoppingCart">
-    </ul>
-    <p>총 금액: <a id="totalPrice">00</a>원</p>
-    <button>결제</button>
+        <!-- 
+        <div class="menu" onclick="gestureButtonClick();">
+          <img class="menuImg" src="../img/img1.png" alt=" hippo">
+          <h4 class="menuTitle">  HIPPO1 </h4>
+          <h4 class="menuPrice"> ₩5,000 </h4>
+        </div> 
+        -->
+      </div>
+
+      <div id="bag">
+        <div id="orderList">
+        <!--
+          <div class="orderMenu">
+              <div class="orderMenuName">  AMERICANO(ICE) </div>
+              <div class="orderMenuPrice"> 3,000 </div>
+              <div class="orderQuantity">
+                <div class="orderMenuQuantityDec"> ▼ </div>
+                <div class="orderMenuQuantity"> 3 </div>
+                <div class="orderMenuQuantityInc"> ▲ </div>
+              </div>
+              <div class="orderMenuCancel"> CANCEL </div>
+          </div>
+        -->
+        </div>
+        
+        <div id="orderControl">
+          <button id="orderListUp" onclick="orderScroll(this.id);"> ▲ </button>
+          <button id="orderListDown" onclick="orderScroll(this.id);"> ▼ </button>
+          <button id="orderButton"> ORDER </button>
+        </div>
+      </div>    
+    </div>
+
+    <div id="modal">
+      <div id="payments">
+        <div class="payment">신용카드</div>
+        <div class="payment">카카오페이</div>
+        <div class="payment">페이코</div>
+        <div class="payment">삼성페이</div>
+      </div><br>
+      <div id="totalPrice">총 결제 금액 12,500원</div>
+      <a><div id="modalClose">이전 단계</div></a>
+    </div>
+  </div>
 </body>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script type="text/javascript" src="/cookie"></script>
+<script type="text/javascript" src="/orderjs"></script>
 <script type="text/javascript">
     const baseUrl = $(location).attr('protocol') + '//' + $(location).attr('host');
     const storeNo = location.href.split(baseUrl + "/order/")[1];
-
-    var totalPrice = 0;
-    var shoppingCartList = {};
-    // shoppingBasketList[storeNo] = {
-    //    menuName: '아메리카노',
-    //    menuPrice: 1000,
-    //    totalPrice: 1000 * 3
-    //    count: 3,
-    //}
-
-    // 접속 시 카테고리 리스트와 첫 카테고리에 대한 메뉴 리스트
-    $.ajax({
-        url: baseUrl + '/api/order/main/' + storeNo,
-        type: 'GET', 
-        dataType: 'json', 
-        success: function(result) {
-            addCategoryList(result.category);
-            addMenuList(result.menu);
-        }, error: function(error) {
-            console.log(error);
-        }
-    })
     
-    // 카테고리 리스트
-    function addCategoryList(result) { 
-        $('#categoryList').empty();
-        $.each(result, function(index, data){
-            $('#categoryList').append($('<li />', {
-                id: data.categoryNo,
-                text: data.categoryName,
-                click: function() {
-                    getMenuByCategoryNo(data.categoryNo);
-                }
-            }));
-        });
+</script>
+<script>
+  function modal(id) {
+    var zIndex = 9999;
+    var modal = document.getElementById(id);
+
+    // 모달 div 뒤에 희끄무레한 레이어
+    var bg = document.createElement('div');
+    bg.setStyle({
+        position: 'fixed',
+        zIndex: zIndex,
+        left: '0px',
+        top: '0px',
+        width: '100%',
+        height: '100%',
+        overflow: 'auto',
+        // 레이어 색갈은 여기서 바꾸면 됨
+        backgroundColor: 'rgba(0,0,0,0.4)'
+    });
+    document.body.append(bg);
+
+    // 닫기 버튼 처리, 시꺼먼 레이어와 모달 div 지우기
+    modal.querySelector('.modal_close_btn').addEventListener('click', function() {
+        bg.remove();
+        modal.style.display = 'none';
+    });
+
+    modal.setStyle({
+        position: 'fixed',
+        display: 'block',
+        boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)',
+
+        // 시꺼먼 레이어 보다 한칸 위에 보이기
+        zIndex: zIndex + 1,
+
+        // div center 정렬
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        msTransform: 'translate(-50%, -50%)',
+        webkitTransform: 'translate(-50%, -50%)'
+    });
+  }
+
+  // Element 에 style 한번에 오브젝트로 설정하는 함수 추가
+  Element.prototype.setStyle = function(styles) {
+    for (var k in styles) this.style[k] = styles[k];
+    return this;
+  };
+
+  document.getElementById('orderButton').addEventListener('click', function() {
+     // 모달창 띄우기
+     modal('modal');
+    });
+
+
+  function gestureButtonClick(){
+    // document.getElementById('btn1').click();
+    console.log(document.getElementsByClassName('menuTitle').text());
+  }
+
+  function orderScroll(clicked_id){
+    const orderList = document.getElementById('orderList');
+    const clickedButton = document.getElementById(clicked_id);
+
+    if(clicked_id == 'orderListUp'){
+      orderList.scrollBy(0, -80);
     }
 
-    // 메뉴 리스트
-    function addMenuList(result) {
-        $('#menuList').empty();
-        $.each(result, function(index, data){
-            $('#menuList').append($('<li />', {
-                id: data.menuNo,
-                text: data.menuName + ' ' + data.menuPrice,
-                click: function () {
-                    addShoppingCart(data.menuNo, data.menuName, data.menuPrice);
-                }
-            }));
-        });
+    else{
+      orderList.scrollBy(0, 80);
     }
 
-    // 카테고리별 메뉴 리스트
-    function getMenuByCategoryNo(categoryNo) {
-        $.ajax({
-            url: baseUrl + '/api/order/menu/' + categoryNo,
-            type: 'GET',
-            dataType : 'json', 
-            success: function (result) {
-                addMenuList(result);
-            }, error: function (error) {
-                console.log(error);
-            }
-        });
+    clickedButton
+}
+</script>
+<script type="module">
+const videoElement = document.getElementsByClassName('input_video')[0];
+const canvasElement = document.getElementsByClassName('output_canvas')[0];
+const canvasCtx = canvasElement.getContext('2d');
+ 
+// check handpose
+const compareIndex = [[18, 4], [6, 8], [10, 12], [14, 16], [18, 20]]
+var open = [false, false, false, false, false]
+const gesture = [[true, true, true, true, true, "HI"], [false, false, false, false, false, "주먹쥠"], [true, false, false, false, false, "엄지만 펴짐"]]
+
+function dist(x1, y1, x2, y2) { // 두 점 사이의 거리를 반환
+  return Math.sqrt(Math.pow(x1-x2, 2)) + Math.sqrt(Math.pow(y1-y2, 2));
+}
+
+function getAngle(x1, y1, x2, y2){ // 두 점 사이의 각도를 반환
+  var rad = Math.atan2(y2-y1, x2-x1);
+  return (rad*180 / Math.PI);
+}
+
+function handHover(x1, y1){
+  hand_x = -(x1 * window.width);
+  hand_y = y1 * window.height;
+}
+
+function sleep(ms) {
+  const wakeUpTime = Date.now() + ms;
+  while (Date.now() < wakeUpTime) {}
+}
+
+function onResults(results) {
+  canvasCtx.save();
+  canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
+  // canvas 웹캠 이미지 삭제
+  // canvasCtx.drawImage(
+  //     results.image, 0, 0, canvasElement.width, canvasElement.height);
+
+  var print_x, print_y;
+  var middle;
+      
+  if (results.multiHandLandmarks) {
+    for (const landmarks of results.multiHandLandmarks) { // landmarks.length == 21 (0-20)
+      // 현재 사용자의 손 상태 판별
+      for (var i=0; i<5; i++) {
+        // true 펼쳐짐, false 접힘
+          open[i] = dist(landmarks[0]['x'], landmarks[0]['y'], landmarks[compareIndex[i][0]]['x'], landmarks[compareIndex[i][0]]['y']) 
+                  < dist(landmarks[0]['x'], landmarks[0]['y'], landmarks[compareIndex[i][1]]['x'], landmarks[compareIndex[i][1]]['y'])
+      }
+      drawConnectors(canvasCtx, landmarks, HAND_CONNECTIONS, {color: '#f0c697', lineWidth: 20});
+      drawLandmarks(canvasCtx, landmarks, {color: '#f5c9a9', lineWidth: 10});
     }
+  }
+  canvasCtx.restore();
+}
 
-    // 장바구니 정보 저장
-    const addShoppingCart = (menuNo, menuName, menuPrice) => {
-        
-        if (menuNo in shoppingCartList) { // 이미 추가된 메뉴일 때
-            shoppingCartList[menuNo]['count'] += 1;
-            shoppingCartList[menuNo]['totalPrice'] = shoppingCartList[menuNo]['count'] * shoppingCartList[menuNo]['menuPrice'];
-            console.log(shoppingCartList);
-        } else {
-            // 장바구니 dict
-            shoppingCartList[menuNo] = {
-                'menuNo': menuNo,
-                'menuName': menuName,
-                'count': 1,
-                'menuPrice': menuPrice,
-                'totalPrice': 1
-            }
-            console.log(shoppingCartList);
-        }
+const hands = new Hands({locateFile: (file) => {
+  return `https://cdn.jsdelivr.net/npm/@mediapipe/hands@0.1/${file}`;
+}});
 
-        return shoppingCartList[menuNo]['count'], shoppingCartList[menuNo]['menuPrice'];
-    }
+hands.setOptions({
+  maxNumHands: 1,
+  minDetectionConfidence: 0.5,
+  minTrackingConfidence: 0.5
+});
 
-    // 장바구니 리스트 추가
-    const addShoppingCartList = (menuNo, menuName, menuPrice) => {
-        $('#shoppingCart').append($('<li />', {
-            id: menuNo,
-            text: menuName + ' ' + menuPrice
-        }).append($('<button />', {
-            text: 'up',
-            click: function() {
-                totalPrice += menuPrice;
-                changeTotalPrice(totalPrice);
-            }
-        })).append($('<a />', {
-            text: 1, 
-        })).append($('<button />', {
-            text: 'down',
-            click: function() {
-                totalPrice -= menuPrice;
-                if (totalPrice < 0) {
-                    alert('잘못된 접근입니다!');
-                    $(this).parent().remove();
-                } else {
-                    $('#totalPrice').text(totalPrice);
-                }
-            }
-        })).append($('<button />', {
-            text: '취소',
-            click: function() {
-                $(this).parent().remove();
-                totalPrice -= parseInt(menuPrice);
-                changeTotalPrice(totalPrice);
-            }
-        })));
-        
-        totalPrice += parseInt(menuPrice);
-        changeTotalPrice(totalPrice);
-    }
+hands.onResults(onResults);
 
-    // 총 가격 조정
-    function changeTotalPrice(totalPrice) {
-        if (totalPrice < 0) {
-            alert('잘못된 접근입니다!');
-            $(this).parent().remove();
-        } else {
-            $('#totalPrice').text(totalPrice);
-        }
-    }
+const camera = new Camera(videoElement, {
+  onFrame: async () => {
+    await hands.send({image: videoElement});
+  },
+  width: 1280,
+  height: 720
+});
 
+camera.start();
 </script>
 </html>
