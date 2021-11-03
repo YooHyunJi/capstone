@@ -2,6 +2,8 @@
 <html>
 <head>
   <meta charset="utf-8">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   
   <style>
       html, body{
@@ -113,20 +115,34 @@
     }
 
     th{
-        background-color: rgb(200, 200, 200);
+        background-color: rgb(130, 189, 189);
         color: white;
         font-weight: 400;
     }
 
-    .changeStatus{
+    .finishedOrder td{
+        background-color: rgb(190, 190, 190);
+        color: white;
+    }
+
+    .preparingOrder{
+        background-color: rgb(238, 238, 238);
+    }
+
+    .canceledOrder td{
+        background-color: rgb(190, 190, 190);
+        color: white;
+    }
+
+    .changeStatusBtn{
         background-color: rgb(130, 189, 189);
         color: white;
         font-weight: 400;
         cursor: pointer;
     }
 
-    .orderCancel{
-        background-color: rgb(190, 190, 190);
+    .orderCancelBtn{
+        background-color: rgb(226, 125, 9);
         color: white;
         font-weight: 400;
         cursor: pointer;
@@ -163,48 +179,48 @@
                 <th>상태 변경</th>
                 <th>주문 취소</th>
 
-                <tr class="order">
+                <tr class="finishedOrder">
                     <td>001</td>
                     <td>2021-10-20 10:03</td>
                     <td class="orderStatus">완료</td>
                     <td>010-2356-4725</td>
                     <td>7,000</td>
-                    <td>N</td>
-                    <td class="changeStatus">준비 완료</td>
-                    <td class="orderCancel">취소</td>
+                    <td class="orderCancel">N</td>
+                    <td class="changeStatusBtn">완료 취소</td>
+                    <td class="orderCancelBtn" onclick>취소</td>
                 </tr>
 
-                <tr class="order">
+                <tr class="preparingOrder canceledOrder">
                     <td>002</td>
                     <td>2021-10-20 10:07</td>
-                    <td class="orderStatus">완료</td>
+                    <td class="orderStatus">준비중</td>
                     <td>010-6237-4823</td>
                     <td>8,500</td>
-                    <td>N</td>
-                    <td class="changeStatus">준비 완료</td>
-                    <td class="orderCancel">취소</td>
+                    <td class="orderCancel">Y</td>
+                    <td class="changeStatusBtn">완료 취소</td>
+                    <td class="orderCancelBtn" onclick>취소</td>
                 </tr>
 
-                <tr class="order">
+                <tr class="preparingOrder">
                     <td>003</td>
                     <td>2021-10-20 10:23</td>
                     <td class="orderStatus">준비중</td>
                     <td>010-9386-2843</td>
                     <td>3,500</td>
-                    <td>N</td>
-                    <td class="changeStatus">준비 완료</td>
-                    <td class="orderCancel">취소</td>
+                    <td class="orderCancel">N</td>
+                    <td class="changeStatusBtn">준비 완료</td>
+                    <td class="orderCancelBtn" onclick>취소</td>
                 </tr>
 
-                <tr class="order">
+                <tr class="preparingOrder">
                     <td>004</td>
                     <td>2021-10-20 10:25</td>
                     <td class="orderStatus">준비중</td>
                     <td>010-8243-4387</td>
                     <td>5,000</td>
-                    <td>N</td>
-                    <td class="changeStatus">준비 완료</td>
-                    <td class="orderCancel">취소</td>
+                    <td class="orderCancel">N</td>
+                    <td class="changeStatusBtn">준비 완료</td>
+                    <td class="orderCancelBtn"">취소</td>
                 </tr>
                 
             </table>
@@ -212,5 +228,72 @@
     </div>
 </body>
 
-<script></script>
+
+
+<script>
+    // jQuery
+    $(document).ready(function(){
+    });
+    
+    $(function changeOrderStatus(status){
+        $(".changeStatusBtn").on("click", function(){
+            var orderParent = $(this).parent();
+            var orderChildrenStatus = orderParent.children(".orderStatus");
+
+            // 미완료 주문을 완료 처리
+            if(orderParent.attr("class") == "preparingOrder"){
+                orderParent.attr("class", "finishedOrder");
+                orderChildrenStatus.text("완료");
+                $(this).text("완료 취소");
+            }
+            // 실수로 완료 처리한 주문을 미완료 처리
+            else{
+                orderParent.attr("class", "preparingOrder");
+                orderChildrenStatus.text("준비중");
+                $(this).text("준비 완료");
+            }
+        });
+    });
+
+    $(function cancelOrderStatus(){
+        $(".orderCancelBtn").on("click", function(){
+            var orderParent = $(this).parent();
+            var orderChildrenStatus = orderParent.children(".orderStatus");
+            var orderChildrenCancel = orderParent.children(".orderCancel");
+
+            alert("주문이 취소되었습니다")
+            orderParent.addClass("canceledOrder");;
+            orderChildrenStatus.text("취소");
+            orderChildrenCancel.text("Y");
+        });
+    });
+
+    
+    //javascript
+    
+
+
+    // $("div").css({"background-color": "yellow"});
+
+    
+
+    // var div = document.getElementsByTagName("div");
+    // for(var i =0; i<div.length; i++){
+    //     div[i].style.color="red"; 
+    // }
+
+
+</script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js">
+    $(document).ready(function(){
+        $("div").css({"background-color": "yellow"});
+    });
+</script>
+
+<script src="http://code.jquery.com/jquery-latest.js">
+    $(document).ready(function(){
+        $("div").css({"background-color": "yellow"});
+    });
+</script>
 </html>
