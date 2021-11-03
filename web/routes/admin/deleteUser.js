@@ -24,7 +24,17 @@ router.post('/deleteUser', function (req, res) {
                     res.json({'code': 208, 'result': 'Password is not correct'});
                 }
                 else { // password 옳게 입력한 경우 회원탈퇴 진행
-                    res.json({'code': 200, 'result': 'Password is correct'});
+                    // res.json({'code': 200, 'result': 'Password is correct'});
+                    query = `DELETE FROM store WHERE storeId = ${req.session.user.storeId}` // 회원탈퇴 쿼리문
+                    connection.query(query, function (err, result) {
+                        if(err) { // 에러 발생시
+                            console.log("error ocurred: ", err);
+                            res.json({ "code": 400, "result": "error ocurred" })
+                        } else {
+                            console.log("delete user success");
+                            res.json({"code": 200, "result": "delete user success"})
+                        }
+                    })
                 }
             })
         }

@@ -2,11 +2,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <title>테스트용 메뉴등록 페이지</title>
+    <title>카톡 공유</title>
 </head>
 <body>
-    <form id="fileForm">
+    <!--<form id="fileForm">
         <input type="text" id="menuName" name="menuName">
         <input type="text" id="menuDetail" name="menuDetail">
         <input type="text" id="menuPrice" name="menuPrice">
@@ -17,8 +16,13 @@
     <button onclick="addMenu()">메뉴등록</button>
 
     <input type="text" id="categoryName" name="categoryName">
-    <button onclick="addCategory()">카테고리등록</button>
+    <button onclick="addCategory()">카테고리등록</button>-->
+
+    <input type="button" onClick="sendKakaoMessage()" value="카톡보내기"/>
 </body>
-<script type="text/javascript" src="/menu"></script>
+<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>-->
+<script src="https://developers.kakao.com/sdk/js/kakao.min.js"></script>
+<script type="text/javascript" src="/order"></script>
+<script src="/menu"></script>
 <script src="/category"></script>
 </html>

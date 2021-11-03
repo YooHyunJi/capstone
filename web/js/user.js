@@ -134,8 +134,11 @@ function deleteUser() {
             if (result.code == 208) {
                 alert('비밀번호가 맞지 않습니다.');
             }
+            else if (result.code == 400) {
+                alert('회원탈퇴 실패');
+            }
             else if (result.code == 200) {
-                alert('비밀번호 일치');
+                alert('회원탈퇴 성공');
             }
         }
     })

@@ -90,7 +90,7 @@ app.get('/test/:id', (req, res) => {
   }
 })
 
-// 관리 시스템
+// 관리 시스템 controller
 app.get('/admin', (req, res) => {
     res.sendFile(__dirname + "/public/admin/main.html")
 })
@@ -138,6 +138,9 @@ app.get('/menu', (req, res) => {
 })
 app.get('/order', (req, res) => {
   res.sendFile(__dirname + "/js/order.js")
+})
+app.get('/mp', (req, res) => {
+  res.sendFile(__dirname + "/test/mouse_cursor.html")
 })
 
 // 주문 시스템

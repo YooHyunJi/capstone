@@ -57,3 +57,10 @@ function cancelOrder(orderNo) {
         return;
     } 
 }
+
+function sendKakaoMessage() {
+    Kakao.init("b0acf0bf7eaa895e395a0d5ff254a55c");
+    Kakao.Link.sendCustom({
+        templateId: 64485
+    });
+}
