@@ -42,6 +42,7 @@
       /* background-color: rgb(224, 224, 224); */
       width: 100%;
       height: 100%;
+      z-index: 0;
     }
 
     #categoryList{
@@ -65,6 +66,7 @@
       text-align: center;
       line-height: 100px;
       display: inline-block;
+      cursor: pointer;
     }
 
     #section{
@@ -134,7 +136,7 @@
       position: relative;
       float: left;
       width: 100%;
-      height: 20%;
+      height: 100px;
       background: linear-gradient(to bottom,  rgba(189, 209, 206, 0.3), rgba(189, 209, 206, 0.5));
     }
 
@@ -143,7 +145,8 @@
       float: left;
       width: 25%;
       text-align: center;
-      line-height: 150px;
+      line-height: 100px;
+      font-size: 3px;
     }
 
     #orderControl{
@@ -192,18 +195,19 @@
       text-align: center;
       border: none;
       padding: 0px;
+      cursor: pointer;
     }
 
     #orderButton:active{
       background-color: rgba(38, 99, 91, 0.5);
     }
 
-    #modal{
+    .modal{
       display: none;
-      width: 70%;
-      height: 70%;
-      background-color: #f7f7f7;
-      border-radius: 5px;
+      width: 700px;
+      height: 470px;
+      background-color: rgb(247, 247, 247);
+      border-radius: 10px;
       text-align: center;
     }
 
@@ -212,37 +216,179 @@
       /* background-color: thistle; */
       display: inline-block;
       text-align: center;
-      margin-top: 80px;
+      margin-top: 50px;
     }
 
     .payment{
       width: 21%;
-      height: 300px;
-      background-color: rgb(74, 155, 155);
+      height: 250px;
+      background-color: rgba(74, 155, 155, 0.6);
       color: white;
       float: left;
       text-align: center;
-      line-height: 300px;
+      line-height: 250px;
       margin: 0 2%;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+    .payment:hover{
+      background-color: rgb(74, 155, 155);
     }
 
     #totalPrice{
       display: inline-block;
       width: 80%;
-      height: 50px;
-      line-height: 50px;
-      font-size: 20px;
-      margin-top: 30px;
+      height: 20px;
+      line-height: 20px;
+      font-size: 15px;
+      margin: 30px 0;
       /* background-color: tomato; */
     }
 
-    #modalClose{
+    .modalClose, #phoneBtn{
       width: 90%;
-      height: 60px;
+      height: 50px;
       display: inline-block;
-      background-color:rgb(216, 216, 216);
-      line-height: 60px;
+      background-color:rgba(216, 216, 216, 0.6);
+      line-height: 50px;
       text-align: center;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+    .modalClose:hover, #phoneBtn:hover{
+      background-color:rgb(216, 216, 216);
+    }
+
+    /* #processModal{
+      text-align: center;
+    } */
+
+    #processModal .processArea{
+      width: 200px;
+      height: 220px;
+      display: inline-block;
+      /* background-color: darkkhaki; */
+      margin-top: 125px;
+    }
+
+    #processModal .modalClose{
+      display: none;
+    }
+
+    .spinner {
+      display: inline-block;
+      /* background-color: cornsilk; */
+      vertical-align: middle;
+      margin-bottom: 20%;
+    }
+
+    .fas, .fa-spinner, .fa-10x{
+      animation: spin 2s linear infinite;
+      /* background-color: darkgreen; */
+      width: 100%;
+    }
+
+    @keyframes spin {
+      from {
+        transform: rotate(0);
+      }
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    #processModal .processArea span{
+      /* background-color: darkgreen; */
+      text-align: center;
+    }
+
+    #phoneModal .phoneArea{
+      width: 600px;
+      height: 320px;
+      /* background-color: darkkhaki; */
+      float: left;
+      margin-top: 75px;
+      margin-left: 50px;
+    }
+
+    #phoneModal .phoneArea .phoneOutput{
+      width: 300px;
+      height: 240px;
+      display: block;
+      float: left;
+      margin-top: 40px;
+      /* background-color: darksalmon; */
+    }
+
+    #phoneModal .phoneArea .phoneOutput span{
+      line-height: 30px;
+    }
+
+    #phoneModal .phoneArea .phoneOutput input[type="text"]{
+      line-height: 50px;
+      width: calc(100% - 26px);
+      border-radius: 10px;
+      border: 3px solid rgb(74, 155, 155);
+      padding: 0 10px;
+      font-size: 30px;
+      margin: 30px 0;
+    }
+
+    #phoneModal .phoneArea .phoneOutput input[type="text"]:focus{
+      outline: none;
+    }
+
+    #phoneModal .phoneArea .phoneOutput #phoneBtn{
+      width: 100%;
+    }
+
+    #phoneModal .phoneArea table{
+      margin: 0;
+      float: right;
+      border-radius: 20px;
+      border: 3px solid rgb(216, 216, 216);
+      padding: 0;
+      border-spacing: 0;
+    }
+
+    #phoneModal .phoneArea table tbody{
+      width: 240px;
+      height: 320px;
+      display: block;
+    }
+
+    #phoneModal .phoneArea table tbody tr{
+      height: 80px;
+      /* background-color: darkslategrey; */
+      vertical-align: middle;
+    }
+
+    #phoneModal .phoneArea table tbody tr td{
+      width: 80px;
+      border-radius: 15px;
+      vertical-align: middle;
+    }
+
+    #phoneModal .phoneArea table tbody tr td:hover{
+      background: rgb(216, 216, 216);
+    }
+
+    #finishModal{
+      vertical-align: middle;
+    }
+
+    #finishModal .finishArea{
+      width: 100%;
+      height: 100px;
+      margin-top: 185px;
+    }
+
+    #finishModal .finishArea p{
+      font-size: 20px;
+      line-height: 50px;
+      margin: 0;
     }
   </style>
 </head>
@@ -299,30 +445,88 @@
       </div>    
     </div>
 
-    <div id="modal">
+    <div id="paymentsModal" class="modal">
       <div id="payments">
-        <div class="payment">신용카드</div>
-        <div class="payment">카카오페이</div>
-        <div class="payment">페이코</div>
-        <div class="payment">삼성페이</div>
+        <div class="payment" id="creditCard" onclick="payingProcess(this.id);">신용카드</div>
+        <div class="payment" id="kakaoPay" onclick="payingProcess(this.id);">카카오페이</div>
+        <div class="payment" id="payco" onclick="payingProcess(this.id);">페이코</div>
+        <div class="payment" id="samsungPay" onclick="payingProcess(this.id);">삼성페이</div>
       </div><br>
       <div id="totalPrice">총 결제 금액 12,500원</div>
-      <a><div id="modalClose">이전 단계</div></a>
+      <a><div class="modalClose">이전 단계</div></a>
     </div>
+  
+    <div id="processModal" class="modal">
+      <div class="processArea">
+        <div class="spinner">
+          <i class="fas fa-spinner fa-10x"></i>
+        </div>
+        <br>
+        <span>결제 처리 중입니다 ...</span>
+      </div>
+      <a><div class="modalClose">이전 단계</div></a>
+    </div>
+
+    <div id="phoneModal" class="modal">
+      <div class="phoneArea">
+        <div class="phoneOutput">
+          <span>주문 메시지를 받을</span><br>
+          <span>휴대폰 번호를 입력해주세요</span><br>
+          <input type="text" autofocus/>
+          <a><div id="phoneBtn">입력 완료</div></a>
+        </div>
+  
+        <table class="phoneNumBtn">
+          <tr>
+              <td id='num1'>1</td>
+              <td id='num2'>2</td>
+              <td id='num3'>3</td>
+          </tr>
+  
+          <tr>
+            <td id='num4'>4</td>
+            <td id='num5'>5</td>
+            <td id='num6'>6</td>
+         </tr>
+  
+         <tr>
+          <td id='num7'>7</td>
+          <td id='num8'>8</td>
+          <td id='num9'>9</td>
+        </tr>
+  
+        <tr>
+          <td id='num010'>010</td>
+          <td id='num0'>0</td>
+          <td id='numCancel'>취소</td>
+        </tr>
+  
+      </table>
+      </div>
+    </div>
+  
+    <div id="finishModal" class="modal">
+      <div class="finishArea">
+        <p>주문이 완료되었습니다</p>
+        <p>준비가 완료되면 메시지를 발송해드립니다</p>
+      </div>
+    </div>
+
   </div>
 </body>
 <script type="text/javascript" src="/cookie"></script>
 <script type="text/javascript" src="/orderjs"></script>
 <script type="text/javascript">
-  
-</script>
-<script>
+  // front script
   function modal(id) {
     var zIndex = 9999;
     var modal = document.getElementById(id);
+    var canvas = document.getElementsByClassName('output_canvas')[0];
 
     // 모달 div 뒤에 희끄무레한 레이어
     var bg = document.createElement('div');
+    bg.id = "bg";
+
     bg.setStyle({
         position: 'fixed',
         zIndex: zIndex,
@@ -337,10 +541,91 @@
     document.body.append(bg);
 
     // 닫기 버튼 처리, 시꺼먼 레이어와 모달 div 지우기
-    modal.querySelector('.modal_close_btn').addEventListener('click', function() {
+    modal.querySelector('.modalClose').addEventListener('click', function() {
         bg.remove();
         modal.style.display = 'none';
     });
+
+    modal.setStyle({
+        position: 'fixed',
+        display: 'block',
+        boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)',
+
+        // 시꺼먼 레이어 보다 한칸 위에 보이기
+        zIndex: zIndex + 1,
+
+        // div center 정렬
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        msTransform: 'translate(-50%, -50%)',
+        webkitTransform: 'translate(-50%, -50%)'
+    });
+
+    // canvas.setStyle({
+    //   zIndex: zIndex - 1
+    // });
+  }
+
+  // 결제 진행 중 모달
+  function modal_process(id){
+    var zIndex = 9999;
+    var modal = document.getElementById(id);
+
+    // 닫기 버튼 처리, 시꺼먼 레이어와 모달 div 지우기
+    modal.querySelector('.modalClose').addEventListener('click', function() {
+        modal.style.display = 'none';
+    });
+
+    modal.setStyle({
+        position: 'fixed',
+        display: 'block',
+        boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)',
+
+        // 시꺼먼 레이어 보다 한칸 위에 보이기
+        zIndex: zIndex + 2,
+
+        // div center 정렬
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        msTransform: 'translate(-50%, -50%)',
+        webkitTransform: 'translate(-50%, -50%)'
+    });
+  }
+
+  // 전화번호 입력 모달
+  function modal_phone(id){
+    var zIndex = 9999;
+    var modal = document.getElementById(id);
+
+    // 닫기 버튼 처리, 시꺼먼 레이어와 모달 div 지우기
+    modal.querySelector('#phoneBtn').addEventListener('click', function() {
+        modal.style.display = 'none';
+        
+    });
+
+    modal.setStyle({
+        position: 'fixed',
+        display: 'block',
+        boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)',
+
+        // 시꺼먼 레이어 보다 한칸 위에 보이기
+        zIndex: zIndex + 1,
+
+        // div center 정렬
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        msTransform: 'translate(-50%, -50%)',
+        webkitTransform: 'translate(-50%, -50%)'
+    });
+  }
+
+  // 결제 완료 모달
+  function modal_finish(id){
+    var zIndex = 9999;
+    var modal = document.getElementById(id);
 
     modal.setStyle({
         position: 'fixed',
@@ -367,9 +652,50 @@
 
   document.getElementById('orderButton').addEventListener('click', function() {
      // 모달창 띄우기
-     modal('modal');
-    });
+     
+     // back - 장바구니 비었는지 확인
+     if(checkCart()) { // true 장바구니 있음
+        modal('paymentsModal');
+     } else { // false 장바구니 비었음
+        alert('메뉴를 선택해 주세요');
+     }
+  });
 
+  function payingProcess(id){
+
+    // 쿠키 확인
+    if(checkCart()) { // 장바구니 안비었을 때
+      setCookie('payment', id, 3); // 쿠키 설정
+
+      modal_process('processModal');
+      
+      var modal = document.getElementById('processModal');
+
+      setTimeout(function() {
+        modal.style.display = 'none';
+        modal_phone('phoneModal');
+      }, 3000);
+
+    } else {
+        alert('메뉴를 선택해주세요');
+        location.reload();
+    }
+  }
+
+  document.getElementById('phoneBtn').addEventListener('click', function() {
+     // 모달창 띄우기
+     modal_finish('finishModal');
+
+    var modals = document.getElementsByClassName('modal');
+    var bg = document.getElementById('bg');
+
+    setTimeout(function() {
+      for(var i=0; i<modals.length; i++){
+        modals[i].style.display = 'none';
+      }
+      bg.style.display = 'none';
+    }, 3000);
+  });
 
   function gestureButtonClick(){
     // document.getElementById('btn1').click();
@@ -392,79 +718,80 @@
 }
 </script>
 <script type="module">
-const videoElement = document.getElementsByClassName('input_video')[0];
-const canvasElement = document.getElementsByClassName('output_canvas')[0];
-const canvasCtx = canvasElement.getContext('2d');
- 
-// check handpose
-const compareIndex = [[18, 4], [6, 8], [10, 12], [14, 16], [18, 20]]
-var open = [false, false, false, false, false]
-const gesture = [[true, true, true, true, true, "HI"], [false, false, false, false, false, "주먹쥠"], [true, false, false, false, false, "엄지만 펴짐"]]
+  // mediapipe script
+  const videoElement = document.getElementsByClassName('input_video')[0];
+  const canvasElement = document.getElementsByClassName('output_canvas')[0];
+  const canvasCtx = canvasElement.getContext('2d');
+  
+  // check handpose
+  const compareIndex = [[18, 4], [6, 8], [10, 12], [14, 16], [18, 20]]
+  var open = [false, false, false, false, false]
+  const gesture = [[true, true, true, true, true, "HI"], [false, false, false, false, false, "주먹쥠"], [true, false, false, false, false, "엄지만 펴짐"]]
 
-function dist(x1, y1, x2, y2) { // 두 점 사이의 거리를 반환
-  return Math.sqrt(Math.pow(x1-x2, 2)) + Math.sqrt(Math.pow(y1-y2, 2));
-}
-
-function getAngle(x1, y1, x2, y2){ // 두 점 사이의 각도를 반환
-  var rad = Math.atan2(y2-y1, x2-x1);
-  return (rad*180 / Math.PI);
-}
-
-function handHover(x1, y1){
-  hand_x = -(x1 * window.width);
-  hand_y = y1 * window.height;
-}
-
-function sleep(ms) {
-  const wakeUpTime = Date.now() + ms;
-  while (Date.now() < wakeUpTime) {}
-}
-
-function onResults(results) {
-  canvasCtx.save();
-  canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
-  // canvas 웹캠 이미지 삭제
-  // canvasCtx.drawImage(
-  //     results.image, 0, 0, canvasElement.width, canvasElement.height);
-
-  var print_x, print_y;
-  var middle;
-      
-  if (results.multiHandLandmarks) {
-    for (const landmarks of results.multiHandLandmarks) { // landmarks.length == 21 (0-20)
-      // 현재 사용자의 손 상태 판별
-      for (var i=0; i<5; i++) {
-        // true 펼쳐짐, false 접힘
-          open[i] = dist(landmarks[0]['x'], landmarks[0]['y'], landmarks[compareIndex[i][0]]['x'], landmarks[compareIndex[i][0]]['y']) 
-                  < dist(landmarks[0]['x'], landmarks[0]['y'], landmarks[compareIndex[i][1]]['x'], landmarks[compareIndex[i][1]]['y'])
-      }
-      drawConnectors(canvasCtx, landmarks, HAND_CONNECTIONS, {color: '#f0c697', lineWidth: 20});
-      drawLandmarks(canvasCtx, landmarks, {color: '#f5c9a9', lineWidth: 10});
-    }
+  function dist(x1, y1, x2, y2) { // 두 점 사이의 거리를 반환
+    return Math.sqrt(Math.pow(x1-x2, 2)) + Math.sqrt(Math.pow(y1-y2, 2));
   }
-  canvasCtx.restore();
-}
 
-const hands = new Hands({locateFile: (file) => {
-  return `https://cdn.jsdelivr.net/npm/@mediapipe/hands@0.1/${file}`;
-}});
+  function getAngle(x1, y1, x2, y2){ // 두 점 사이의 각도를 반환
+    var rad = Math.atan2(y2-y1, x2-x1);
+    return (rad*180 / Math.PI);
+  }
 
-hands.setOptions({
-  maxNumHands: 1,
-  minDetectionConfidence: 0.5,
-  minTrackingConfidence: 0.5
-});
+  function handHover(x1, y1){
+    hand_x = -(x1 * window.width);
+    hand_y = y1 * window.height;
+  }
 
-hands.onResults(onResults);
+  function sleep(ms) {
+    const wakeUpTime = Date.now() + ms;
+    while (Date.now() < wakeUpTime) {}
+  }
 
-const camera = new Camera(videoElement, {
-  onFrame: async () => {
-    await hands.send({image: videoElement});
-  },
-  width: 1280,
-  height: 720
-});
+  function onResults(results) {
+    canvasCtx.save();
+    canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
+    // canvas 웹캠 이미지 삭제
+    // canvasCtx.drawImage(
+    //     results.image, 0, 0, canvasElement.width, canvasElement.height);
 
-camera.start();
-</script>
-</html>
+    var print_x, print_y;
+    var middle;
+        
+    if (results.multiHandLandmarks) {
+      for (const landmarks of results.multiHandLandmarks) { // landmarks.length == 21 (0-20)
+        // 현재 사용자의 손 상태 판별
+        for (var i=0; i<5; i++) {
+          // true 펼쳐짐, false 접힘
+            open[i] = dist(landmarks[0]['x'], landmarks[0]['y'], landmarks[compareIndex[i][0]]['x'], landmarks[compareIndex[i][0]]['y']) 
+                    < dist(landmarks[0]['x'], landmarks[0]['y'], landmarks[compareIndex[i][1]]['x'], landmarks[compareIndex[i][1]]['y'])
+        }
+        // drawConnectors(canvasCtx, landmarks, HAND_CONNECTIONS, {color: '#f0c697', lineWidth: 20});
+        // drawLandmarks(canvasCtx, landmarks, {color: '#f5c9a9', lineWidth: 10});
+      }
+    }
+    canvasCtx.restore();
+  }
+
+  const hands = new Hands({locateFile: (file) => {
+    return `https://cdn.jsdelivr.net/npm/@mediapipe/hands@0.1/${file}`;
+  }});
+
+  hands.setOptions({
+    maxNumHands: 1,
+    minDetectionConfidence: 0.5,
+    minTrackingConfidence: 0.5
+  });
+
+  hands.onResults(onResults);
+
+  const camera = new Camera(videoElement, {
+    onFrame: async () => {
+      await hands.send({image: videoElement});
+    },
+    width: 1280,
+    height: 720
+  });
+
+  camera.start();
+  </script>
+  </html>

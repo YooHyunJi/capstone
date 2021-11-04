@@ -3,7 +3,10 @@ $(document).ready(function() {
     const storeNo = location.href.split(baseUrl + "/order/")[1];
 
     let shoppingCartList = {};
+    let paymentInfo = '';
     let totalPrice = 0;
+
+    $('#orderList').empty();
 
     // 접속 시 카테고리 리스트와 첫 카테고리에 대한 메뉴 리스트
     $.ajax({
@@ -20,7 +23,6 @@ $(document).ready(function() {
 
     if (getCookie("shoppingCart")) {
         let shoppingCartList = JSON.parse((getCookie("shoppingCart")));
-        $('#orderList').empty();
         for (key in shoppingCartList) {
             $('#orderList').append($('<div />', {
                 class: 'orderMenu',
@@ -42,14 +44,13 @@ $(document).ready(function() {
                         if (delete shoppingCartList[$(this).parent().parent().attr('id')]) {
                             $(this).parent().parent().remove();
                             deleteCookie("shoppingCart"); // 쿠키에 변경 사항 새로 저장
-                            setCookie("shoppingCart", JSON.stringify(shoppingCartList), 1);
-                            console.log(shoppingCartList);
+                            setCookie("shoppingCart", JSON.stringify(shoppingCartList), 3);
                         }
                     } else {
                         $('#cntNum' + $(this).parent().parent().attr('id')).text(shoppingCartList[$(this).parent().parent().attr('id')]["count"]);
                         $('#price' + $(this).parent().parent().attr('id')).text(shoppingCartList[$(this).parent().parent().attr('id')]["totalPrice"]);
                         deleteCookie("shoppingCart");
-                        setCookie("shoppingCart", JSON.stringify(shoppingCartList), 1);    
+                        setCookie("shoppingCart", JSON.stringify(shoppingCartList), 3);    
                     }
                 }
             })).append($('<div />', {
@@ -65,7 +66,7 @@ $(document).ready(function() {
                     $('#cntNum' + $(this).parent().parent().attr('id')).text(shoppingCartList[$(this).parent().parent().attr('id')]["count"]);
                     $('#price' + $(this).parent().parent().attr('id')).text(shoppingCartList[$(this).parent().parent().attr('id')]["totalPrice"]);
                     deleteCookie("shoppingCart");
-                    setCookie("shoppingCart", JSON.stringify(shoppingCartList), 1);
+                    setCookie("shoppingCart", JSON.stringify(shoppingCartList), 3);
                 }
             }))).append($('<div />', {
                 class: 'orderMenuCancel', 
@@ -74,12 +75,73 @@ $(document).ready(function() {
                     if (delete shoppingCartList[$(this).parent().attr('id')]) {
                         $(this).parent().remove();
                         deleteCookie("shoppingCart"); 
-                        setCookie("shoppingCart", JSON.stringify(shoppingCartList), 1);
+                        setCookie("shoppingCart", JSON.stringify(shoppingCartList), 3);
                     }
                 }
             })));
         }
     }
+
+    $('.phoneNumBtn tr td').on({
+        click: function() {
+            let btnId = $(this).attr('id').substring(3, 10);
+            if (btnId == 'cancel') {
+                // TODO input에서 하나씩 지우기..
+            } else {
+                // TODO input 하나씩 추가하기
+
+            }
+        }
+    })
+
+    // 전화번호 입력 완료
+    $('#phoneBtn').on({
+        click: function() {
+            shoppingCartList = JSON.parse(getCookie('shoppingCart'));
+            paymentInfo = getCookie('payment');
+
+            // TODO 주문정보&주문상세정보 추가
+            $.ajax({
+                url: '/api/order/add',
+                type: 'POST',
+                success: function(result) {
+                    // TODO 결제 정보 추가
+                    $.ajax({
+                        url: '/api/order/pay',
+                        type: 'POST',
+                        contentType: 'application/json',
+                        data: JSON.stringify({
+                            'phone': '01051916351', // test
+                            'orderNo': 1
+                        }),
+                        success: function(result) {
+                            // TODO 문자 메시지 전송
+                            $.ajax({
+                                url: '/api/order/send/msg',
+                                type: 'POST',
+                                contentType: 'application/json',
+                                data: JSON.stringify({
+                                    'phone': '', // test
+                                    'orderNo': 1
+                                }), success: function(result) {
+                                    console.log('send message success');
+                                    deleteCookie('shoppingCart');
+                                    deleteCookie('payment');
+                                }, error: function(err) {
+                                    console.log(err);
+                                }
+                            });
+                        }, error: function(err) {
+                            console.log(err);
+                        }
+                    })
+                }, error: function(err) {
+                    console.log(err);
+                }
+            })
+            
+        }
+    })
 
     // 카테고리 리스트
     function addCategoryList(result) { 
@@ -143,7 +205,7 @@ $(document).ready(function() {
             shoppingCartList[menuNo]["count"]++; // 1개씩 추가
             shoppingCartList[menuNo]["totalPrice"] += shoppingCartList[menuNo]["menuPrice"];
             deleteCookie("shoppingCart"); // 쿠키에 변경 사항 새로 저장
-            setCookie("shoppingCart", JSON.stringify(shoppingCartList), 1);
+            setCookie("shoppingCart", JSON.stringify(shoppingCartList), 3);
         } else { // 장바구니에 담겨있지 않던 메뉴일 때
             shoppingCartList[menuNo] = {
                 menuNo: menuNo,
@@ -152,7 +214,7 @@ $(document).ready(function() {
                 menuPrice: menuPrice,
                 totalPrice: menuPrice
             }
-            setCookie("shoppingCart", JSON.stringify(shoppingCartList), 1);
+            setCookie("shoppingCart", JSON.stringify(shoppingCartList), 3);
         }
 
         totalPrice = 0;
@@ -178,14 +240,14 @@ $(document).ready(function() {
                         if (delete shoppingCartList[$(this).parent().parent().attr('id')]) {
                             $(this).parent().parent().remove();
                             deleteCookie("shoppingCart"); // 쿠키에 변경 사항 새로 저장
-                            setCookie("shoppingCart", JSON.stringify(shoppingCartList), 1);
+                            setCookie("shoppingCart", JSON.stringify(shoppingCartList), 3);
                             console.log(shoppingCartList);
                         }
                     } else {
                         $('#cntNum' + $(this).parent().parent().attr('id')).text(shoppingCartList[$(this).parent().parent().attr('id')]["count"]);
                         $('#price' + $(this).parent().parent().attr('id')).text(shoppingCartList[$(this).parent().parent().attr('id')]["totalPrice"]);
                         deleteCookie("shoppingCart");
-                        setCookie("shoppingCart", JSON.stringify(shoppingCartList), 1);    
+                        setCookie("shoppingCart", JSON.stringify(shoppingCartList), 3);    
                     }
                 }
             })).append($('<div />', {
@@ -201,7 +263,7 @@ $(document).ready(function() {
                     $('#cntNum' + $(this).parent().parent().attr('id')).text(shoppingCartList[$(this).parent().parent().attr('id')]["count"]);
                     $('#price' + $(this).parent().parent().attr('id')).text(shoppingCartList[$(this).parent().parent().attr('id')]["totalPrice"]);
                     deleteCookie("shoppingCart");
-                    setCookie("shoppingCart", JSON.stringify(shoppingCartList), 1);
+                    setCookie("shoppingCart", JSON.stringify(shoppingCartList), 3);
                 }
             }))).append($('<div />', {
                 class: 'orderMenuCancel', 
@@ -210,7 +272,7 @@ $(document).ready(function() {
                     if (delete shoppingCartList[$(this).parent().attr('id')]) {
                         $(this).parent().remove();
                         deleteCookie("shoppingCart"); 
-                        setCookie("shoppingCart", JSON.stringify(shoppingCartList), 1);
+                        setCookie("shoppingCart", JSON.stringify(shoppingCartList), 3);
                     }
                 }
             })));
@@ -234,6 +296,7 @@ $(document).ready(function() {
         shoppingCartDict[menuNo]["totalPrice"] += shoppingCartDict[menuNo]["menuPrice"];
         return shoppingCartDict;
     }
+    
 
     // 총 가격 조정
     function changeTotalPrice(totalPrice) {
@@ -245,3 +308,13 @@ $(document).ready(function() {
         }
     }
 })
+
+// 장바구니 쿠키 있는지 확인
+function checkCart () {
+    let cart = getCookie('shoppingCart') ? JSON.parse(getCookie('shoppingCart')) : {};
+    if (Object.keys(cart).length == 0){ // 장바구니 비어있을 때
+        return false; 
+    } else { // 장바구니에 내역이 있을 때
+        return true;
+    }
+}

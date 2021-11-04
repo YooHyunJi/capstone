@@ -156,7 +156,7 @@ app.get('/order', (req, res) => {
   res.sendFile(__dirname + "/public/order/main.html")
 });
 app.get('/cookie', (req, res) => {
-  res.sendFile(__dirname + "/js/cookie.js")
+  res.sendFile(__dirname + "/js/order/cookie.js")
 });
 app.get('/orderjs', (req, res) => {
   res.sendFile(__dirname + "/js/order/order.js")
