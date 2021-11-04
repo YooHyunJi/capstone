@@ -29,7 +29,7 @@ function getAllMenus() {
                     <td>${result.menus[i].categoryName}</td>
                     <td>${result.menus[i].menuName}</td>
                     <td>${result.menus[i].menuPrice}</td>
-                    <td class="menuDetail" onclick="getMenuDetail('${result.menus[i].categoryName}', '${result.menus[i].menuName}', '${result.menus[i].menuPrice}', '${result.menus[i].menuDetail}')">${result.menus[i].menuDetail}</td>
+                    <td class="menuDetail" onclick="getMenuDetail('${result.menus[i].menuNo}', '${result.menus[i].categoryName}', '${result.menus[i].menuName}', '${result.menus[i].menuPrice}', '${result.menus[i].menuDetail}')">${result.menus[i].menuDetail}</td>
                     <td class="modifyMenu" onclick="setValuesBeforeUpdateMenu('${result.menus[i].menuNo}', '${result.menus[i].menuName}', '${result.menus[i].menuPrice}', '${result.menus[i].menuDetail}')">수정</td>
                     <td class="deleteMenu" onclick="deleteMenu('${result.menus[i].menuNo}')">삭제</td>
                     </tr>`
@@ -88,7 +88,7 @@ function getMenusByCategory(categoryName) {
                     <td>${result.menus[i].categoryName}</td>
                     <td>${result.menus[i].menuName}</td>
                     <td>${result.menus[i].menuPrice}</td>
-                    <td class="menuDetail" onclick="getMenuDetail('${result.menus[i].categoryName}', '${result.menus[i].menuName}', '${result.menus[i].menuPrice}', '${result.menus[i].menuDetail}')">${result.menus[i].menuDetail}</td>
+                    <td class="menuDetail" onclick="getMenuDetail('${result.menus[i].menuNo}', '${result.menus[i].categoryName}', '${result.menus[i].menuName}', '${result.menus[i].menuPrice}', '${result.menus[i].menuDetail}')">${result.menus[i].menuDetail}</td>
                     <td class="modifyMenu" onclick="setValuesBeforeUpdateMenu('${result.menus[i].menuNo}', '${result.menus[i].menuName}', '${result.menus[i].menuPrice}', '${result.menus[i].menuDetail}')">수정</td>
                     <td class="deleteMenu" onclick="deleteMenu('${result.menus[i].menuNo}')">삭제</td>
                     </tr>`
@@ -98,17 +98,32 @@ function getMenusByCategory(categoryName) {
     });
 }
 
-function getMenuDetail(categoryName, menuName, menuPrice, menuDetail) {
+function getMenuDetail(menuNo, categoryName, menuName, menuPrice, menuDetail) {
     modal('menuDetailModal');
 
-    $('#menuFormArea').empty(); // 초기화
-    $('#menuFormArea').append(
-        `<img src="img/img2.png" alt="img2" class="menu_img">
-        <span class="detailList">카테고리</span><span class="category_no">`+categoryName+`</span><br><br><br><br>
-        <span class="detailList">이름</span><span class="menu_name">`+menuName+`</span><br><br><br><br>
-        <span class="detailList">가격</span><span class="menu_price">`+menuPrice+`</span><br><br><br><br>
-        <span class="detailList">상세 정보</span><span class="menu_detail">`+menuDetail+`</span>`
-    )
+    $.ajax({
+        url:`/admin/getMenuImg/`+menuNo,
+        cache:false,
+        xhr:function(){
+            var xhr = new XMLHttpRequest();
+            xhr.responseType= 'blob'
+            return xhr;
+        },
+        success: function(data){
+            var url = window.URL || window.webkitURL;
+            var src = url.createObjectURL(data);
+            $('#menuFormArea').empty(); // 초기화
+            $('#menuFormArea').append(
+                `<img src="`+src+`" class="menu_img">
+                <span class="detailList">카테고리</span><span class="category_no">`+categoryName+`</span><br><br><br><br>
+                <span class="detailList">이름</span><span class="menu_name">`+menuName+`</span><br><br><br><br>
+                <span class="detailList">가격</span><span class="menu_price">`+menuPrice+`</span><br><br><br><br>
+                <span class="detailList">상세 정보</span><span class="menu_detail">`+menuDetail+`</span>`
+            )
+        }
+    });
+
+    
 }
 
 function menuImgPreview(id, file) {
@@ -167,6 +182,23 @@ function setValuesBeforeUpdateMenu(menuNo, menuName, menuPrice, menuDetail) {
     $('#menu_name').val(menuName);
     $('#menu_price').val(menuPrice);
     $('#menu_detail').val(menuDetail);
+
+    /*$.ajax({
+        url:`/admin/getMenuImg/`+menuNo,
+        cache:false,
+        xhr:function(){
+            var xhr = new XMLHttpRequest();
+            xhr.responseType= 'blob'
+            return xhr;
+        },
+        success: function(data){
+            var img = document.getElementById('img');
+            var url = window.URL || window.webkitURL;
+            img.src = url.createObjectURL(data);
+
+            
+        }
+    });*/
 
 }
 

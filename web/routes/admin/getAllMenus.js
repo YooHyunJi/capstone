@@ -36,4 +36,21 @@ router.get('/getAllCategoryNames', function (req, res) {
     })
 })
 
+router.get('/getMenuImg/:menuNo', function (req, res) {
+    var menuNo = req.params.menuNo;
+    var query = `SELECT menuImg FROM menu WHERE menuNo = ?`;
+
+    // DB에서 조회
+    connection.query(query, menuNo, function (error, result) {
+        if(error) { // 에러 발생시
+            console.log("error ocurred: ", error);
+            res.json({ "code": 400, "result": "error ocurred" })
+        } else {
+            console.log("get menuImg success");
+            //res.json({"code": 200, "result": "get menuImg success", "menuImg": result[0].menuImg})
+            res.send(result[0].menuImg);
+        }
+    })
+})
+
 module.exports = router;

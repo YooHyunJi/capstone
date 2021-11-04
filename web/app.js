@@ -143,6 +143,9 @@ app.get('/modal', (req, res) => {
 app.get('/mp', (req, res) => { // 임시
   res.sendFile(__dirname + "/test/mouse_cursor.html")
 })
+app.get('/test2', (req, res) => { // 임시
+  res.sendFile(__dirname + "/public/admin/test.html")
+})
 
 // 주문 시스템
 app.use(express.static('public')); // 이미지(ex)
