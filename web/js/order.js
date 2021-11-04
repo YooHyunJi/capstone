@@ -123,9 +123,10 @@ function changeOrderStatus(orderStatus, cancelYn, orderNo) {
     }
 }
 
-function sendKakaoMessage() {
+// 주문 현황 카톡 발신
+/*function sendKakaoMessage() {
     Kakao.init("b0acf0bf7eaa895e395a0d5ff254a55c");
     Kakao.Link.sendCustom({
         templateId: 64485
     });
-}
+}*/

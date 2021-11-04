@@ -89,15 +89,15 @@ function findId() {
         success: function (result) {
             if (result.code == 204)
                 alert('미가입 사용자입니다.');
-            else if (result.code == 200) {
+            else if (result.code == 200)
                 alert('아이디는 ' + result.storeId +' 입니다.');
-            }
+            location.href="/login";
         }
     })
 }
 
 function findPw() {
-    let storeId = $('#storeId').val();
+    let storeId = $('#store_id').val();
     let email = $('#email').val();
     if (!storeId || !email) {
         alert('미입력');
@@ -109,14 +109,14 @@ function findPw() {
         url: '/admin/findpw',
         contentType: 'application/json',
         data: JSON.stringify({'storeId': storeId, 'email': email}),
-        success: function (json) {
+        success: function (result) {
             if (result.code == 204)
                 alert('해당 아이디가 없습니다.');
-            else if (result.code == 404) {
+            else if (result.code == 404)
                 alert('메일 전송 오류');
-            }
-            else if (result.code == 200) {
+            else if (result.code == 200) { 
                 alert('임시 비밀번호가 발급되었습니다.');
+                location.href="/login";
             }
         }
     })

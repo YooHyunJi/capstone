@@ -122,7 +122,7 @@
     }
 
     #loginArea form input[value="JOIN"]{
-        width: 360px;
+        width: 160px;
         height: 40px;
         font-size: 15px;
         border: none;
@@ -131,6 +131,118 @@
         color: white;
         cursor: pointer;
         margin-left: 120px;
+    }
+
+    #loginArea form input[value="ID/비밀번호 찾기"]{
+        width: 160px;
+        height: 40px;
+        font-size: 15px;
+        border: none;
+        border-radius: 10px;
+        background-color: rgb(200, 200, 200);
+        color: white;
+        cursor: pointer;
+        margin-left: 38px;
+    }
+
+    .modal{
+      display: none;
+      width: 700px;
+      height: 470px;
+      background-color: rgb(61, 61, 61);
+      border-radius: 10px;
+    }
+
+    .modalClose{
+      width: 20px;
+      height: 20px;
+      line-height: 20px;
+      text-align: center;
+      cursor: pointer;
+      font-size: 20px;
+      background-color: rgb(202, 22, 22);
+      border-radius: 50%;
+      margin: 10px;
+    }
+
+    .membershipArea{
+        background-color: rgb(255, 255, 255);
+        float: left;
+        width: 100%;
+        height: 100%;
+    }
+
+    .membershipArea form{
+        /* background-color: rgb(192, 212, 212); */
+        float: left;
+        width: 100%;
+        height: 100%;
+    }
+
+    .membershipArea form h2{
+        color: rgb(99, 99, 99);
+        line-height: 50px;
+        width: 100%;
+        text-align: center;
+        margin: 0;
+        margin-bottom: 30px;
+    }
+
+    .membershipArea .formArea{
+        width: 450px;
+        height: 300px;
+        margin-left: 125px;
+    }
+
+    .membershipArea form h3{
+        color: rgb(99, 99, 99);
+        line-height: 30px;
+        width: 120px;
+        text-align: left;
+        margin: 0;
+        margin-bottom: 10px;
+    }
+
+    .membershipArea form label{
+        width: 120px;
+        display: inline-block;
+        font-size: 15px;
+        line-height: 33px;
+        margin: 0 20px 20px 0px;
+        text-align: right;
+    }
+
+    .membershipArea form input{
+        height: 25px;
+        width: 200px;
+        line-height: 50px;
+    }
+
+    .membershipArea form input:focus{
+        outline: 0.5px solid rgba(135, 192, 184, 0.541);
+        border-radius: 3px;
+    }
+
+    .membershipArea form input[value="찾기"]{
+        position: fixed;
+        width: 80px;
+        line-height: 85px;
+        height: 85px;
+        font-size: 15px;
+        border: none;
+        border-radius: 10px;
+        background-color: rgb(200, 200, 200);
+        color: white;
+        cursor: pointer;
+        left: 495px;
+    }
+
+    .membershipArea form .findId{
+        top: 200px;
+    }
+
+    .membershipArea form .findPw{
+        top: 355px;
     }
   </style>
 </head>
@@ -153,10 +265,34 @@
                 <label>PW</label><input type="password" id= "storePw" name="storePw">
                 <input type="button" value="LOGIN" onclick="login()"><br><br><br> <!--로그인 과정 진행-->
                 <input type="button" value="JOIN" onclick="location.href='/join'"> <!--회원가입 폼으로 이동-->
+                <input type="button" value="ID/비밀번호 찾기" onclick="modal('membershipModal');"> <!--아이디/비밀번호 찾기 모달-->
+            </form>
+        </div>
+    </div>
+
+    <div id="membershipModal" class="modal">
+        <a><div class="modalClose"></div></a>
+        <div class="membershipArea">
+            <!--회원 탈퇴 폼-->
+            <form name="find_membership_form" action="#" method="post">
+                <br><br>
+                <h2>ID/비밀번호 찾기</h2>
+                <div class="formArea">
+                    <h3>ID 찾기</h3>
+                    <label>사업자 등록 번호</label><input type="text" id="crn" name="crn"><br>
+                    <label>매니저 연락처</label><input type="text" id="managerTel" name="managerTel"><br><br>
+                    <input type="button" value="찾기" class="findId" onclick="findId()">
+
+                    <h3>비밀번호 찾기</h3>
+                    <label>ID</label><input type="text" id="store_id" name="store_id"><br>
+                    <label>이메일</label><input type="text" id="email" name="email"><br>
+                    <input type="button" value="찾기" class="findPw" onclick="findPw()">
+                </div>
             </form>
         </div>
     </div>
 </body>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script type="text/javascript" src="/user"></script>
+<script src="/modal"></script>
 </html>

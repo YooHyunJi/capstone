@@ -1,5 +1,5 @@
 // 메뉴 관리
-// Author : Sumin, Created : 2021.10.27
+// Author : Sumin, Created : 2021.10.27, Modified : 2021.11.04
 $(document).ready(function () {
     getAllMenus();
     getAllCategoryNames();
@@ -131,10 +131,10 @@ function menuImgPreview(id, file) {
 }
 
 function addMenu() {
-    /*if (!$('#add_menu_form')) {
+    if (!$('#menuName') || !$('#menuPrice') || !$('#menuDetail') || !$('#menuImg').src) {
         alert('미입력');
         return;
-    }*/ // 미입력 처리 필요
+    }
 
     var form = $('#add_menu_form')[0];
     var formData = new FormData(form);
@@ -203,6 +203,11 @@ function setValuesBeforeUpdateMenu(menuNo, menuName, menuPrice, menuDetail) {
 }
 
 function updateMenu() {
+    if (!$('#menu_name') || !$('#menu_price') || !$('#menu_detail') || !$('#menu_img').src) {
+        alert('미입력');
+        return;
+    }
+
     var form = $('#modify_menu_form')[0];
     var formData = new FormData(form);
 

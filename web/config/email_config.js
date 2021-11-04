@@ -5,7 +5,7 @@ require('dotenv').config();
 
 const config = {
     mailer: {
-        user: '@gmail.com', // TODO
+        user: 'airosk.official@gmail.com',
         password: process.env.EMAIL_SECRET
     }
 }

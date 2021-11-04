@@ -3,11 +3,11 @@
 
 var express = require('express');
 var router = express.Router();
+var transporter = require('../../config/email_config');
 var config = require('../../config/db_config');
 var crypto = require('crypto');
 var connection = config.init();
 connection.connect();
-var nodemailer = require('nodemailer');
 
 router.post('/findpw', function (req, res) {
     var storeId = req.body.storeId; // 매장 아이디
@@ -55,13 +55,13 @@ router.post('/findpw', function (req, res) {
                         });
                     })
                 })
-                var transporter = nodemailer.createTransport({
+                /*var transporter = nodemailer.createTransport({
                     service: 'gmail',
                     auth: {
                       user: 'airosk.official@gmail.com',
                       pass: process.env.EMAIL_SECRET
                     }
-                  });
+                  });*/
 
                 // 메일 양식
                 let mail = {

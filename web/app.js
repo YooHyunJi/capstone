@@ -143,6 +143,9 @@ app.get('/modal', (req, res) => {
 app.get('/mp', (req, res) => { // 임시
   res.sendFile(__dirname + "/test/mouse_cursor.html")
 })
+app.get('/mp_copy', (req, res) => { // 임시
+  res.sendFile(__dirname + "/test/mouse_cursor_copy.html")
+})
 app.get('/test2', (req, res) => { // 임시
   res.sendFile(__dirname + "/public/admin/test.html")
 })
