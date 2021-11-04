@@ -111,7 +111,7 @@ $(document).ready(function() {
                         type: 'POST',
                         contentType: 'application/json',
                         data: JSON.stringify({
-                            'phone': '01051916351', // test
+                            'phone': '', // test
                             'orderNo': 1
                         }),
                         success: function(result) {
