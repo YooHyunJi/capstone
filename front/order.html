@@ -206,8 +206,8 @@
 
     .modal{
       display: none;
-      width: 70%;
-      height: 70%;
+      width: 700px;
+      height: 470px;
       background-color: rgb(247, 247, 247);
       border-radius: 10px;
       text-align: center;
@@ -248,7 +248,7 @@
       /* background-color: tomato; */
     }
 
-    .modalClose{
+    .modalClose, #phoneBtn{
       width: 90%;
       height: 50px;
       display: inline-block;
@@ -259,36 +259,37 @@
       cursor: pointer;
     }
 
-    .modalClose:hover{
+    .modalClose:hover, #phoneBtn:hover{
       background-color:rgb(216, 216, 216);
+    }
+
+    /* #processModal{
+      text-align: center;
+    } */
+
+    #processModal .processArea{
+      width: 200px;
+      height: 220px;
+      display: inline-block;
+      /* background-color: darkkhaki; */
+      margin-top: 125px;
     }
 
     #processModal .modalClose{
       display: none;
     }
 
-    #processModal span{
-      text-align: center;
-      margin-top: 30px;
-    }
-
-    #spinnerArea{
-      width: 100%;
-      height: 80%;
-      vertical-align: middle;
-      /* background-color: cornsilk; */
-      margin-top: 10%;
-    }
-
     .spinner {
-      animation: spin 2s linear infinite;
+      display: inline-block;
+      /* background-color: cornsilk; */
       vertical-align: middle;
-      width: 25%;
-      /* background-color: darkgray; */
+      margin-bottom: 20%;
     }
 
     .fas, .fa-spinner, .fa-10x{
-      margin-top: (50% - 250px);
+      animation: spin 2s linear infinite;
+      /* background-color: darkgreen; */
+      width: 100%;
     }
 
     @keyframes spin {
@@ -298,6 +299,98 @@
       to {
         transform: rotate(360deg);
       }
+    }
+
+    #processModal .processArea span{
+      /* background-color: darkgreen; */
+      text-align: center;
+    }
+
+    #phoneModal .phoneArea{
+      width: 600px;
+      height: 320px;
+      /* background-color: darkkhaki; */
+      float: left;
+      margin-top: 75px;
+      margin-left: 50px;
+    }
+
+    #phoneModal .phoneArea .phoneOutput{
+      width: 300px;
+      height: 240px;
+      display: block;
+      float: left;
+      margin-top: 40px;
+      /* background-color: darksalmon; */
+    }
+
+    #phoneModal .phoneArea .phoneOutput span{
+      line-height: 30px;
+    }
+
+    #phoneModal .phoneArea .phoneOutput input[type="text"]{
+      line-height: 50px;
+      width: calc(100% - 26px);
+      border-radius: 10px;
+      border: 3px solid rgb(74, 155, 155);
+      padding: 0 10px;
+      font-size: 30px;
+      margin: 30px 0;
+    }
+
+    #phoneModal .phoneArea .phoneOutput input[type="text"]:focus{
+      outline: none;
+    }
+
+    #phoneModal .phoneArea .phoneOutput #phoneBtn{
+      width: 100%;
+    }
+
+    #phoneModal .phoneArea table{
+      margin: 0;
+      float: right;
+      border-radius: 20px;
+      border: 3px solid rgb(216, 216, 216);
+      padding: 0;
+      border-spacing: 0;
+    }
+
+    #phoneModal .phoneArea table tbody{
+      width: 240px;
+      height: 320px;
+      display: block;
+    }
+
+    #phoneModal .phoneArea table tbody tr{
+      height: 80px;
+      /* background-color: darkslategrey; */
+      vertical-align: middle;
+    }
+
+    #phoneModal .phoneArea table tbody tr td{
+      width: 80px;
+      border-radius: 15px;
+      vertical-align: middle;
+    }
+
+    #phoneModal .phoneArea table tbody tr td:hover{
+      background: rgb(216, 216, 216);
+    }
+
+    #finishModal{
+      vertical-align: middle;
+    }
+
+    #finishModal .finishArea{
+      width: 100%;
+      height: 100px;
+      margin-top: 185px;
+    }
+
+    #finishModal .finishArea p{
+      font-size: 20px;
+      line-height: 50px;
+      margin: 0;
     }
     
   </style>
@@ -473,26 +566,72 @@
         </div>
       </div>    
     </div>
+  </div>
 
-    <div id="paymentsModal" class="modal">
-      <div id="payments">
-        <div class="payment" id="creditCard" onclick="payingProcess(this.id);">신용카드</div>
-        <div class="payment" id="kakaoPay" onclick="payingProcess(this.id);">카카오페이</div>
-        <div class="payment" id="payco" onclick="payingProcess(this.id);">페이코</div>
-        <div class="payment" id="samsungPay" onclick="payingProcess(this.id);">삼성페이</div>
-      </div><br>
-      <div id="totalPrice">총 결제 금액 12,500원</div>
-      <a><div class="modalClose">이전 단계</div></a>
-    </div>
+  <div id="paymentsModal" class="modal">
+    <div id="payments">
+      <div class="payment" id="creditCard" onclick="payingProcess(this.id);">신용카드</div>
+      <div class="payment" id="kakaoPay" onclick="payingProcess(this.id);">카카오페이</div>
+      <div class="payment" id="payco" onclick="payingProcess(this.id);">페이코</div>
+      <div class="payment" id="samsungPay" onclick="payingProcess(this.id);">삼성페이</div>
+    </div><br>
+    <div id="totalPrice">총 결제 금액 12,500원</div>
+    <a><div class="modalClose">이전 단계</div></a>
+  </div>
 
-    <div id="processModal" class="modal">
-      <div id="spinnerArea">
-        <div class="spinner">
-          <i class="fas fa-spinner fa-10x"></i>
-        </div>
-        <span>결제 처리 중입니다 ...</span>
+  <div id="processModal" class="modal">
+    <div class="processArea">
+      <div class="spinner">
+        <i class="fas fa-spinner fa-10x"></i>
       </div>
-      <a><div class="modalClose">이전 단계</div></a>
+      <br>
+      <span>결제 처리 중입니다 ...</span>
+    </div>
+    <a><div class="modalClose">이전 단계</div></a>
+  </div>
+
+  <div id="phoneModal" class="modal">
+    <div class="phoneArea">
+      <div class="phoneOutput">
+        <span>주문 메시지를 받을</span><br>
+        <span>휴대폰 번호를 입력해주세요</span><br>
+        <input type="text" autofocus/>
+        <a><div id="phoneBtn">입력 완료</div></a>
+      </div>
+
+      <table>
+        <tr>
+            <td>1</td>
+            <td>2</td>
+            <td>3</td>
+        </tr>
+
+        <tr>
+          <td>4</td>
+          <td>5</td>
+          <td>6</td>
+       </tr>
+       
+       <tr>
+        <td>7</td>
+        <td>8</td>
+        <td>9</td>
+      </tr>
+
+      <tr>
+        <td>010</td>
+        <td>0</td>
+        <td>취소</td>
+      </tr>
+
+    </table>
+    </div>
+  </div>
+
+  <div id="finishModal" class="modal">
+    <div class="finishArea">
+      <p>주문이 완료되었습니다</p>
+      <p>준비가 완료되면 메시지를 발송해드립니다</p>
     </div>
   </div>
 
@@ -508,6 +647,8 @@
 
     // 모달 div 뒤에 희끄무레한 레이어
     var bg = document.createElement('div');
+    bg.id = "bg";
+
     bg.setStyle({
         position: 'fixed',
         zIndex: zIndex,
@@ -575,6 +716,55 @@
     });
   }
 
+  // 전화번호 입력 모달
+  function modal_phone(id){
+    var zIndex = 9999;
+    var modal = document.getElementById(id);
+
+    // 닫기 버튼 처리, 시꺼먼 레이어와 모달 div 지우기
+    modal.querySelector('#phoneBtn').addEventListener('click', function() {
+        modal.style.display = 'none';
+    });
+
+    modal.setStyle({
+        position: 'fixed',
+        display: 'block',
+        boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)',
+
+        // 시꺼먼 레이어 보다 한칸 위에 보이기
+        zIndex: zIndex + 1,
+
+        // div center 정렬
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        msTransform: 'translate(-50%, -50%)',
+        webkitTransform: 'translate(-50%, -50%)'
+    });
+  }
+
+  // 결제 완료 모달
+  function modal_finish(id){
+    var zIndex = 9999;
+    var modal = document.getElementById(id);
+
+    modal.setStyle({
+        position: 'fixed',
+        display: 'block',
+        boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)',
+
+        // 시꺼먼 레이어 보다 한칸 위에 보이기
+        zIndex: zIndex + 1,
+
+        // div center 정렬
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        msTransform: 'translate(-50%, -50%)',
+        webkitTransform: 'translate(-50%, -50%)'
+    });
+  }
+
   // Element 에 style 한번에 오브젝트로 설정하는 함수 추가
   Element.prototype.setStyle = function(styles) {
     for (var k in styles) this.style[k] = styles[k];
@@ -587,11 +777,30 @@
   });
 
   function payingProcess(id){
-    // if(id == 'creditCard'){
-    // }
     modal_process('processModal');
-    // alert(id);
-}
+
+    var modal = document.getElementById('processModal');
+
+    setTimeout(function() {
+      modal.style.display = 'none';
+      modal_phone('phoneModal');
+    }, 3000);
+  }
+
+  document.getElementById('phoneBtn').addEventListener('click', function() {
+     // 모달창 띄우기
+     modal_finish('finishModal');
+
+    var modals = document.getElementsByClassName('modal');
+    var bg = document.getElementById('bg');
+
+    setTimeout(function() {
+      for(var i=0; i<modals.length; i++){
+        modals[i].style.display = 'none';
+      }
+      bg.style.display = 'none';
+    }, 3000);
+  });
 
   function gestureButtonClick(){
     // document.getElementById('btn1').click();
