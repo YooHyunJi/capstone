@@ -148,6 +148,129 @@
         cursor: pointer;
     }
 
+    .orderDetail{
+        cursor: pointer;
+    }
+
+    .modal{
+      display: none;
+      width: 700px;
+      height: 600px;
+      background-color: rgb(61, 61, 61);
+      border-radius: 10px;
+    }
+
+    .modalClose{
+      width: 20px;
+      height: 20px;
+      line-height: 20px;
+      text-align: center;
+      cursor: pointer;
+      font-size: 20px;
+      background-color: rgb(202, 22, 22);
+      border-radius: 50%;
+      margin: 10px;
+    }
+
+    .orderDetailArea{
+        background-color: rgb(255, 255, 255);
+        float: left;
+        width: 100%;
+        height: 580px;
+        overflow: scroll;
+    }
+
+    .orderDetailArea__1{
+        width: 100%;
+        height: 100px;
+        text-align: center;
+        margin: 30px 0;
+    }
+
+
+    .orderDetailArea p{
+        font-size: 15px;
+        margin: 0;
+        padding-top: 20px;
+        text-align: center;
+    }
+
+    .orderDetailArea__1 .order_no{
+        font-size: 35px;
+        padding-top: 10px;
+        color: rgb(130, 189, 189);;
+    }
+
+    .orderDetailArea__2{
+        width: 500px;
+        margin-left: 100px;
+        overflow: scroll;
+    }
+
+    .orderDetailArea__2 span{
+        font-size: 15px;
+        display: inline-block;
+        height: 40px;
+        line-height: 40px;
+        color:rgb(114, 114, 114);
+    }
+
+    .orderDetailArea__2 .detailTitle__2{
+        color: rgb(50, 50, 50);
+    }
+
+    .orderDetailArea__2 .menu_name{
+        width: 340px;
+    }
+
+    .orderDetailArea__2 .count{
+        width: 50px;
+        text-align: center;
+    }
+
+    .orderDetailArea__2 .orderDetailPrice{
+        width: 100px;
+        text-align: right;
+    }
+
+    .orderDetailArea__2 .totalPrice{
+        width: 100%;
+        text-align: right;
+    }
+
+    .orderDetailArea__2 hr{
+       background-color: rgb(130, 189, 189);
+       height: 3px;
+       border-radius: 10px;
+       border: none;
+    }
+
+    .orderDetailArea__3{
+        width: 500px;
+        margin: 20px 0 30px 100px;
+        float: left;
+    }
+
+    .orderDetailArea__3 span{
+        font-size: 15px;
+        display: inline-block;
+        height: 40px;
+        width: 100px;
+        line-height: 40px;
+        color:rgb(114, 114, 114);
+    }
+    
+    .orderDetailArea__3 .detailTitle__3{
+        width: 100px;
+        color: rgb(50, 50, 50);
+        /* background-color: pink; */
+    }
+
+    .orderDetailArea__3 .paymentPricepaymentTime{
+        width: 195.5px;
+        /* background-color: rgb(70, 28, 35); */
+    }
+
   </style>
 </head>
 
@@ -176,6 +299,7 @@
                 <th>고객 연락처</th>
                 <th>결제 금액</th>
                 <th>취소 여부</th>
+                <th>주문 상세</th>
                 <th>상태 변경</th>
                 <th>주문 취소</th>
 
@@ -186,6 +310,7 @@
                     <td>010-2356-4725</td>
                     <td>7,000</td>
                     <td class="orderCancel">N</td>
+                    <td class="orderDetail">-</td>
                     <td class="changeStatusBtn">완료 취소</td>
                     <td class="orderCancelBtn" onclick>취소</td>
                 </tr>
@@ -197,6 +322,7 @@
                     <td>010-6237-4823</td>
                     <td>8,500</td>
                     <td class="orderCancel">Y</td>
+                    <td class="orderDetail">-</td>
                     <td class="changeStatusBtn">완료 취소</td>
                     <td class="orderCancelBtn" onclick>취소</td>
                 </tr>
@@ -208,6 +334,7 @@
                     <td>010-9386-2843</td>
                     <td>3,500</td>
                     <td class="orderCancel">N</td>
+                    <td class="orderDetail">-</td>
                     <td class="changeStatusBtn">준비 완료</td>
                     <td class="orderCancelBtn" onclick>취소</td>
                 </tr>
@@ -219,11 +346,60 @@
                     <td>010-8243-4387</td>
                     <td>5,000</td>
                     <td class="orderCancel">N</td>
+                    <td class="orderDetail">-</td>
                     <td class="changeStatusBtn">준비 완료</td>
                     <td class="orderCancelBtn"">취소</td>
                 </tr>
-                
             </table>
+        </div>
+    </div>
+
+    <div id="orderDetailModal" class="modal">
+        <a><div class="modalClose"></div></a>
+        <div class="orderDetailArea">
+            <div class="orderDetailArea__1">
+                <p>주문 번호</p>
+                <p class="order_no">003</p>
+            </div>
+
+            <div class="orderDetailArea__2">
+                <p class="detailTitle__2">주문 정보</p><br>
+                <span class="detailTitle__2 menu_name">메뉴</span>
+                <span class="detailTitle__2 count">수량</span>
+                <span class="detailTitle__2 orderDetailPrice">가격</span><br>
+
+                <span class="menu_name">레몬라임(HOT)</span>
+                <span class="count">2</span>
+                <span class="orderDetailPrice">7,000</span><br>
+                
+                <span class="menu_name">아메리카노(ICE)</span>
+                <span class="count">3</span>
+                <span class="orderDetailPrice">9,000</span><br>
+                
+                <span class="menu_name">바닐라 라떼(HOT)</span>
+                <span class="count">1</span>
+                <span class="orderDetailPrice">4,500</span><br>
+                
+                <span class="menu_name">아메리카노(HOT)</span>
+                <span class="count">2</span>
+                <span class="orderDetailPrice">6,000</span><br>
+                
+                <span class="menu_name">파인애플 주스</span>
+                <span class="count">1</span>
+                <span class="orderDetailPrice">5,000</span><br>
+
+                <hr>
+                <span class="totalPrice">31,500</span>
+            </div>
+
+            <div class="orderDetailArea__3">
+                <P>결제 정보</p><br>
+                <span class="detailTitle__3">총 결제 금액</span><span class="paymentPrice">20,500</span>
+                <span class="detailTitle__3">결제 시간</span><span class="paymentPricepaymentTime">2021-11-06 13:08:26</span><br>
+                <span class="detailTitle__3">결제 수단</span><span class="paymentMethod">신용카드</span>
+                <span class="detailTitle__3">결제 타입</span><span class="paymentType">주문 결제</span>
+            </div>
+            
         </div>
     </div>
 </body>
@@ -232,7 +408,11 @@
 
 <script>
     // jQuery
-    $(document).ready(function(){
+
+    $(function showDetail(){
+        $(".orderDetail").on("click", function(){
+            modal('orderDetailModal');
+        });
     });
     
     $(function changeOrderStatus(status){
@@ -268,32 +448,55 @@
         });
     });
 
+    // Element 에 style 한번에 오브젝트로 설정하는 함수 추가
+    Element.prototype.setStyle = function(styles) {
+        for (var k in styles) this.style[k] = styles[k];
+        return this;
+    };
     
-    //javascript
-    
+    function modal(id) {
+        var zIndex = 9999;
+        var modal = document.getElementById(id);
 
+        // 모달 div 뒤에 희끄무레한 레이어
+        var bg = document.createElement('div');
+        bg.setStyle({
+            position: 'fixed',
+            zIndex: zIndex,
+            left: '0px',
+            top: '0px',
+            width: '100%',
+            height: '100%',
+            overflow: 'auto',
+            // 레이어 색갈은 여기서 바꾸면 됨
+            backgroundColor: 'rgba(0,0,0,0.4)'
+        });
+        document.body.append(bg);
 
-    // $("div").css({"background-color": "yellow"});
+        // 닫기 버튼 처리, 시꺼먼 레이어와 모달 div 지우기
+        modal.querySelector('.modalClose').addEventListener('click', function() {
+            bg.remove();
+            modal.style.display = 'none';
+        });
 
-    
+        modal.setStyle({
+            position: 'fixed',
+            display: 'block',
+            boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)',
 
-    // var div = document.getElementsByTagName("div");
-    // for(var i =0; i<div.length; i++){
-    //     div[i].style.color="red"; 
-    // }
+            // 시꺼먼 레이어 보다 한칸 위에 보이기
+            zIndex: zIndex + 1,
+
+            // div center 정렬
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            msTransform: 'translate(-50%, -50%)',
+            webkitTransform: 'translate(-50%, -50%)'
+        });
+    }
 
 
 </script>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js">
-    $(document).ready(function(){
-        $("div").css({"background-color": "yellow"});
-    });
-</script>
-
-<script src="http://code.jquery.com/jquery-latest.js">
-    $(document).ready(function(){
-        $("div").css({"background-color": "yellow"});
-    });
-</script>
 </html>
