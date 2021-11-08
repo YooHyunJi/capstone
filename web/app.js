@@ -33,6 +33,7 @@ const changeOrderStatusRouter = require('./routes/admin/changeOrderStatus'); // 
 
 const orderViewRouter = require('./routes/order/views.js'); // 주문 시스템 VIEWS 라우터
 const orderApiRouter = require('./routes/order'); // 주문 시스템 API 라우터 index.js
+const sensApiRouter = require('./routes/sens'); // NCP SENS API 라우터 index.js
 
 app.use(morgan('dev'));
 app.use(express.json());
@@ -72,6 +73,8 @@ app.use('/admin', changeOrderStatusRouter);
 app.use('/order', orderViewRouter);
 // order API 라우터
 app.use('/api/order', orderApiRouter);
+// sens API 라우터
+app.use('/api/sens', sensApiRouter);
 
 // 메인
 app.get('/', (req, res) => {
@@ -147,7 +150,7 @@ app.get('/test2', (req, res) => { // 임시
   res.sendFile(__dirname + "/public/admin/test.html")
 })
 
-// 주문 시스템
+// 주문 시스템 (@juran)
 app.use(express.static('public')); // 이미지(ex)
 app.get('/order', (req, res) => {
   res.sendFile(__dirname + "/public/order/main.html")

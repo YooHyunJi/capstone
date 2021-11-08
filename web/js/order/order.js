@@ -132,7 +132,7 @@ $(document).ready(function() {
                             success: function(res) {
                                 // 문자 메시지 전송
                                 $.ajax({
-                                    url: '/api/order/sens',
+                                    url: '/api/sens/order',
                                     type: 'POST',
                                     contentType: 'application/json',
                                     data: JSON.stringify({
