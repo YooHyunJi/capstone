@@ -14,10 +14,6 @@ function sendOrderMsg(req, res) {
     const date = Date.now().toString();
     
     // 환경변수에 저장된 키값
-    const serviceId = 'ncp:sms:kr:274650391224:airosk'
-    const secretKey = 'cJQY9PLhlbB2vpimzHPYPn4XfBAXHKiUgjWwBnf4'
-    const accessKey = 'Px6EyHufEYl1fYMlNCgX'
-    const my_number = '01051916351'
 
     // const serviceId = process.env.SENS_SERVICE_ID; 
     // const secretKey = process.env.SENS_SECRET_ID; 
