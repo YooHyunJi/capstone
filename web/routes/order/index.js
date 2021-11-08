@@ -11,11 +11,11 @@ router.get('/category/:storeNo', ctrl.getCategoryByStoreNo);
 router.get('/menu/:categoryNo', ctrl.getMenuByCategoryNo);
 
 // add order info
-router.post('/add', ctrl.addOrder);
-router.post('/add/detail', ctrl.addOrderDetail);
-router.post('/add/pay', ctrl.addPayment);
+router.post('/add/orderInfo', ctrl.addOrder);
+router.post('/add/orderDetail', ctrl.addOrderDetail);
+router.post('/add/payment', ctrl.addPayment);
 
 // send message (naver api) 
-router.post('/send/msg', sens.sendOrderMsg);
+router.post('/sens', sens.sendOrderMsg);
 
 module.exports = router;

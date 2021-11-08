@@ -30,7 +30,7 @@ const orderMain = (req, res) => {
             console.log('error occured: ', err);
             return res.status(400).end();
         } else {
-            console.log('success');
+            console.log('select category & first menu success');
             let data = {
                 'category': result[0],
                 'menu': result[1]
@@ -49,7 +49,7 @@ const getCategoryByStoreNo = (req, res) => {
             console.log('error occured: ', err);
             res.status(400).end();
         } else {
-            console.log('get category list success');
+            console.log('select category success');
             res.status(200).json(result).end();
 
             // ejs
@@ -67,7 +67,7 @@ const getMenuByCategoryNo = (req, res) => {
             console.log('error occured: ', err);
             res.status(400).end();
         } else {
-            console.log('get category list success');
+            console.log('select menu success');
             res.status(200).json(result).end();
         }
     });
@@ -79,17 +79,16 @@ const addOrder = (req, res) => {
     let customerTel = req.body.customerTel;
     let totalPrice = req.body.totalPrice;
     let storeNo = req.body.storeNo;
-    let params = [orderTime, customerTel, totalPrice, storeNo, orderTime];
+    let params = [orderTime, customerTel, totalPrice, storeNo];
 
-    let insertQuery = `INSERT INTO orders(orderTime, customerTel, totalPrice, storeNo) VALUE (?, ?, ?, ?);`
-    let selectQuery =  ` SELECT orderNo FROM orders WHERE orderTime = ?;`
-    connection.query(insertQuery + selectQuery, params, function(err, result) {
+    let insertOrderQuery = `INSERT INTO orders(orderTime, customerTel, totalPrice, storeNo) VALUE (?, ?, ?, ?); SELECT LAST_INSERT_ID();`
+    connection.query(insertOrderQuery, params, function(err, result) {
         if(err) {
-            console.log('error occured: ', err);
+            console.log('insert order rror ', err);
             res.status(400).end();
         } else {
             console.log('add order success');
-            res.status(200).json(result[1]).end();
+            res.status(200).json({"orderNo": result[1][0]["LAST_INSERT_ID()"]}).end();
         }
     });
 }
@@ -123,16 +122,36 @@ const addPayment = (req, res) => {
     let paymentPrice = req.body.paymentPrice;
     let storeNo = req.body.storeNo;
     let orderNo = req.body.orderNo;
-    let params = [payTime, paymentMethod, paymentPrice, storeNo, orderNo];
+    let params1 = ['결제', payTime, paymentMethod, paymentPrice, storeNo, orderNo];
 
-    let addQuery = `INSERT INTO payment(paymentType, paymentTime, paymentMethod, paymentPrice, storeNo, orderNo) VALUE (?, ?, ?, ?, ?, ?);`
-    connection.query(addQuery, params, function(err, result) {
+    let shoppingCartDict = JSON.parse(req.body.shoppingCart);
+    let params2 = [];
+    // console.log(JSON.parse(shoppingCartDict));
+    for (let key in shoppingCartDict) {
+        var value = shoppingCartDict[key];
+        console.log(value);
+        params2.push([value["count"], value["totalPrice"], storeNo, orderNo, value["menuNo"], value["menuName"]]);
+    };
+    console.log(params2);
+
+    let insertPaymentQuery = `INSERT INTO payment(paymentType, paymentTime, paymentMethod, paymentPrice, storeNo, orderNo) VALUE (?, ?, ?, ?, ?, ?); `
+    let insertOrderDetailQuery =  `INSERT INTO orderDetail(count, orderDetailPrice, storeNo, orderNo, menuNo, menuName) VALUES ?;`
+    connection.query(insertPaymentQuery, params1, function(err, result) {
         if(err) {
-            console.log('error occured: ', err);
+            console.log('add payment error ', err);
             res.status(400).end();
         } else {
             console.log('add payment success');
-            res.status(200).end();
+            connection.query(insertOrderDetailQuery, [params2], function(err, result) {
+                if(err) {
+                    console.log('insert orderDetail error ', err);
+                    res.status(400).end();
+                } else {
+                    console.log('add orderDetail & payment success');
+                    res.json({"orderNo": orderNo}).status(200).end();
+                }
+            });
+            // res.status(200).end();
         }
     });
 }

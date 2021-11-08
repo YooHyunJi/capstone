@@ -165,13 +165,15 @@ io.on('connection', (socket) => { // 소켓 연결이 들어오면 실행
   socket.on('location', (msg) => {
       // console.log('Message received: ' + msg);
 
-      var screenSize = robot.getScreenSize();
-      var height = (screenSize.height / 2) - 10;
-      var width = screenSize.width;
+      // var screenSize = robot.getScreenSize();
+      // var height = (screenSize.height / 2) - 10;
+      // var width = screenSize.width;
 
       // 마우스 좌표
-      var x = (width - msg[0] * width); // 좌우반전
-      var y = msg[1] * height;
+      // var x = (width - msg[0] * width); // 좌우반전
+      // var y = msg[1] * height;
+      var x = msg[0];
+      var y = msg[1];
 
       robot.moveMouse(x, y);
   });

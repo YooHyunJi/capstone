@@ -1,7 +1,8 @@
 // naver sms api
 
 const CryptoJS = require('crypto-js');
-var request = require('request');
+const request = require('request');
+const axios = require('axios');
 require('dotenv').config();
 
 function sendOrderMsg(req, res) {
@@ -13,7 +14,15 @@ function sendOrderMsg(req, res) {
     const date = Date.now().toString();
     
     // 환경변수에 저장된 키값
-    
+    const serviceId = 'ncp:sms:kr:274650391224:airosk'
+    const secretKey = 'cJQY9PLhlbB2vpimzHPYPn4XfBAXHKiUgjWwBnf4'
+    const accessKey = 'Px6EyHufEYl1fYMlNCgX'
+    const my_number = '01051916351'
+
+    // const serviceId = process.env.SENS_SERVICE_ID; 
+    // const secretKey = process.env.SENS_SECRET_ID; 
+    // const accessKey = process.env.SENS_ACCESS_ID; 
+    // const my_number = process.env.SENS_MYNUM; 
     
     // crypto-js 모듈 이용하여 정보 암호화
     const method = "POST";
@@ -33,37 +42,32 @@ function sendOrderMsg(req, res) {
     const hash = hmac.finalize();
     const signature = hash.toString(CryptoJS.enc.Base64);
 
-    request({
-		method : method,
-		uri : url,
-        json: true,
-		headers : {
-			'Contenc-type': 'application/json; charset=utf-8',
-			'x-ncp-iam-access-key': accessKey,
-			'x-ncp-apigw-timestamp': date,
-			'x-ncp-apigw-signature-v2': signature
-		},
-		body : {
-			'type' : 'SMS',
-			'countryCode' : '82',
-            'from': my_number,
-			'content' : `주문이 완료되었습니다. 주문번호는 ${orderNo}입니다.`,
-			'messages' : [{
-					'to' : `${phone}`
-			}]
-		}
-	}, function(err) {
-		if(err) {
-            console.log(err);
-            // return res.status(404).end();
-        } else {
-			console.log('success');
-			// return res.status(200).end();
-		}
-	});
+    axios({
+        method: method,
+        url: url,
+        headers: {
+            "Contenc-type": "application/json; charset=utf-8",
+            "x-ncp-iam-access-key": accessKey,
+            "x-ncp-apigw-timestamp": date,
+            "x-ncp-apigw-signature-v2": signature,
+        },
+        data: {
+            type: "SMS",
+            countryCode: "82",
+            from: my_number, 
+            content : `주문이 완료되었습니다. 주문번호는 ${orderNo} 입니다.`,
+            messages: [
+                { to: `${phone}`, },],
+        },
+    }).then(response => {
+        console.log('send message success');
+        return res.status(200).end();
+    }).catch(err => {
+        console.log('send message err');
+        return res.status(404).end();
+    });
 }
 
 module.exports = {
     sendOrderMsg: sendOrderMsg,
-
 }

@@ -86,7 +86,7 @@
       position: relative;
       float: left;
       width: 33.3%;
-      height: 300px;
+      height: 400px;
       text-align: center;
       border: none;
     }
@@ -472,7 +472,7 @@
         <div class="phoneOutput">
           <span>주문 메시지를 받을</span><br>
           <span>휴대폰 번호를 입력해주세요</span><br>
-          <input type="text" autofocus/>
+          <input type="text" id="inputPhone" autofocus/>
           <a><div id="phoneBtn">입력 완료</div></a>
         </div>
   
@@ -514,9 +514,12 @@
 
   </div>
 </body>
+<script src="/socket.io/socket.io.js"></script>
 <script type="text/javascript" src="/cookie"></script>
 <script type="text/javascript" src="/orderjs"></script>
 <script type="text/javascript">
+  var socket = io(); // socket 통신 -> 마우스 커서 연결
+
   // front script
   function modal(id) {
     var zIndex = 9999;
@@ -602,7 +605,6 @@
     // 닫기 버튼 처리, 시꺼먼 레이어와 모달 div 지우기
     modal.querySelector('#phoneBtn').addEventListener('click', function() {
         modal.style.display = 'none';
-        
     });
 
     modal.setStyle({
@@ -717,16 +719,13 @@
     clickedButton
 }
 </script>
-<script type="module">
+<script>
   // mediapipe script
   const videoElement = document.getElementsByClassName('input_video')[0];
   const canvasElement = document.getElementsByClassName('output_canvas')[0];
   const canvasCtx = canvasElement.getContext('2d');
-  
-  // check handpose
-  const compareIndex = [[18, 4], [6, 8], [10, 12], [14, 16], [18, 20]]
-  var open = [false, false, false, false, false]
-  const gesture = [[true, true, true, true, true, "HI"], [false, false, false, false, false, "주먹쥠"], [true, false, false, false, false, "엄지만 펴짐"]]
+  const width = $(window).width();
+  const height = $(window).height();
 
   function dist(x1, y1, x2, y2) { // 두 점 사이의 거리를 반환
     return Math.sqrt(Math.pow(x1-x2, 2)) + Math.sqrt(Math.pow(y1-y2, 2));
@@ -759,14 +758,20 @@
         
     if (results.multiHandLandmarks) {
       for (const landmarks of results.multiHandLandmarks) { // landmarks.length == 21 (0-20)
-        // 현재 사용자의 손 상태 판별
-        for (var i=0; i<5; i++) {
-          // true 펼쳐짐, false 접힘
-            open[i] = dist(landmarks[0]['x'], landmarks[0]['y'], landmarks[compareIndex[i][0]]['x'], landmarks[compareIndex[i][0]]['y']) 
-                    < dist(landmarks[0]['x'], landmarks[0]['y'], landmarks[compareIndex[i][1]]['x'], landmarks[compareIndex[i][1]]['y'])
-        }
+        
         // drawConnectors(canvasCtx, landmarks, HAND_CONNECTIONS, {color: '#f0c697', lineWidth: 20});
         // drawLandmarks(canvasCtx, landmarks, {color: '#f5c9a9', lineWidth: 10});
+        
+
+        var x = landmarks[8]['x'];
+        var y = landmarks[8]['y'];
+        x = width - width * x;
+        y = height * y;
+
+        canvasCtx.fillStyle = "black";
+        canvasCtx.fillRect((width - x), y, 10, 10);
+
+        socket.emit('location', [x, y]); // 소켓 이용하여 손가락 좌표 정보 전달
       }
     }
     canvasCtx.restore();
