@@ -2,14 +2,13 @@
 <html>
 <head>
   <meta charset="utf-8">
-  
   <style>
-      html, body{
-      width: 100%;
-      height: 100%;
-      margin: 0;
+    html, body{
+        width: 100%;
+        height: 100%;
+        margin: 0;
     }
-      
+        
     #header{
         width: 100%;
         height: 150px;
@@ -154,6 +153,82 @@
         cursor: pointer;
     }
 
+    .modal{
+        display: none;
+        width: 700px;
+        height: 470px;
+        background-color: rgb(61, 61, 61);
+        border-radius: 10px;
+    }
+
+    #modalClose{
+        width: 20px;
+        height: 20px;
+        line-height: 20px;
+        text-align: center;
+        cursor: pointer;
+        font-size: 20px;
+        background-color: rgb(202, 22, 22);
+        border-radius: 50%;
+        margin: 10px;
+    }
+
+    #deleteArea{
+        background-color: rgb(255, 255, 255);
+        text-align: center;
+        float: left;
+        width: 100%;
+        height: 100%;
+    }
+
+    #deleteArea form{
+        /* background-color: rgb(192, 212, 212); */
+        text-align: center;
+        float: left;
+        width: 100%;
+        height: 100%;
+    }
+
+    #deleteArea form h2{
+        color: rgb(99, 99, 99);
+        line-height: 80px;
+        width: 100%;
+    }
+
+    #deleteArea form label{
+        width: 100%;
+        font-size: 15px;
+        line-height: 20px;
+        text-align: center;
+        float: left;
+        line-height: 50px;
+    }
+
+    #deleteArea form input{
+        height: 30px;
+        width: 200px;
+        outline: 0.5px solid rgb(236, 236, 236);
+        display: inline-block;
+        line-height: 50px;
+        margin-bottom: 80px;
+    }
+
+    #deleteArea form input:focus{
+        outline: 0.5px solid rgba(135, 192, 184, 0.541);
+        border-radius: 3px;
+    }
+
+    #deleteArea form input[value="회원 탈퇴"]{
+        width: 300px;
+        line-height: 40px;
+        height: 40px;
+        font-size: 15px;
+        border: none;
+        border-radius: 10px;
+        background-color: rgb(200, 200, 200);
+        color: white;
+        cursor: pointer;
+    }
   </style>
 </head>
 
@@ -173,8 +248,7 @@
                 <li><a class="nav-li" href="/manage_category">카테고리 관리</a></li>
                 <li><a class="nav-li" href="/manage_menu">메뉴 관리</a></li>
             </ul>
-
-            <div id="deleteAccount" onclick="location.href='/deleteAccount'">회원 탈퇴</div>
+            <div id="deleteAccount" onclick="modal('deleteAccountModal')">회원 탈퇴</div>
         </div>
         <div id="mode">
             <div id="modifyArea">
@@ -193,7 +267,23 @@
             </div>
         </div>
     </div>
+
+    <!-- 회원탈퇴 Modal -->
+    <div id="deleteAccountModal" class="modal">
+        <a><div class="modalClose" id="modalClose"></div></a>
+        <div id="deleteArea">
+            <!--회원 탈퇴 폼-->
+            <form name="delete_account_form" action="#" method="post">
+                <br><br>
+                <h2>회원 탈퇴</h2><br>
+                <label>본인 확인을 위해 비밀번호를 입력해주세요</label><input type="password" id="store_pw" name="store_pw">
+                <br>
+                <input type="button" value="회원 탈퇴" onclick="deleteUser()">
+            </form>
+        </div>
+    </div>
 </body>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script type="text/javascript" src="/store"></script>
+<script src="/modal"></script>
 </html>

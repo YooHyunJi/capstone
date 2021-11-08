@@ -146,6 +146,129 @@
         cursor: pointer;
     }
 
+    .orderDetail{
+        cursor: pointer;
+    }
+
+    .modal{
+      display: none;
+      width: 700px;
+      height: 600px;
+      background-color: rgb(61, 61, 61);
+      border-radius: 10px;
+    }
+
+    .modalClose{
+      width: 20px;
+      height: 20px;
+      line-height: 20px;
+      text-align: center;
+      cursor: pointer;
+      font-size: 20px;
+      background-color: rgb(202, 22, 22);
+      border-radius: 50%;
+      margin: 10px;
+    }
+
+    .orderDetailArea{
+        background-color: rgb(255, 255, 255);
+        float: left;
+        width: 100%;
+        height: 580px;
+        overflow: scroll;
+    }
+
+    .orderDetailArea__1{
+        width: 100%;
+        height: 100px;
+        text-align: center;
+        margin: 30px 0;
+    }
+
+
+    .orderDetailArea p{
+        font-size: 15px;
+        margin: 0;
+        padding-top: 20px;
+        text-align: center;
+    }
+
+    .orderDetailArea__1 .order_no{
+        font-size: 35px;
+        padding-top: 10px;
+        color: rgb(130, 189, 189);;
+    }
+
+    .orderDetailArea__2{
+        width: 500px;
+        margin-left: 100px;
+        overflow: scroll;
+    }
+
+    .orderDetailArea__2 span{
+        font-size: 15px;
+        display: inline-block;
+        height: 40px;
+        line-height: 40px;
+        color:rgb(114, 114, 114);
+    }
+
+    .orderDetailArea__2 .detailTitle__2{
+        color: rgb(50, 50, 50);
+    }
+
+    .orderDetailArea__2 .menu_name{
+        width: 340px;
+    }
+
+    .orderDetailArea__2 .count{
+        width: 50px;
+        text-align: center;
+    }
+
+    .orderDetailArea__2 .orderDetailPrice{
+        width: 100px;
+        text-align: right;
+    }
+
+    .orderDetailArea__2 .totalPrice{
+        width: 100%;
+        text-align: right;
+    }
+
+    .orderDetailArea__2 hr{
+       background-color: rgb(130, 189, 189);
+       height: 3px;
+       border-radius: 10px;
+       border: none;
+    }
+
+    .orderDetailArea__3{
+        width: 500px;
+        margin: 20px 0 30px 100px;
+        float: left;
+    }
+
+    .orderDetailArea__3 span{
+        font-size: 15px;
+        display: inline-block;
+        height: 40px;
+        width: 100px;
+        line-height: 40px;
+        color:rgb(114, 114, 114);
+    }
+    
+    .orderDetailArea__3 .detailTitle__3{
+        width: 100px;
+        color: rgb(50, 50, 50);
+        /* background-color: pink; */
+    }
+
+    .orderDetailArea__3 .paymentPricepaymentTime{
+        width: 195.5px;
+        /* background-color: rgb(70, 28, 35); */
+    }
+
   </style>
 </head>
 
@@ -174,13 +297,33 @@
                 <th>고객 연락처</th>
                 <th>결제 금액</th>
                 <th>취소 여부</th>
+                <th>주문 상세</th>
                 <th>상태 변경</th>
                 <th>주문 취소</th>
             </table>
+        </div>
+    </div>
+
+    <div id="orderDetailModal" class="modal">
+        <a><div class="modalClose"></div></a>
+        <div class="orderDetailArea">
+            <div class="orderDetailArea__1" id="orderDetailArea__1">
+                <!-- 주문 번호 -->
+            </div>
+
+            <div class="orderDetailArea__2" id="orderDetailArea__2">
+               <!-- 메뉴, 가격, 수량 -->
+            </div>
+
+            <div class="orderDetailArea__3" id="orderDetailArea__3">
+                <!-- 결제 정보 -->
+            </div>
+            
         </div>
     </div>
 </body>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="http://code.jquery.com/jquery-latest.js"></script>
 <script type="text/javascript" src="/order"></script>
+<script src="/modal"></script>
 </html>

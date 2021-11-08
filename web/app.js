@@ -119,9 +119,6 @@ app.get('/manage_category', (req, res) => {
 app.get('/manage_menu', (req, res) => {
   res.sendFile(__dirname + "/public/admin/manage_menu.html")
 })
-app.get('/deleteAccount', (req, res) => {
-  res.sendFile(__dirname + "/public/admin/deleteAccount.html")
-})
 app.get('/user', (req, res) => {
   res.sendFile(__dirname + "/js/user.js")
 })

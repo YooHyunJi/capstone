@@ -60,3 +60,26 @@ function updateUserInfo() {
         }
     })
 }
+
+function deleteUser() {
+    let storePw = $('#store_pw').val();
+    // 회원탈퇴
+    $.ajax({
+        type: 'POST',
+        url: '/admin/deleteUser',
+        contentType: 'application/json',
+        data: JSON.stringify({'storePw': storePw}),
+        success: function (result) {
+            if (result.code == 208) {
+                alert('비밀번호가 맞지 않습니다.');
+            }
+            else if (result.code == 400) {
+                alert('회원탈퇴 실패');
+            }
+            else if (result.code == 200) {
+                alert('회원탈퇴 성공');
+                location.href="/main_logout";
+            }
+        }
+    })
+}
