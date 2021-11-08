@@ -20,9 +20,8 @@
     ::-webkit-scrollbar{ display:none; }
 
     #container{
-      width: 100%;
-      height: 100%;
-      position: absolute;
+      width: 1440px;
+      height: 715.6px;
       float: left;
     }
 
@@ -44,122 +43,231 @@
       /* background-color: rgb(224, 224, 224); */
       width: 100%;
       height: 100%;
-      z-index: 0;
+      z-index: -5;
     }
 
-    #categoryList{
-      color: rgba(255, 255, 255, 0.7);
-      position: relative;
+    #categoryArea{
       width: 100%;
-      height: 100px;
+      height: 95.6px;
       float: left;
-      list-style: none;
-      padding: 0px;
-      margin: 0px;
-      overflow: auto;
-      white-space: nowrap;
     }
 
-    .category{
-      background: linear-gradient( -45deg, rgba(54, 146, 134, 0.5), rgba(54, 146, 134, 0.55));
-      position: relative;
-      width: 22%;
-      height: 100px;
+    #categoryArea #categoryBtn{
+      width: 15%;
+      height: 100%;
+      float: left;
       text-align: center;
-      line-height: 100px;
-      display: inline-block;
+      line-height: 95.6px;
+      font-size: 40px;
+      color: rgba(54, 146, 134, 0.5);
       cursor: pointer;
     }
 
+    #categoryArea #categoryBtn #categoryBtnLeft{
+      width: 50%;
+      height: 100%;
+      background: linear-gradient(to right,  rgba(179, 179, 179, 0.3), rgba(161, 161, 161, 0.3));
+      float: left;
+    }
+    #categoryArea #categoryBtn #categoryBtnLeft:hover{
+      background: linear-gradient(to bottom,  rgba(139, 139, 139, 0.3), rgba(116, 116, 116, 0.3));
+    }
+    
+    #categoryArea #categoryBtn #categoryBtnRight{
+      width: 50%;
+      height: 100%;
+      background: linear-gradient(to right,  rgba(179, 179, 179, 0.3), rgba(161, 161, 161, 0.3));
+      float: left;
+    }
+    #categoryArea #categoryBtn #categoryBtnRight:hover{
+      background: linear-gradient(to bottom,  rgba(139, 139, 139, 0.3), rgba(116, 116, 116, 0.3));
+    }
+
+    #categoryArea #categoryList{
+      color: rgba(255, 255, 255, 0.7);
+      width: 85%;
+      height: 100%;
+      list-style: none;
+      padding: 0px;
+      margin: 0px;
+      overflow: scroll;
+      white-space: nowrap;
+      float: left;
+    }
+
+    #categoryArea #categoryList .category{
+      background: linear-gradient( -45deg, rgba(54, 146, 134, 0.5), rgba(54, 146, 134, 0.55));
+      width: calc(100% / 6);
+      height: 95.6px;
+      text-align: center;
+      line-height: 95.6px;
+      display: inline-block;
+      cursor: pointer;
+    }
+    #categoryArea #categoryList .category:hover{
+      background: linear-gradient( -45deg, rgba(40, 116, 105, 0.5), rgba(40, 116, 105, 0.55));
+    }
+
     #section{
-      height: calc(100% - 100px);
+      height: 620px;
+      width: 1440px;
+      float: left;
     }
 
     #menuList{
-      /* background-color: rgb(214, 156, 156); */
-      position: relative;
-      width: 60%;
+      width: 55%;
       float: left;
       height: 100%;
+      overflow: scroll;
     }
 
     .menu{
       background: linear-gradient( -45deg, rgba(220, 220, 220, 0.5), rgba(241, 241, 241, 0.5));
-      position: relative;
       float: left;
-      width: 33.3%;
-      height: 300px;
+      width: 25%;
+      height: 260px;
       text-align: center;
       border: none;
+      cursor: pointer;
+    }
+
+    .menu:hover{
+      background: linear-gradient( -45deg, rgba(168, 168, 168, 0.5), rgba(185, 185, 185, 0.5));
     }
 
     .menuImg{
-      width: 80%;
-      position: relative;
+      width: 75%;
       margin-top: 20px;
-      margin-bottom: -20px;
     }
 
     .menuTitle{
-      width: 80%;
+      width: 100%;
       line-height: 30px;
-      position: relative;
-      line-height: 50px;
       margin: 0 auto;
-      margin-top: 20px;
+      margin-top: 10px;
     }
 
     .menuPrice{
       width: 80%;
       line-height: 30px;
-      position: relative;
       line-height: 30px;
       margin: 0 auto;
     }
 
     #bag{
-      position: relative;
       float: left;
-      width: 40%;
+      width: 45%;
       height: 100%;
     }
 
-    #orderList{
-      position: relative;
-      float: left;
-      width: 80%;
+    #orderBucket{
+      width: 85%;
       height: 100%;
+      float: left;
+    }
+
+    #orderList{
+      width: 100%;
+      height: 80%;
       background-color: rgba(214, 230, 227, 0.5);
       overflow: scroll;
       font-size: 10px;
     }
 
     .orderMenu{
-      position: relative;
       float: left;
       width: 100%;
-      height: 100px;
-      background: linear-gradient(to bottom,  rgba(189, 209, 206, 0.3), rgba(189, 209, 206, 0.5));
+      height: 20%;
+      background: linear-gradient(to bottom,  rgba(214, 224, 223, 0.3), rgba(214, 224, 223, 0.5));
     }
 
     .orderMenu div{
-      position: relative;
       float: left;
-      width: 25%;
       text-align: center;
-      line-height: 100px;
-      font-size: 3px;
+      line-height: 99.2px;
+      font-size: 11px;
+    }
+
+    .orderMenu .orderMenuName{
+      width: 40%;
+    }
+
+    .orderMenu .orderMenuPrice{
+      width: 15%;
+    }
+
+    .orderMenu .orderQuantity{
+      width: 25%;
+      float: left;
+    }
+
+    .orderMenu .orderQuantity .orderMenuQuantityDec{
+      width: 40%;
+      font-size: 20px;
+      color: rgba(54, 146, 134, 0.5);
+      cursor: pointer;
+    }
+    .orderMenu .orderQuantity .orderMenuQuantityDec:hover{
+      width: 40%;
+      font-size: 20px;
+      background: linear-gradient(to bottom,  rgba(165, 184, 181, 0.3), rgba(165, 184, 181, 0.5));
+    }
+
+    .orderMenu .orderQuantity .orderMenuQuantity{
+      width: 20%;
+      font-size: 15px;
+    }
+
+    .orderMenu .orderQuantity .orderMenuQuantityInc{
+      width: 40%;
+      font-size: 20px;
+      color: rgba(54, 146, 134, 0.5);
+      cursor: pointer;
+    }
+    .orderMenu .orderQuantity .orderMenuQuantityInc:hover{
+      width: 40%;
+      font-size: 20px;
+      background: linear-gradient(to bottom,  rgba(165, 184, 181, 0.3), rgba(165, 184, 181, 0.5));
+    }
+
+    .orderMenu .orderMenuCancel{
+      width: 20%;
+      cursor: pointer;
+    }
+
+    .orderMenu .orderMenuCancel:hover{
+      background: linear-gradient(to bottom,  rgba(165, 184, 181, 0.3), rgba(165, 184, 181, 0.5));
+    }
+
+    #totalPriceArea{
+      width: 100%;
+      height: 20%;
+      background: linear-gradient( 45deg, rgba(59, 155, 142, 0.5), rgba(54, 146, 134, 0.55));
+    }
+
+    #totalPriceArea span{
+      font-size: 25px;
+      line-height: 140px;
+      display: inline-block;
+      margin-left: 10%;
+      width: 40%;
+      color: white;
+      font-weight: 400;
+    }
+
+    #totalPriceArea .bagTotalPrice{
+      font-size: 35px;
+      font-weight: 500;
     }
 
     #orderControl{
-      position: relative;
-      float: left;
-      width: 20%;
+      width: 15%;
       height: 100%;
+      float: left;
+      cursor: pointer;
     }
 
     #orderListUp{
-      position: relative;
       float: left;
       width: 100%;
       height: 25%;
@@ -167,14 +275,20 @@
       text-align: center;
       border: none;
       padding: 0px;
+      font-size: 35px;
+      color: rgba(54, 146, 134, 0.5);
+      cursor: pointer;
+    }
+
+    #orderListUp:hover{
+      background: linear-gradient(to bottom,  rgba(139, 139, 139, 0.3), rgba(116, 116, 116, 0.3));
     }
 
     #orderListUp:active{
-      background: linear-gradient(to bottom,  rgba(139, 139, 139, 0.3), rgba(116, 116, 116, 0.3));
+      background: linear-gradient(to bottom,  rgba(107, 107, 107, 0.3), rgba(95, 95, 95, 0.3));
     }
 
     #orderListDown{
-      position: relative;
       float: left;
       width: 100%;
       height: 25%;
@@ -182,26 +296,33 @@
       text-align: center;
       border: none;
       padding: 0px;
+      font-size: 35px;
+      color: rgba(54, 146, 134, 0.5);
+      cursor: pointer;
     }
 
-    #orderListDown:active{
+    #orderListDown:hover{
       background: linear-gradient(to bottom,  rgba(139, 139, 139, 0.3), rgba(116, 116, 116, 0.3));
     }
 
+    #orderListDown:active{
+      background: linear-gradient(to bottom,  rgba(107, 107, 107, 0.3), rgba(95, 95, 95, 0.3));
+    }
+
     #orderButton{
-      position: relative;
       float: left;
       width: 100%;
       height: 50%;
       background-color: rgba(59, 155, 142, 0.5);
+      color: white;
       text-align: center;
       border: none;
       padding: 0px;
       cursor: pointer;
     }
 
-    #orderButton:active{
-      background-color: rgba(38, 99, 91, 0.5);
+    #orderButton:hover{
+      background: linear-gradient( -45deg, rgba(40, 116, 105, 0.5), rgba(40, 116, 105, 0.55));
     }
 
     .modal{
@@ -392,6 +513,7 @@
       line-height: 50px;
       margin: 0;
     }
+
     
   </style>
 
@@ -402,168 +524,198 @@
   <div id="container">
     <video class="input_video"></video>
 
-    <ul id="categoryList">
-      <li class="category"> COFFEE
-      <li class="category"> TEA
-      <li class="category"> ADE
-      <li class="category"> JUICE
-      <li class="category"> BAKERY
-      <li class="category"> SMOOTHIE
-    </ul>
+    <div id="categoryArea">
+      <div id="categoryBtn">
+        <div id="categoryBtnLeft" onclick="categoryScroll(this.id);">◀︎</div>
+        <div id="categoryBtnRight" onclick="categoryScroll(this.id);">▶︎</div>
+      </div>
+      <ul id="categoryList">
+        <li class="category"> COFFEE
+        <li class="category"> TEA
+        <li class="category"> ADE
+        <li class="category"> JUICE
+        <li class="category"> BAKERY
+        <li class="category"> SMOOTHIE
+        <li class="category"> BEER
+        <li class="category"> CAKE
+      </ul>
+    </div>
+
 
     <div id="section">
       <div id="menuList">
         <div class="menu" onclick="gestureButtonClick();">
-          <img class="menuImg" src="img/img1.png" alt=" hippo">
+          <img class="menuImg" src="img/test_img.png" alt=" hippo">
           <h4 class="menuTitle">  BEAR1 </h4>
           <h4 class="menuPrice"> ₩5,000 </h4>
         </div> 
         <div class="menu" onclick="gestureButtonClick();">
-          <img class="menuImg" src="img/img2.png" alt=" laon">
+          <img class="menuImg" src="img/test_img.png" alt=" laon">
           <h4 class="menuTitle">  HIPPO1 </h4>
           <h4 class="menuPrice"> ₩9,000 </h4>
         </div> 
         <div class="menu" onclick="gestureButtonClick();">
-          <img class="menuImg" src="img/img1.png" alt=" hippo">
+          <img class="menuImg" src="img/test_img.png" alt=" hippo">
           <h4 class="menuTitle">  BEAR1 </h4>
           <h4 class="menuPrice"> ₩5,000 </h4>
         </div> 
         <div class="menu" onclick="gestureButtonClick();">
-          <img class="menuImg" src="img/img2.png" alt=" laon">
+          <img class="menuImg" src="img/test_img.png" alt=" laon">
           <h4 class="menuTitle">  HIPPO1 </h4>
           <h4 class="menuPrice"> ₩9,000 </h4>
         </div> 
         <div class="menu" onclick="gestureButtonClick();">
-          <img class="menuImg" src="img/img1.png" alt=" hippo">
+          <img class="menuImg" src="img/test_img.png" alt=" hippo">
           <h4 class="menuTitle">  BEAR1 </h4>
           <h4 class="menuPrice"> ₩5,000 </h4>
         </div> 
         <div class="menu" onclick="gestureButtonClick();">
-          <img class="menuImg" src="img/img2.png" alt=" laon">
+          <img class="menuImg" src="img/test_img.png" alt=" laon">
           <h4 class="menuTitle">  HIPPO1 </h4>
           <h4 class="menuPrice"> ₩9,000 </h4>
         </div> 
         <div class="menu" onclick="gestureButtonClick();">
-          <img class="menuImg" src="img/img1.png" alt=" hippo">
+          <img class="menuImg" src="img/test_img.png" alt=" hippo">
           <h4 class="menuTitle">  BEAR1 </h4>
           <h4 class="menuPrice"> ₩5,000 </h4>
         </div> 
         <div class="menu" onclick="gestureButtonClick();">
-          <img class="menuImg" src="img/img2.png" alt=" laon">
+          <img class="menuImg" src="img/test_img.png" alt=" laon">
+          <h4 class="menuTitle">  HIPPO1 </h4>
+          <h4 class="menuPrice"> ₩9,000 </h4>
+        </div> 
+        <div class="menu" onclick="gestureButtonClick();">
+          <img class="menuImg" src="img/test_img.png" alt=" laon">
+          <h4 class="menuTitle">  HIPPO1 </h4>
+          <h4 class="menuPrice"> ₩9,000 </h4>
+        </div> 
+        <div class="menu" onclick="gestureButtonClick();">
+          <img class="menuImg" src="img/test_img.png" alt=" hippo">
+          <h4 class="menuTitle">  BEAR1 </h4>
+          <h4 class="menuPrice"> ₩5,000 </h4>
+        </div> 
+        <div class="menu" onclick="gestureButtonClick();">
+          <img class="menuImg" src="img/test_img.png" alt=" laon">
           <h4 class="menuTitle">  HIPPO1 </h4>
           <h4 class="menuPrice"> ₩9,000 </h4>
         </div> 
       </div>
 
       <div id="bag">
-        <div id="orderList">
-          <div class="orderMenu">
-              <div class="orderMenuName">  AMERICANO(ICE) </div>
-              <div class="orderMenuPrice"> 3,000 </div>
-              <div class="orderQuantity">
-                <div class="orderMenuQuantityDec"> ▼ </div>
-                <div class="orderMenuQuantity"> 3 </div>
-                <div class="orderMenuQuantityInc"> ▲ </div>
-              </div>
-              <div class="orderMenuCancel"> CANCEL </div>
+        <div id="orderBucket">
+          <div id="orderList">
+            <div class="orderMenu">
+                <div class="orderMenuName">  AMERICANO(ICE) </div>
+                <div class="orderMenuPrice"> 3,000 </div>
+                <div class="orderQuantity">
+                  <div class="orderMenuQuantityDec"> ▼ </div>
+                  <div class="orderMenuQuantity"> 3 </div>
+                  <div class="orderMenuQuantityInc"> ▲ </div>
+                </div>
+                <div class="orderMenuCancel"> CANCEL </div>
+            </div>
+            <div class="orderMenu">
+                <div class="orderMenuName"> LATTE(HOT) </div>
+                <div class="orderMenuPrice"> 4,000 </div>
+                <div class="orderQuantity">
+                  <div class="orderMenuQuantityDec"> ▼ </div>
+                  <div class="orderMenuQuantity"> 2 </div>
+                  <div class="orderMenuQuantityInc"> ▲ </div>
+                </div>
+                <div class="orderMenuCancel"> CANCEL </div>
+            </div>
+            <div class="orderMenu">
+                <div class="orderMenuName">  STRAWBERRY JUICE </div>
+                <div class="orderMenuPrice"> 7,000 </div>
+                <div class="orderQuantity">
+                  <div class="orderMenuQuantityDec"> ▼ </div>
+                  <div class="orderMenuQuantity"> 1 </div>
+                  <div class="orderMenuQuantityInc"> ▲ </div>
+                </div>
+                <div class="orderMenuCancel"> CANCEL </div>
+            </div>
+            <div class="orderMenu">
+                <div class="orderMenuName">  CHEESE CAKE </div>
+                <div class="orderMenuPrice"> 6,000 </div>
+                <div class="orderQuantity">
+                  <div class="orderMenuQuantityDec"> ▼ </div>
+                  <div class="orderMenuQuantity"> 1 </div>
+                  <div class="orderMenuQuantityInc"> ▲ </div>
+                </div>
+                <div class="orderMenuCancel"> CANCEL </div>
+            </div>
+            <div class="orderMenu">
+                <div class="orderMenuName">  BAGLE </div>
+                <div class="orderMenuPrice"> 3,500 </div>
+                <div class="orderQuantity">
+                  <div class="orderMenuQuantityDec"> ▼ </div>
+                  <div class="orderMenuQuantity"> 1 </div>
+                  <div class="orderMenuQuantityInc"> ▲ </div>
+                </div>
+                <div class="orderMenuCancel"> CANCEL </div>
+            </div>
+            <div class="orderMenu">
+                <div class="orderMenuName">  VANILA LATTE(HOT) </div>
+                <div class="orderMenuPrice"> 4,500 </div>
+                <div class="orderQuantity">
+                  <div class="orderMenuQuantityDec"> ▼ </div>
+                  <div class="orderMenuQuantity"> 1 </div>
+                  <div class="orderMenuQuantityInc"> ▲ </div>
+                </div>
+                <div class="orderMenuCancel"> CANCEL </div>
+            </div>
+            <div class="orderMenu">
+                <div class="orderMenuName">  AMERICANO(HOT) </div>
+                <div class="orderMenuPrice"> 3,000 </div>
+                <div class="orderQuantity">
+                  <div class="orderMenuQuantityDec"> ▼ </div>
+                  <div class="orderMenuQuantity"> 4 </div>
+                  <div class="orderMenuQuantityInc"> ▲ </div>
+                </div>
+                <div class="orderMenuCancel"> CANCEL </div>
+            </div>
+            <div class="orderMenu">
+                <div class="orderMenuName">  CAPPUCHINO </div>
+                <div class="orderMenuPrice"> 4,500 </div>
+                <div class="orderQuantity">
+                  <div class="orderMenuQuantityDec"> ▼ </div>
+                  <div class="orderMenuQuantity"> 1 </div>
+                  <div class="orderMenuQuantityInc"> ▲ </div>
+                </div>
+                <div class="orderMenuCancel"> CANCEL </div>
+            </div>
+            <div class="orderMenu">
+                <div class="orderMenuName">  CHOCOLATE </div>
+                <div class="orderMenuPrice"> 4,500 </div>
+                <div class="orderQuantity">
+                  <div class="orderMenuQuantityDec"> ▼ </div>
+                  <div class="orderMenuQuantity"> 1 </div>
+                  <div class="orderMenuQuantityInc"> ▲ </div>
+                </div>
+                <div class="orderMenuCancel"> CANCEL </div>
+            </div>
+            <div class="orderMenu">
+                <div class="orderMenuName">  BREAD </div>
+                <div class="orderMenuPrice"> 2,000 </div>
+                <div class="orderQuantity">
+                  <div class="orderMenuQuantityDec"> ▼ </div>
+                  <div class="orderMenuQuantity"> 1 </div>
+                  <div class="orderMenuQuantityInc"> ▲ </div>
+                </div>
+                <div class="orderMenuCancel"> CANCEL </div>
+            </div>
           </div>
-          <div class="orderMenu">
-              <div class="orderMenuName"> LATTE(HOT) </div>
-              <div class="orderMenuPrice"> 4,000 </div>
-              <div class="orderQuantity">
-                <div class="orderMenuQuantityDec"> ▼ </div>
-                <div class="orderMenuQuantity"> 2 </div>
-                <div class="orderMenuQuantityInc"> ▲ </div>
-              </div>
-              <div class="orderMenuCancel"> CANCEL </div>
+          
+          <div id="totalPriceArea">
+            <span>총 결제 금액</span><span class="bagTotalPrice">18,500원</span>
           </div>
-          <div class="orderMenu">
-              <div class="orderMenuName">  STRAWBERRY JUICE </div>
-              <div class="orderMenuPrice"> 7,000 </div>
-              <div class="orderQuantity">
-                <div class="orderMenuQuantityDec"> ▼ </div>
-                <div class="orderMenuQuantity"> 1 </div>
-                <div class="orderMenuQuantityInc"> ▲ </div>
-              </div>
-              <div class="orderMenuCancel"> CANCEL </div>
-          </div>
-          <div class="orderMenu">
-              <div class="orderMenuName">  CHEESE CAKE </div>
-              <div class="orderMenuPrice"> 6,000 </div>
-              <div class="orderQuantity">
-                <div class="orderMenuQuantityDec"> ▼ </div>
-                <div class="orderMenuQuantity"> 1 </div>
-                <div class="orderMenuQuantityInc"> ▲ </div>
-              </div>
-              <div class="orderMenuCancel"> CANCEL </div>
-          </div>
-          <div class="orderMenu">
-              <div class="orderMenuName">  BAGLE </div>
-              <div class="orderMenuPrice"> 3,500 </div>
-              <div class="orderQuantity">
-                <div class="orderMenuQuantityDec"> ▼ </div>
-                <div class="orderMenuQuantity"> 1 </div>
-                <div class="orderMenuQuantityInc"> ▲ </div>
-              </div>
-              <div class="orderMenuCancel"> CANCEL </div>
-          </div>
-          <div class="orderMenu">
-              <div class="orderMenuName">  VANILA LATTE(HOT) </div>
-              <div class="orderMenuPrice"> 4,500 </div>
-              <div class="orderQuantity">
-                <div class="orderMenuQuantityDec"> ▼ </div>
-                <div class="orderMenuQuantity"> 1 </div>
-                <div class="orderMenuQuantityInc"> ▲ </div>
-              </div>
-              <div class="orderMenuCancel"> CANCEL </div>
-          </div>
-          <div class="orderMenu">
-              <div class="orderMenuName">  AMERICANO(HOT) </div>
-              <div class="orderMenuPrice"> 3,000 </div>
-              <div class="orderQuantity">
-                <div class="orderMenuQuantityDec"> ▼ </div>
-                <div class="orderMenuQuantity"> 4 </div>
-                <div class="orderMenuQuantityInc"> ▲ </div>
-              </div>
-              <div class="orderMenuCancel"> CANCEL </div>
-          </div>
-          <div class="orderMenu">
-              <div class="orderMenuName">  CAPPUCHINO </div>
-              <div class="orderMenuPrice"> 4,500 </div>
-              <div class="orderQuantity">
-                <div class="orderMenuQuantityDec"> ▼ </div>
-                <div class="orderMenuQuantity"> 1 </div>
-                <div class="orderMenuQuantityInc"> ▲ </div>
-              </div>
-              <div class="orderMenuCancel"> CANCEL </div>
-          </div>
-          <div class="orderMenu">
-              <div class="orderMenuName">  CHOCOLATE </div>
-              <div class="orderMenuPrice"> 4,500 </div>
-              <div class="orderQuantity">
-                <div class="orderMenuQuantityDec"> ▼ </div>
-                <div class="orderMenuQuantity"> 1 </div>
-                <div class="orderMenuQuantityInc"> ▲ </div>
-              </div>
-              <div class="orderMenuCancel"> CANCEL </div>
-          </div>
-          <div class="orderMenu">
-              <div class="orderMenuName">  BREAD </div>
-              <div class="orderMenuPrice"> 2,000 </div>
-              <div class="orderQuantity">
-                <div class="orderMenuQuantityDec"> ▼ </div>
-                <div class="orderMenuQuantity"> 1 </div>
-                <div class="orderMenuQuantityInc"> ▲ </div>
-              </div>
-              <div class="orderMenuCancel"> CANCEL </div>
-          </div>
-        </div>
-        
-        <div id="orderControl">
-          <button id="orderListUp" onclick="orderScroll(this.id);"> ▲ </button>
-          <button id="orderListDown" onclick="orderScroll(this.id);"> ▼ </button>
-          <button id="orderButton"> ORDER </button>
-        </div>
+      </div>
+
+      <div id="orderControl">
+        <button id="orderListUp" onclick="orderScroll(this.id);"> ▲ </button>
+        <button id="orderListDown" onclick="orderScroll(this.id);"> ▼ </button>
+        <button id="orderButton"> ORDER </button>
+      </div>
       </div>    
     </div>
   </div>
@@ -807,20 +959,31 @@
     console.log(document.getElementsByClassName('menuTitle').text());
   }
 
+  function categoryScroll(clicked_id){
+    const categoryList = document.getElementById('categoryList');
+    const clickedButton = document.getElementById(clicked_id);
+
+    if(clicked_id == 'categoryBtnLeft'){
+      categoryList.scrollBy(-204, 0);
+    }
+
+    else{
+      categoryList.scrollBy(204, 0);
+    }
+  }
+
   function orderScroll(clicked_id){
     const orderList = document.getElementById('orderList');
     const clickedButton = document.getElementById(clicked_id);
 
     if(clicked_id == 'orderListUp'){
-      orderList.scrollBy(0, -80);
+      orderList.scrollBy(0, -99.2);
     }
 
     else{
-      orderList.scrollBy(0, 80);
+      orderList.scrollBy(0, 99.2);
     }
-
-    clickedButton
-}
+  }
 </script>
 
 <script type="module">
