@@ -3,6 +3,8 @@
 const CryptoJS = require('crypto-js');
 var request = require('request');
 require('dotenv').config();
+var connection = config.init();
+connection.connect();
 
 function sendOrderMsg(req, res) {
 
