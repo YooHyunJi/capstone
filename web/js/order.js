@@ -49,6 +49,7 @@ function getAllOrders() {
                     <td>${result.orders[i].customerTel}</td>
                     <td>${result.orders[i].totalPrice}</td>
                     <td class="orderCancel">`+cancelYn+`</td>
+                    <td class="orderDetail" onclick="getOrderDetails('${result.orders[i].orderNo}')">-</td>
                     <td class="changeStatusBtn" onclick="changeOrderStatus('${result.orders[i].orderStatus}', '${result.orders[i].cancelYn}', '${result.orders[i].orderNo}')">준비완료</td>
                     <td class="orderCancelBtn" onclick="cancelOrder('${result.orders[i].orderStatus}', '${result.orders[i].cancelYn}', '${result.orders[i].orderNo}')">취소</td>
                     </tr>`
@@ -121,6 +122,64 @@ function changeOrderStatus(orderStatus, cancelYn, orderNo) {
             }
         })
     }
+}
+
+function getOrderDetails(orderNo) {
+    modal('orderDetailModal');
+
+    $.ajax({
+        type: 'GET',
+        url: `admin/getOrderDetails/`+orderNo,
+        success: function (result) {
+            // 초기화
+            $('#orderDetailArea__1').empty();
+            $('#orderDetailArea__2').empty();
+            $('#orderDetailArea__3').empty();
+
+            // 영역 1
+            $('#orderDetailArea__1').append(
+                `<p>주문 번호</p>
+                <p class="order_no">`+orderNo+`</p>`
+            )
+            
+            // 영역 2
+            $('#orderDetailArea__2').append(
+                `<p class="detailTitle__2">주문 정보</p><br>
+                <span class="detailTitle__2 menu_name">메뉴</span>
+                <span class="detailTitle__2 count">수량</span>
+                <span class="detailTitle__2 orderDetailPrice">가격</span><br>`
+            )
+            for (let i=0; i<result.orderList.length; i++) {
+                $('#orderDetailArea__2').append( // 메뉴, 수량, 가격
+                    `<span class="menu_name">${result.orderList[i].menuName}</span>
+                    <span class="count">${result.orderList[i].count}</span>
+                    <span class="orderDetailPrice">`+numberWithCommas(result.orderList[i].orderDetailPrice)+`</span><br><hr>`
+                )
+            }
+
+            $('#orderDetailArea__2').append( // 총 주문금액
+                `<span class="totalPrice">`+numberWithCommas(result.totalPrice[0].totalPrice)+`</span>`
+            )
+
+            // 영역 3
+            $('#orderDetailArea__3').append(
+                `<P>결제 정보</p><br>`
+            )
+            for (let i=0; i<result.payment.length; i++) { // 총 결제금액, 결제 시간, 수단, 타입
+                $('#orderDetailArea__3').append(
+                    `<span class="detailTitle__3">총 결제 금액</span><span class="paymentPrice">`+numberWithCommas(result.payment[i].paymentPrice)+`</span>
+                    <span class="detailTitle__3">결제 시간</span><span class="paymentPricepaymentTime">${result.payment[i].paymentTime}</span><br>
+                    <span class="detailTitle__3">결제 수단</span><span class="paymentMethod">${result.payment[i].paymentMethod}</span>
+                    <span class="detailTitle__3">결제 타입</span><span class="paymentType">${result.payment[i].paymentType}</span>`
+                )
+            }
+        }
+    });
+}
+
+// 숫자에 콤마 붙여 표현하는 메서드
+function numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
 // 주문 현황 카톡 발신

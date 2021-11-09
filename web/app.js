@@ -33,6 +33,7 @@ const changeOrderStatusRouter = require('./routes/admin/changeOrderStatus'); // 
 
 const orderViewRouter = require('./routes/order/views.js'); // 주문 시스템 VIEWS 라우터
 const orderApiRouter = require('./routes/order'); // 주문 시스템 API 라우터 index.js
+const sensApiRouter = require('./routes/sens'); // NCP SENS API 라우터 index.js
 
 app.use(morgan('dev'));
 app.use(express.json());
@@ -72,6 +73,8 @@ app.use('/admin', changeOrderStatusRouter);
 app.use('/order', orderViewRouter);
 // order API 라우터
 app.use('/api/order', orderApiRouter);
+// sens API 라우터
+app.use('/api/sens', sensApiRouter);
 
 // 메인
 app.get('/', (req, res) => {
@@ -119,9 +122,6 @@ app.get('/manage_category', (req, res) => {
 app.get('/manage_menu', (req, res) => {
   res.sendFile(__dirname + "/public/admin/manage_menu.html")
 })
-app.get('/deleteAccount', (req, res) => {
-  res.sendFile(__dirname + "/public/admin/deleteAccount.html")
-})
 app.get('/user', (req, res) => {
   res.sendFile(__dirname + "/js/user.js")
 })
@@ -150,7 +150,7 @@ app.get('/test2', (req, res) => { // 임시
   res.sendFile(__dirname + "/public/admin/test.html")
 })
 
-// 주문 시스템
+// 주문 시스템 (@juran)
 app.use(express.static('public')); // 이미지(ex)
 app.get('/order', (req, res) => {
   res.sendFile(__dirname + "/public/order/main.html")
@@ -168,13 +168,15 @@ io.on('connection', (socket) => { // 소켓 연결이 들어오면 실행
   socket.on('location', (msg) => {
       // console.log('Message received: ' + msg);
 
-      var screenSize = robot.getScreenSize();
-      var height = (screenSize.height / 2) - 10;
-      var width = screenSize.width;
+      // var screenSize = robot.getScreenSize();
+      // var height = (screenSize.height / 2) - 10;
+      // var width = screenSize.width;
 
       // 마우스 좌표
-      var x = (width - msg[0] * width); // 좌우반전
-      var y = msg[1] * height;
+      // var x = (width - msg[0] * width); // 좌우반전
+      // var y = msg[1] * height;
+      var x = msg[0];
+      var y = msg[1];
 
       robot.moveMouse(x, y);
   });

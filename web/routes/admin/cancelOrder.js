@@ -11,7 +11,7 @@ var moment = require('moment');
 router.post('/cancelOrder', function (req, res) {
     var storeNo = req.session.user.storeNo; // 매장 번호
     var orderNo = req.body.orderNo; // 주문 번호
-    var paymentType = "주문취소"; // 결제 타입(주문결제/주문취소)
+    var paymentType = "주문 취소"; // 결제 타입(주문결제/주문취소)
 
     var query = "SELECT paymentMethod, paymentPrice FROM payment WHERE orderNo = ?";
     connection.query(query, orderNo, function (err, result) {

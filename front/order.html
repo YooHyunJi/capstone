@@ -21,7 +21,7 @@
 
     #container{
       width: 1440px;
-      height: 715.6px;
+      height: 735px;
       float: left;
     }
 
@@ -48,7 +48,7 @@
 
     #categoryArea{
       width: 100%;
-      height: 95.6px;
+      height: 95px;
       float: left;
     }
 
@@ -109,7 +109,7 @@
     }
 
     #section{
-      height: 620px;
+      height: 640px;
       width: 1440px;
       float: left;
     }
@@ -327,36 +327,37 @@
 
     .modal{
       display: none;
-      width: 700px;
-      height: 470px;
-      background-color: rgb(247, 247, 247);
+      width: 900px;
+      height: 700px;
+      background-color: rgba(247, 247, 247, 0.6);
       border-radius: 10px;
       text-align: center;
     }
 
     #payments{
       width: 90%;
+      height: 300px;
       /* background-color: thistle; */
       display: inline-block;
       text-align: center;
-      margin-top: 50px;
+      margin-top: 110px;
     }
 
     .payment{
       width: 21%;
-      height: 250px;
-      background-color: rgba(74, 155, 155, 0.6);
+      height: 100%;
+      background-color: rgba(54, 146, 134, 0.5);
       color: white;
       float: left;
       text-align: center;
-      line-height: 250px;
+      line-height: 300px;
       margin: 0 2%;
       border-radius: 10px;
       cursor: pointer;
     }
 
     .payment:hover{
-      background-color: rgb(74, 155, 155);
+      background-color: rgba(45, 124, 114, 0.5);
     }
 
     #totalPrice{
@@ -364,8 +365,8 @@
       width: 80%;
       height: 20px;
       line-height: 20px;
-      font-size: 15px;
-      margin: 30px 0;
+      font-size: 20px;
+      padding: 50px 0;
       /* background-color: tomato; */
     }
 
@@ -373,7 +374,7 @@
       width: 90%;
       height: 50px;
       display: inline-block;
-      background-color:rgba(216, 216, 216, 0.6);
+      background-color:rgba(184, 184, 184, 0.6);
       line-height: 50px;
       text-align: center;
       border-radius: 10px;
@@ -381,19 +382,15 @@
     }
 
     .modalClose:hover, #phoneBtn:hover{
-      background-color:rgb(216, 216, 216);
+      background-color:rgba(146, 146, 146, 0.6);
     }
-
-    /* #processModal{
-      text-align: center;
-    } */
 
     #processModal .processArea{
       width: 200px;
-      height: 220px;
+      height: 240px;
       display: inline-block;
       /* background-color: darkkhaki; */
-      margin-top: 125px;
+      margin-top: 230px;
     }
 
     #processModal .modalClose{
@@ -404,7 +401,7 @@
       display: inline-block;
       /* background-color: cornsilk; */
       vertical-align: middle;
-      margin-bottom: 20%;
+      margin-bottom: 60px;
     }
 
     .fas, .fa-spinner, .fa-10x{
@@ -428,20 +425,20 @@
     }
 
     #phoneModal .phoneArea{
-      width: 600px;
-      height: 320px;
+      width: 700px;
+      height: 550px;
       /* background-color: darkkhaki; */
       float: left;
       margin-top: 75px;
-      margin-left: 50px;
+      margin-left: 100px;
     }
 
     #phoneModal .phoneArea .phoneOutput{
-      width: 300px;
-      height: 240px;
+      width: 50%;
+      height: 330px;
       display: block;
       float: left;
-      margin-top: 40px;
+      margin-top: 110px;
       /* background-color: darksalmon; */
     }
 
@@ -453,10 +450,11 @@
       line-height: 50px;
       width: calc(100% - 26px);
       border-radius: 10px;
-      border: 3px solid rgb(74, 155, 155);
+      border: 4px solid rgba(54, 146, 134, 0.65);
       padding: 0 10px;
       font-size: 30px;
-      margin: 30px 0;
+      margin: 80px 0;
+      text-align: center;
     }
 
     #phoneModal .phoneArea .phoneOutput input[type="text"]:focus{
@@ -471,31 +469,36 @@
       margin: 0;
       float: right;
       border-radius: 20px;
-      border: 3px solid rgb(216, 216, 216);
+      border: 6px solid rgb(216, 216, 216);
+      background-color: rgba(255, 255, 255, 0.3);
       padding: 0;
       border-spacing: 0;
+      width: 270px;
+      height: 400px;
+      margin-top: 75px;
     }
 
     #phoneModal .phoneArea table tbody{
-      width: 240px;
-      height: 320px;
       display: block;
+      width: 100%;
+      height: 100%;
     }
 
     #phoneModal .phoneArea table tbody tr{
-      height: 80px;
+      height: 100px;
       /* background-color: darkslategrey; */
       vertical-align: middle;
     }
 
     #phoneModal .phoneArea table tbody tr td{
-      width: 80px;
+      width: 90px;
       border-radius: 15px;
       vertical-align: middle;
+      cursor: pointer;
     }
 
     #phoneModal .phoneArea table tbody tr td:hover{
-      background: rgb(216, 216, 216);
+      background-color: rgba(54, 146, 134, 0.5);
     }
 
     #finishModal{
@@ -505,7 +508,7 @@
     #finishModal .finishArea{
       width: 100%;
       height: 100px;
-      margin-top: 185px;
+      margin-top: 300px;
     }
 
     #finishModal .finishArea p{
@@ -726,7 +729,7 @@
       <div class="payment" id="kakaoPay" onclick="payingProcess(this.id);">카카오페이</div>
       <div class="payment" id="payco" onclick="payingProcess(this.id);">페이코</div>
       <div class="payment" id="samsungPay" onclick="payingProcess(this.id);">삼성페이</div>
-    </div><br>
+    </div>
     <div id="totalPrice">총 결제 금액 12,500원</div>
     <a><div class="modalClose">이전 단계</div></a>
   </div>
@@ -796,6 +799,7 @@
     var zIndex = 9999;
     var modal = document.getElementById(id);
     var canvas = document.getElementsByClassName('output_canvas')[0];
+    var container = document.getElementById('container');
 
     // 모달 div 뒤에 희끄무레한 레이어
     var bg = document.createElement('div');
@@ -810,14 +814,17 @@
         height: '100%',
         overflow: 'auto',
         // 레이어 색갈은 여기서 바꾸면 됨
-        backgroundColor: 'rgba(0,0,0,0.4)'
+        backgroundColor: 'rgba(0,0,0,0.2)'
     });
     document.body.append(bg);
+
+    container.style.display = 'none';
 
     // 닫기 버튼 처리, 시꺼먼 레이어와 모달 div 지우기
     modal.querySelector('.modalClose').addEventListener('click', function() {
         bg.remove();
         modal.style.display = 'none';
+        container.style.display = '';
     });
 
     modal.setStyle({
@@ -835,16 +842,15 @@
         msTransform: 'translate(-50%, -50%)',
         webkitTransform: 'translate(-50%, -50%)'
     });
-
-    // canvas.setStyle({
-    //   zIndex: zIndex - 1
-    // });
   }
 
   // 결제 진행 중 모달
   function modal_process(id){
     var zIndex = 9999;
     var modal = document.getElementById(id);
+    var prevModal = document.getElementById('paymentsModal');
+
+    prevModal.style.display = 'none';
 
     // 닫기 버튼 처리, 시꺼먼 레이어와 모달 div 지우기
     modal.querySelector('.modalClose').addEventListener('click', function() {
@@ -899,6 +905,7 @@
   function modal_finish(id){
     var zIndex = 9999;
     var modal = document.getElementById(id);
+    var container = document.getElementById('container');
 
     modal.setStyle({
         position: 'fixed',
@@ -951,6 +958,7 @@
         modals[i].style.display = 'none';
       }
       bg.style.display = 'none';
+      container.style.display = '';
     }, 3000);
   });
 
@@ -994,7 +1002,7 @@ const canvasCtx = canvasElement.getContext('2d');
 // check handpose
 const compareIndex = [[18, 4], [6, 8], [10, 12], [14, 16], [18, 20]]
 var open = [false, false, false, false, false]
-const gesture = [[true, true, true, true, true, "HI"], [false, false, false, false, false, "주먹쥠"], [true, false, false, false, false, "엄지만 펴짐"]]
+const gesture = [[true, true, true, true, true, "HI"], [false, true, false, false, false, "검지만 펴짐"], [true, true, false, false, false, "검지만 펴짐_2"], [true, false, false, false, false, "엄지만 펴짐"]]
 
 function dist(x1, y1, x2, y2) { // 두 점 사이의 거리를 반환
   return Math.sqrt(Math.pow(x1-x2, 2)) + Math.sqrt(Math.pow(y1-y2, 2));
@@ -1035,7 +1043,7 @@ function onResults(results) {
       }
 
       // 지정된 제스처와 비교
-      for (var i=0; i<3; i++) {
+      for (var i=0; i<4; i++) {
         var flag = true;
         for (var j=0; j<5; j++) {
           if (gesture[i][j] != open[j]) {
@@ -1043,17 +1051,22 @@ function onResults(results) {
           }
         }
         if (flag == true) { // 지정된 제스처와 동일할 때
-          // 선택 모션을 취할 때(움켜쥐는 모션)
-          if(i==1){
-            // gestureButtonClick();
-            // console.log((1 - landmarks[9]['x']), landmarks[9]['y']);
-            // alert('선택되었습니다' + '\n' + (1 - landmarks[9]['x']) + '\n' + landmarks[9]['y']);
-            console.log('선택되었습니다' + '\nx좌표 : ' + (1 - landmarks[9]['x']) * window.innerWidth + '\ny좌표 : ' + landmarks[9]['y'] * window.innerHeight);
-            // sleep(500);
+          // 선택 모션을 취할 때(검지를 굽힘)
+          if((i==1) || (i==2)){
+            // console.log('검지 ㅇㅅㅇ');
+
+            // 검지가 위를 향하고 있을 때만 동작하게 하여 검지가 아래를 향하고 있을 때는 동작하지 않게
+            if(getAngle(landmarks[8]['x'], landmarks[8]['y'],landmarks[6]['x'], landmarks[6]['y'])>0){
+              // 검지 끝이 검지 두 번째 마디보다 내려갔을 때(클릭 모션을 취했을 때) 콘솔에 좌표 출력
+              if(getAngle(landmarks[7]['x'], landmarks[7]['y'],landmarks[8]['x'], landmarks[8]['y'])>0){
+                console.log('선택되었습니다' + '\nx좌표 : ' + (1 - landmarks[8]['x']) * window.innerWidth + '\ny좌표 : ' + landmarks[8]['y'] * window.innerHeight);
+                sleep(300);
+              }
+            }
           }
 
           // 엄지를 제외한 손가락을 모두 접은 제스처일 때(엄지만 편 상태)
-          else if(i==2){
+          else if(i==3){
             // 엄지 손가락 끝이 새끼 손가락 끝보다 위쪽에 있으면 'Good'으로 인식
             if (getAngle(landmarks[4]['x'], landmarks[4]['y'],landmarks[20]['x'], landmarks[20]['y'])>0){
               console.log('GOOD');
@@ -1072,6 +1085,8 @@ function onResults(results) {
       }
       drawConnectors(canvasCtx, landmarks, HAND_CONNECTIONS, {color: '#f0c697', lineWidth: 20});
       drawLandmarks(canvasCtx, landmarks, {color: '#f5c9a9', lineWidth: 10});
+      // 손의 각 포인트를 보기 위해 빨간색으로 표시
+      // drawLandmarks(canvasCtx, landmarks, {color: 'red', lineWidth: 10});
     }
   }
   canvasCtx.restore();
