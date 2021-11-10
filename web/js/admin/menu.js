@@ -130,6 +130,10 @@ function menuImgPreview(id, file) {
     id.src=URL.createObjectURL(file);
 }
 
+function resetMenuImg(id) {
+    id.src = "";
+}
+
 function addMenu() {
     /*if (!$('#menuName') || !$('#menuPrice') || !$('#menuDetail') || !$('#menuImg').src) {
         alert('미입력');
@@ -183,7 +187,7 @@ function setValuesBeforeUpdateMenu(menuNo, menuName, menuPrice, menuDetail) {
     $('#menu_price').val(menuPrice);
     $('#menu_detail').val(menuDetail);
 
-    /*$.ajax({
+    $.ajax({
         url:`/admin/getMenuImg/`+menuNo,
         cache:false,
         xhr:function(){
@@ -192,13 +196,9 @@ function setValuesBeforeUpdateMenu(menuNo, menuName, menuPrice, menuDetail) {
             return xhr;
         },
         success: function(data){
-            var img = document.getElementById('img');
-            var url = window.URL || window.webkitURL;
-            img.src = url.createObjectURL(data);
-
-            
+            menuImgPreview(modify_menuImg_frame, data)
         }
-    });*/
+    });
 
 }
 
