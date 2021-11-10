@@ -130,8 +130,14 @@ function menuImgPreview(id, file) {
     id.src=URL.createObjectURL(file);
 }
 
+// 선택된 메뉴 이미지을 삭제하는 메서드
 function resetMenuImg(id) {
-    id.src = "";
+    $(id).empty();
+    $(id).append(
+        `<img id="add_menuImg_frame" src="" class="menu_img" width="250px" height="250px">
+        <label>메뉴 이미지</label><input type="file" id="menuImg" name="menuImg" onchange="menuImgPreview(add_menuImg_frame, event.target.files[0])">
+        <input type="button" value="초기화" onclick="resetMenuImg(`+id+`)">`
+    );
 }
 
 function addMenu() {

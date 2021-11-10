@@ -365,10 +365,10 @@
         <div class="menuFormArea">
             <!-- 메뉴 등록 폼 -->
             <form id="add_menu_form" name="add_menu_form" action="#" method="post">
-                <div class="menuImageArea">
+                <div class="menuImageArea" id="menuImageArea_addmenu">
                     <img id="add_menuImg_frame" src="" class="menu_img" width="250px" height="250px">
                     <label>메뉴 이미지</label><input type="file" id="menuImg" name="menuImg" onchange="menuImgPreview(add_menuImg_frame, event.target.files[0])">
-                    <input type="button" value="초기화" onclick="resetMenuImg(add_menuImg_frame)">
+                    <input type="button" value="초기화" onclick="resetMenuImg(menuImageArea_addmenu)">
                 </div>
 
                 <div class="menuInfoArea">
@@ -398,10 +398,10 @@
         <div class="menuFormArea">
             <!--메뉴 수정 폼-->
             <form id="modify_menu_form" name="modify_menu_form" action="#" method="post">
-                <div class="menuImageArea">
+                <div class="menuImageArea" id="menuImageArea_modifymenu">
                     <img id="modify_menuImg_frame" src="" class="menu_img" width="250px" height="250px">
                     <label>메뉴 이미지</label><br><input type="file" id="menu_img" name="menu_img" onchange="menuImgPreview(modify_menuImg_frame, event.target.files[0])">
-                    <input type="button" value="초기화" onclick="resetMenuImg(modify_menuImg_frame)">
+                    <input type="button" value="초기화" onclick="resetMenuImg(menuImageArea_modifymenu)">
                 </div>
 
                 <div class="menuInfoArea">
