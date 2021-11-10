@@ -161,6 +161,9 @@ app.get('/cookie', (req, res) => {
 app.get('/orderjs', (req, res) => {
   res.sendFile(__dirname + "/js/order/order.js")
 });
+app.get('/common', (req, res) => {
+  res.sendFile(__dirname + "/js/common.js")
+});
 
 // socket & robotjs 마우스 커서 조작
 io.on('connection', (socket) => { // 소켓 연결이 들어오면 실행

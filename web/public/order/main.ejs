@@ -18,9 +18,8 @@
     ::-webkit-scrollbar{ display:none; }
 
     #container{
-      width: 100%;
-      height: 100%;
-      position: absolute;
+      width: 1440px;
+      height: 735px;
       float: left;
     }
 
@@ -42,122 +41,231 @@
       /* background-color: rgb(224, 224, 224); */
       width: 100%;
       height: 100%;
-      z-index: 0;
+      z-index: -5;
     }
 
-    #categoryList{
-      color: rgba(255, 255, 255, 0.7);
-      position: relative;
+    #categoryArea{
       width: 100%;
-      height: 100px;
+      height: 95px;
       float: left;
-      list-style: none;
-      padding: 0px;
-      margin: 0px;
-      overflow: auto;
-      white-space: nowrap;
     }
 
-    .category{
-      background: linear-gradient( -45deg, rgba(54, 146, 134, 0.5), rgba(54, 146, 134, 0.55));
-      position: relative;
-      width: 22%;
-      height: 100px;
+    #categoryArea #categoryBtn{
+      width: 15%;
+      height: 100%;
+      float: left;
       text-align: center;
-      line-height: 100px;
-      display: inline-block;
+      line-height: 95.6px;
+      font-size: 40px;
+      color: rgba(54, 146, 134, 0.5);
       cursor: pointer;
     }
 
+    #categoryArea #categoryBtn #categoryBtnLeft{
+      width: 50%;
+      height: 100%;
+      background: linear-gradient(to right,  rgba(179, 179, 179, 0.3), rgba(161, 161, 161, 0.3));
+      float: left;
+    }
+    #categoryArea #categoryBtn #categoryBtnLeft:hover{
+      background: linear-gradient(to bottom,  rgba(139, 139, 139, 0.3), rgba(116, 116, 116, 0.3));
+    }
+    
+    #categoryArea #categoryBtn #categoryBtnRight{
+      width: 50%;
+      height: 100%;
+      background: linear-gradient(to right,  rgba(179, 179, 179, 0.3), rgba(161, 161, 161, 0.3));
+      float: left;
+    }
+    #categoryArea #categoryBtn #categoryBtnRight:hover{
+      background: linear-gradient(to bottom,  rgba(139, 139, 139, 0.3), rgba(116, 116, 116, 0.3));
+    }
+
+    #categoryArea #categoryList{
+      color: rgba(255, 255, 255, 0.7);
+      width: 85%;
+      height: 100%;
+      list-style: none;
+      padding: 0px;
+      margin: 0px;
+      overflow: scroll;
+      white-space: nowrap;
+      float: left;
+    }
+
+    #categoryArea #categoryList .category{
+      background: linear-gradient( -45deg, rgba(54, 146, 134, 0.5), rgba(54, 146, 134, 0.55));
+      width: calc(100% / 6);
+      height: 95.6px;
+      text-align: center;
+      line-height: 95.6px;
+      display: inline-block;
+      cursor: pointer;
+    }
+    #categoryArea #categoryList .category:hover{
+      background: linear-gradient( -45deg, rgba(40, 116, 105, 0.5), rgba(40, 116, 105, 0.55));
+    }
+
     #section{
-      height: calc(100% - 100px);
+      height: 640px;
+      width: 1440px;
+      float: left;
     }
 
     #menuList{
-      /* background-color: rgb(214, 156, 156); */
-      position: relative;
-      width: 60%;
+      width: 55%;
       float: left;
       height: 100%;
+      overflow: scroll;
     }
 
     .menu{
       background: linear-gradient( -45deg, rgba(220, 220, 220, 0.5), rgba(241, 241, 241, 0.5));
-      position: relative;
       float: left;
-      width: 33.3%;
-      height: 400px;
+      width: 25%;
+      height: 260px;
       text-align: center;
       border: none;
+      cursor: pointer;
+    }
+
+    .menu:hover{
+      background: linear-gradient( -45deg, rgba(168, 168, 168, 0.5), rgba(185, 185, 185, 0.5));
     }
 
     .menuImg{
-      width: 80%;
-      position: relative;
+      width: 75%;
       margin-top: 20px;
-      margin-bottom: -20px;
     }
 
     .menuTitle{
-      width: 80%;
+      width: 100%;
       line-height: 30px;
-      position: relative;
-      line-height: 50px;
       margin: 0 auto;
-      margin-top: 20px;
+      margin-top: 10px;
     }
 
     .menuPrice{
       width: 80%;
       line-height: 30px;
-      position: relative;
       line-height: 30px;
       margin: 0 auto;
     }
 
     #bag{
-      position: relative;
       float: left;
-      width: 40%;
+      width: 45%;
       height: 100%;
     }
 
-    #orderList{
-      position: relative;
-      float: left;
-      width: 80%;
+    #orderBucket{
+      width: 85%;
       height: 100%;
+      float: left;
+    }
+
+    #orderList{
+      width: 100%;
+      height: 80%;
       background-color: rgba(214, 230, 227, 0.5);
       overflow: scroll;
       font-size: 10px;
     }
 
     .orderMenu{
-      position: relative;
       float: left;
       width: 100%;
-      height: 100px;
-      background: linear-gradient(to bottom,  rgba(189, 209, 206, 0.3), rgba(189, 209, 206, 0.5));
+      height: 20%;
+      background: linear-gradient(to bottom,  rgba(214, 224, 223, 0.3), rgba(214, 224, 223, 0.5));
     }
 
     .orderMenu div{
-      position: relative;
       float: left;
-      width: 25%;
       text-align: center;
-      line-height: 100px;
-      font-size: 3px;
+      line-height: 99.2px;
+      font-size: 11px;
+    }
+
+    .orderMenu .orderMenuName{
+      width: 40%;
+    }
+
+    .orderMenu .orderMenuPrice{
+      width: 15%;
+    }
+
+    .orderMenu .orderQuantity{
+      width: 25%;
+      float: left;
+    }
+
+    .orderMenu .orderQuantity .orderMenuQuantityDec{
+      width: 40%;
+      font-size: 20px;
+      color: rgba(54, 146, 134, 0.5);
+      cursor: pointer;
+    }
+    .orderMenu .orderQuantity .orderMenuQuantityDec:hover{
+      width: 40%;
+      font-size: 20px;
+      background: linear-gradient(to bottom,  rgba(165, 184, 181, 0.3), rgba(165, 184, 181, 0.5));
+    }
+
+    .orderMenu .orderQuantity .orderMenuQuantity{
+      width: 20%;
+      font-size: 15px;
+    }
+
+    .orderMenu .orderQuantity .orderMenuQuantityInc{
+      width: 40%;
+      font-size: 20px;
+      color: rgba(54, 146, 134, 0.5);
+      cursor: pointer;
+    }
+    .orderMenu .orderQuantity .orderMenuQuantityInc:hover{
+      width: 40%;
+      font-size: 20px;
+      background: linear-gradient(to bottom,  rgba(165, 184, 181, 0.3), rgba(165, 184, 181, 0.5));
+    }
+
+    .orderMenu .orderMenuCancel{
+      width: 20%;
+      cursor: pointer;
+    }
+
+    .orderMenu .orderMenuCancel:hover{
+      background: linear-gradient(to bottom,  rgba(165, 184, 181, 0.3), rgba(165, 184, 181, 0.5));
+    }
+
+    #totalPriceArea{
+      width: 100%;
+      height: 20%;
+      background: linear-gradient( 45deg, rgba(59, 155, 142, 0.5), rgba(54, 146, 134, 0.55));
+    }
+
+    #totalPriceArea span{
+      font-size: 25px;
+      line-height: 140px;
+      display: inline-block;
+      margin-left: 10%;
+      width: 40%;
+      color: white;
+      font-weight: 400;
+    }
+
+    #totalPriceArea .bagTotalPrice{
+      font-size: 35px;
+      font-weight: 500;
     }
 
     #orderControl{
-      position: relative;
-      float: left;
-      width: 20%;
+      width: 15%;
       height: 100%;
+      float: left;
+      cursor: pointer;
     }
 
     #orderListUp{
-      position: relative;
       float: left;
       width: 100%;
       height: 25%;
@@ -165,14 +273,20 @@
       text-align: center;
       border: none;
       padding: 0px;
+      font-size: 35px;
+      color: rgba(54, 146, 134, 0.5);
+      cursor: pointer;
+    }
+
+    #orderListUp:hover{
+      background: linear-gradient(to bottom,  rgba(139, 139, 139, 0.3), rgba(116, 116, 116, 0.3));
     }
 
     #orderListUp:active{
-      background: linear-gradient(to bottom,  rgba(139, 139, 139, 0.3), rgba(116, 116, 116, 0.3));
+      background: linear-gradient(to bottom,  rgba(107, 107, 107, 0.3), rgba(95, 95, 95, 0.3));
     }
 
     #orderListDown{
-      position: relative;
       float: left;
       width: 100%;
       height: 25%;
@@ -180,69 +294,77 @@
       text-align: center;
       border: none;
       padding: 0px;
+      font-size: 35px;
+      color: rgba(54, 146, 134, 0.5);
+      cursor: pointer;
     }
 
-    #orderListDown:active{
+    #orderListDown:hover{
       background: linear-gradient(to bottom,  rgba(139, 139, 139, 0.3), rgba(116, 116, 116, 0.3));
     }
 
+    #orderListDown:active{
+      background: linear-gradient(to bottom,  rgba(107, 107, 107, 0.3), rgba(95, 95, 95, 0.3));
+    }
+
     #orderButton{
-      position: relative;
       float: left;
       width: 100%;
       height: 50%;
       background-color: rgba(59, 155, 142, 0.5);
+      color: white;
       text-align: center;
       border: none;
       padding: 0px;
       cursor: pointer;
     }
 
-    #orderButton:active{
-      background-color: rgba(38, 99, 91, 0.5);
+    #orderButton:hover{
+      background: linear-gradient( -45deg, rgba(40, 116, 105, 0.5), rgba(40, 116, 105, 0.55));
     }
 
     .modal{
       display: none;
-      width: 700px;
-      height: 470px;
-      background-color: rgb(247, 247, 247);
+      width: 900px;
+      height: 700px;
+      background-color: rgba(247, 247, 247, 0.6);
       border-radius: 10px;
       text-align: center;
     }
 
     #payments{
       width: 90%;
+      height: 300px;
       /* background-color: thistle; */
       display: inline-block;
       text-align: center;
-      margin-top: 50px;
+      margin-top: 110px;
     }
 
     .payment{
       width: 21%;
-      height: 250px;
-      background-color: rgba(74, 155, 155, 0.6);
+      height: 100%;
+      background-color: rgba(54, 146, 134, 0.5);
       color: white;
       float: left;
       text-align: center;
-      line-height: 250px;
+      line-height: 300px;
       margin: 0 2%;
       border-radius: 10px;
       cursor: pointer;
     }
 
     .payment:hover{
-      background-color: rgb(74, 155, 155);
+      background-color: rgba(45, 124, 114, 0.5);
     }
 
-    #totalPrice{
+    #totalPriceDiv{
       display: inline-block;
       width: 80%;
       height: 20px;
       line-height: 20px;
-      font-size: 15px;
-      margin: 30px 0;
+      font-size: 20px;
+      padding: 50px 0;
       /* background-color: tomato; */
     }
 
@@ -250,7 +372,7 @@
       width: 90%;
       height: 50px;
       display: inline-block;
-      background-color:rgba(216, 216, 216, 0.6);
+      background-color:rgba(184, 184, 184, 0.6);
       line-height: 50px;
       text-align: center;
       border-radius: 10px;
@@ -258,19 +380,15 @@
     }
 
     .modalClose:hover, #phoneBtn:hover{
-      background-color:rgb(216, 216, 216);
+      background-color:rgba(146, 146, 146, 0.6);
     }
-
-    /* #processModal{
-      text-align: center;
-    } */
 
     #processModal .processArea{
       width: 200px;
-      height: 220px;
+      height: 240px;
       display: inline-block;
       /* background-color: darkkhaki; */
-      margin-top: 125px;
+      margin-top: 230px;
     }
 
     #processModal .modalClose{
@@ -281,7 +399,7 @@
       display: inline-block;
       /* background-color: cornsilk; */
       vertical-align: middle;
-      margin-bottom: 20%;
+      margin-bottom: 60px;
     }
 
     .fas, .fa-spinner, .fa-10x{
@@ -305,20 +423,20 @@
     }
 
     #phoneModal .phoneArea{
-      width: 600px;
-      height: 320px;
+      width: 700px;
+      height: 550px;
       /* background-color: darkkhaki; */
       float: left;
       margin-top: 75px;
-      margin-left: 50px;
+      margin-left: 100px;
     }
 
     #phoneModal .phoneArea .phoneOutput{
-      width: 300px;
-      height: 240px;
+      width: 50%;
+      height: 330px;
       display: block;
       float: left;
-      margin-top: 40px;
+      margin-top: 110px;
       /* background-color: darksalmon; */
     }
 
@@ -330,10 +448,11 @@
       line-height: 50px;
       width: calc(100% - 26px);
       border-radius: 10px;
-      border: 3px solid rgb(74, 155, 155);
+      border: 4px solid rgba(54, 146, 134, 0.65);
       padding: 0 10px;
       font-size: 30px;
-      margin: 30px 0;
+      margin: 80px 0;
+      text-align: center;
     }
 
     #phoneModal .phoneArea .phoneOutput input[type="text"]:focus{
@@ -348,31 +467,36 @@
       margin: 0;
       float: right;
       border-radius: 20px;
-      border: 3px solid rgb(216, 216, 216);
+      border: 6px solid rgb(216, 216, 216);
+      background-color: rgba(255, 255, 255, 0.3);
       padding: 0;
       border-spacing: 0;
+      width: 270px;
+      height: 400px;
+      margin-top: 75px;
     }
 
     #phoneModal .phoneArea table tbody{
-      width: 240px;
-      height: 320px;
       display: block;
+      width: 100%;
+      height: 100%;
     }
 
     #phoneModal .phoneArea table tbody tr{
-      height: 80px;
+      height: 100px;
       /* background-color: darkslategrey; */
       vertical-align: middle;
     }
 
     #phoneModal .phoneArea table tbody tr td{
-      width: 80px;
+      width: 90px;
       border-radius: 15px;
       vertical-align: middle;
+      cursor: pointer;
     }
 
     #phoneModal .phoneArea table tbody tr td:hover{
-      background: rgb(216, 216, 216);
+      background-color: rgba(54, 146, 134, 0.5);
     }
 
     #finishModal{
@@ -382,7 +506,7 @@
     #finishModal .finishArea{
       width: 100%;
       height: 100px;
-      margin-top: 185px;
+      margin-top: 300px;
     }
 
     #finishModal .finishArea p{
@@ -398,7 +522,12 @@
   <div id="container">
     <video class="input_video"></video>
 
-    <ul id="categoryList">
+    <div id="categoryArea">
+      <div id="categoryBtn">
+        <div id="categoryBtnLeft" onclick="categoryScroll(this.id);">◀︎</div>
+        <div id="categoryBtnRight" onclick="categoryScroll(this.id);">▶︎</div>
+      </div>
+      <ul id="categoryList">
         <!--
         <li class="category"> COFFEE
         <li class="category"> TEA
@@ -406,12 +535,15 @@
         <li class="category"> JUICE
         <li class="category"> BAKERY
         <li class="category"> SMOOTHIE
+        <li class="category"> BEER
+        <li class="category"> CAKE
           -->
-    </ul>
+      </ul>
+    </div>
+    
 
     <div id="section">
       <div id="menuList">
-
         <!-- 
         <div class="menu" onclick="gestureButtonClick();">
           <img class="menuImg" src="../img/img1.png" alt=" hippo">
@@ -422,37 +554,41 @@
       </div>
 
       <div id="bag">
-        <div id="orderList">
-        <!--
-          <div class="orderMenu">
-              <div class="orderMenuName">  AMERICANO(ICE) </div>
-              <div class="orderMenuPrice"> 3,000 </div>
-              <div class="orderQuantity">
-                <div class="orderMenuQuantityDec"> ▼ </div>
-                <div class="orderMenuQuantity"> 3 </div>
-                <div class="orderMenuQuantityInc"> ▲ </div>
-              </div>
-              <div class="orderMenuCancel"> CANCEL </div>
+        <div id="orderBucket">
+          <div id="orderList">
+            <!--
+            <div class="orderMenu">
+                <div class="orderMenuName">  AMERICANO(ICE) </div>
+                <div class="orderMenuPrice"> 3,000 </div>
+                <div class="orderQuantity">
+                  <div class="orderMenuQuantityDec"> ▼ </div>
+                  <div class="orderMenuQuantity"> 3 </div>
+                  <div class="orderMenuQuantityInc"> ▲ </div>
+                </div>
+                <div class="orderMenuCancel"> CANCEL </div>
+            </div>
+            -->
           </div>
-        -->
-        </div>
-        
+          <div id="totalPriceArea">
+            <span>총 결제 금액</span><span class="bagTotalPrice" id="totalPriceSpan">00원</span>
+          </div>
+      </div>
         <div id="orderControl">
           <button id="orderListUp" onclick="orderScroll(this.id);"> ▲ </button>
           <button id="orderListDown" onclick="orderScroll(this.id);"> ▼ </button>
           <button id="orderButton"> ORDER </button>
         </div>
+        </div>
       </div>    
     </div>
-
     <div id="paymentsModal" class="modal">
       <div id="payments">
         <div class="payment" id="creditCard" onclick="payingProcess(this.id);">신용카드</div>
         <div class="payment" id="kakaoPay" onclick="payingProcess(this.id);">카카오페이</div>
         <div class="payment" id="payco" onclick="payingProcess(this.id);">페이코</div>
         <div class="payment" id="samsungPay" onclick="payingProcess(this.id);">삼성페이</div>
-      </div><br>
-      <div id="totalPrice">총 결제 금액 12,500원</div>
+      </div>
+      <div id="totalPriceDiv">총 결제 금액 00원</div>
       <a><div class="modalClose">이전 단계</div></a>
     </div>
   
@@ -517,6 +653,7 @@
 <script src="/socket.io/socket.io.js"></script>
 <script type="text/javascript" src="/cookie"></script>
 <script type="text/javascript" src="/orderjs"></script>
+<script type="text/javascript" src="/common"></script>
 <script type="text/javascript">
   var socket = io(); // socket 통신 -> 마우스 커서 연결
 
@@ -525,6 +662,7 @@
     var zIndex = 9999;
     var modal = document.getElementById(id);
     var canvas = document.getElementsByClassName('output_canvas')[0];
+    var container = document.getElementById('container');
 
     // 모달 div 뒤에 희끄무레한 레이어
     var bg = document.createElement('div');
@@ -539,15 +677,18 @@
         height: '100%',
         overflow: 'auto',
         // 레이어 색갈은 여기서 바꾸면 됨
-        backgroundColor: 'rgba(0,0,0,0.4)'
+        backgroundColor: 'rgba(0,0,0,0.2)'
     });
     document.body.append(bg);
 
+    container.style.display = 'none';
+
     // 닫기 버튼 처리, 시꺼먼 레이어와 모달 div 지우기
     modal.querySelector('.modalClose').addEventListener('click', function() {
-        bg.remove();
-        modal.style.display = 'none';
-    });
+      bg.remove();
+      modal.style.display = 'none';
+      container.style.display = '';
+  });
 
     modal.setStyle({
         position: 'fixed',
@@ -564,16 +705,15 @@
         msTransform: 'translate(-50%, -50%)',
         webkitTransform: 'translate(-50%, -50%)'
     });
-
-    // canvas.setStyle({
-    //   zIndex: zIndex - 1
-    // });
   }
 
   // 결제 진행 중 모달
   function modal_process(id){
     var zIndex = 9999;
     var modal = document.getElementById(id);
+    var prevModal = document.getElementById('paymentsModal');
+
+    prevModal.style.display = 'none';
 
     // 닫기 버튼 처리, 시꺼먼 레이어와 모달 div 지우기
     modal.querySelector('.modalClose').addEventListener('click', function() {
@@ -628,6 +768,7 @@
   function modal_finish(id){
     var zIndex = 9999;
     var modal = document.getElementById(id);
+    var container = document.getElementById('container');
 
     modal.setStyle({
         position: 'fixed',
@@ -696,6 +837,7 @@
         modals[i].style.display = 'none';
       }
       bg.style.display = 'none';
+      container.style.display = '';
     }, 3000);
   });
 
@@ -704,22 +846,34 @@
     console.log(document.getElementsByClassName('menuTitle').text());
   }
 
+  function categoryScroll(clicked_id){
+    const categoryList = document.getElementById('categoryList');
+    const clickedButton = document.getElementById(clicked_id);
+
+    if(clicked_id == 'categoryBtnLeft'){
+      categoryList.scrollBy(-204, 0);
+    }
+
+    else{
+      categoryList.scrollBy(204, 0);
+    }
+  }
+
   function orderScroll(clicked_id){
     const orderList = document.getElementById('orderList');
     const clickedButton = document.getElementById(clicked_id);
 
     if(clicked_id == 'orderListUp'){
-      orderList.scrollBy(0, -80);
+      orderList.scrollBy(0, -99.2);
     }
 
     else{
-      orderList.scrollBy(0, 80);
+      orderList.scrollBy(0, 99.2);
     }
+  }
 
-    clickedButton
-}
 </script>
-<script>
+<script type="module">
   // mediapipe script
   const videoElement = document.getElementsByClassName('input_video')[0];
   const canvasElement = document.getElementsByClassName('output_canvas')[0];
@@ -759,8 +913,8 @@
     if (results.multiHandLandmarks) {
       for (const landmarks of results.multiHandLandmarks) { // landmarks.length == 21 (0-20)
         
-        // drawConnectors(canvasCtx, landmarks, HAND_CONNECTIONS, {color: '#f0c697', lineWidth: 20});
-        // drawLandmarks(canvasCtx, landmarks, {color: '#f5c9a9', lineWidth: 10});
+        drawConnectors(canvasCtx, landmarks, HAND_CONNECTIONS, {color: '#f0c697', lineWidth: 20});
+        drawLandmarks(canvasCtx, landmarks, {color: '#f5c9a9', lineWidth: 10});
         
 
         var x = landmarks[8]['x'];
@@ -768,10 +922,10 @@
         x = width - width * x;
         y = height * y;
 
-        canvasCtx.fillStyle = "black";
-        canvasCtx.fillRect((width - x), y, 10, 10);
+        // canvasCtx.fillStyle = "black";
+        // canvasCtx.fillRect((width - x), y, 10, 10);
 
-        socket.emit('location', [x, y]); // 소켓 이용하여 손가락 좌표 정보 전달
+        // socket.emit('location', [x, y]); // 소켓 이용하여 손가락 좌표 정보 전달
       }
     }
     canvasCtx.restore();
