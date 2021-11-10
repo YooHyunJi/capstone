@@ -167,8 +167,8 @@
 
     .modal{
       display: none;
-      width: 70%;
-      height: 70%;
+      width: 700px;
+      height: 470px;
       background-color: rgb(61, 61, 61);
       border-radius: 10px;
     }
@@ -187,7 +187,6 @@
 
     .menuFormArea{
         background-color: rgb(255, 255, 255);
-        text-align: center;
         float: left;
         width: 100%;
         height: 100%;
@@ -225,7 +224,7 @@
         float: right;
         line-height: 22px;
         margin-bottom: 0px;
-        margin-right: 20%;
+        margin-right: 50px;
         padding: 0;
     }
 
@@ -263,25 +262,61 @@
     }
 
     .menu_img{
-        width: 40%;
-        margin: 5%;
+        width: 300px;
+        margin: 35px;
         float: left;
     }
     
     .detailList{
         float: left;
-        width: 10%;
+        width: 70px;
         float: left;
-        margin-top: 5%;
+        margin-top: 50px;
     }
 
     .category_no, .menu_name, .menu_price, .menu_detail{
-        width: 30%;
-        margin-top: 5%;
-        margin-right: 5%;
+        width: 220px;
+        margin-top: 50px;
+        margin-right: 35px;
         float: right;
     }
-    
+
+    .menuImageArea{
+        width: 370px;
+        height: 470px;
+        /* background-color: beige; */
+        float: left;
+    }
+
+    .menuImageArea label{
+        width: 100px;
+        height: 50px;
+        margin-left: 50px;
+    }
+
+    .menuImageArea input[type="file"]{
+        float: left;
+        margin: 20px 0 0 50px;
+    }
+
+    .menuInfoArea{
+        width: 330px;
+        height: 470px;
+        /* background-color: darkgrey; */
+        float: left;
+    }
+
+    .menuInfoArea select, input{
+        height: 22px;
+        width: 200px;
+        float: right;
+        line-height: 22px;
+        margin-bottom: 0px;
+        margin-right: 50px;
+        margin-top: 50px;
+        padding: 2px;
+    }
+
     .menu_no, .menu_no_input{
         display: none;
     }
@@ -328,21 +363,23 @@
     <div id="addMenuModal" class="modal">
         <a><div class="modalClose"></div></a>
         <div class="menuFormArea">
-            <!--메뉴 등록 폼-->
+            <!-- 메뉴 등록 폼 -->
             <form id="add_menu_form" name="add_menu_form" action="#" method="post">
-                <br><br>
-                <h2>새 메뉴 추가</h2><br>
-                <label>카테고리</label>
-                <select id= "selectCategory" name="selectCategory">
-                </select>
-                <br><br><br>
-                <label>이름</label><input type="text" id="menuName" name="menuName"><br><br><br>
-                <label>가격</label><input type="text" id="menuPrice" name="menuPrice"><br><br><br>
-                <label>상세 정보</label><input type="text" id="menuDetail" name="menuDetail"><br><br><br>
-                <label>메뉴 이미지</label><input type="file" id="menuImg" name="menuImg" onchange="menuImgPreview(add_menuImg_frame, event.target.files[0])"><br> <!-- 메뉴 이미지에 대한 컬럼이 부재하여 임의로 menu_img로 설정 -->
-                <br>
-                <img id="add_menuImg_frame" src="" width="300px" height="300px"/><br>
-                <input type="button" value="새 메뉴 추가" onclick="addMenu()">
+                <div class="menuImageArea">
+                    <img id="add_menuImg_frame" src="" width="325px" height="250px">
+                    <label>메뉴 이미지</label><input type="file" id="menuImg" name="menuImg" onchange="menuImgPreview(add_menuImg_frame, event.target.files[0])">
+                </div>
+
+                <div class="menuInfoArea">
+                    <span class="detailList">카테고리</span>
+                    <select id= "selectCategory" name="selectCategory">
+                    </select><br><br><br>
+                    <span class="detailList">이름</span><input type="text" id="menuName" name="menuName"><br><br><br>
+                    <span class="detailList">가격</span><input type="text" id="menuPrice" name="menuPrice"><br><br><br>
+                    <span class="detailList">상세 정보</span><input type="text" id="menuDetail" name="menuDetail"><br><br><br>
+                    <input type="button" value="새 메뉴 추가" onclick="addMenu()"><br><br><br>
+                    <span class="menu_no">메뉴번호</span><input type="text" class="menu_no_input" id="menuNo" name="menuNo">
+                </div>
             </form>
         </div>
     </div>
@@ -360,19 +397,21 @@
         <div class="menuFormArea">
             <!--메뉴 수정 폼-->
             <form id="modify_menu_form" name="modify_menu_form" action="#" method="post">
-                <br><br>
-                <h2>메뉴 수정</h2><br>
-                <label class="menu_no">메뉴 번호</label><input type="text" class="menu_no_input" id="menu_no" name="menu_no"><br>
-                <label>카테고리</label>
-                <select id= "select_category" name="select_category">
-                </select>
-                <br><br><br>
-                <label>이름</label><input type="text" id="menu_name" name="menu_name"><br><br><br>
-                <label>가격</label><input type="text" id="menu_price" name="menu_price"><br><br><br>
-                <label>상세 정보</label><input type="text" id="menu_detail" name="menu_detail"><br><br><br>
-                <label>메뉴 이미지</label><input type="file" id="menu_img" name="menu_img" onchange="menuImgPreview(modify_menuImg_frame, event.target.files[0])"><br>
-                <img id="modify_menuImg_frame" src="" width="300px" height="300px"/><br>
-                <input type="button" value="메뉴 수정" onclick="updateMenu()">
+                <div class="menuImageArea">
+                    <img id="modify_menuImg_frame" src="" class="menu_img" width="250px" height="250px">
+                    <label>메뉴 이미지</label><br><input type="file" id="menu_img" name="menu_img" onchange="menuImgPreview(modify_menuImg_frame, event.target.files[0])">
+                </div>
+
+                <div class="menuInfoArea">
+                    <span class="detailList">카테고리</span>
+                    <select id= "select_category" name="select_category">
+                    </select><br><br><br>
+                    <span class="detailList">이름</span><input type="text" id="menu_name" name="menu_name"><br><br><br>
+                    <span class="detailList">가격</span><input type="text" id="menu_price" name="menu_price"><br><br><br>
+                    <span class="detailList">상세 정보</span><input type="text" id="menu_detail" name="menu_detail"><br><br><br>
+                    <input type="button" value="메뉴 수정" onclick="updateMenu()"><br><br><br>
+                    <span class="menu_no">메뉴번호</span><input type="text" class="menu_no_input" id="menu_no" name="menu_no">
+                </div>
             </form>
         </div>
     </div>

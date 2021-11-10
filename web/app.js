@@ -123,22 +123,22 @@ app.get('/manage_menu', (req, res) => {
   res.sendFile(__dirname + "/public/admin/manage_menu.html")
 })
 app.get('/user', (req, res) => {
-  res.sendFile(__dirname + "/js/user.js")
+  res.sendFile(__dirname + "/js/admin/user.js")
 })
 app.get('/store', (req, res) => {
-  res.sendFile(__dirname + "/js/store.js")
+  res.sendFile(__dirname + "/js/admin/store.js")
 })
 app.get('/category', (req, res) => {
-  res.sendFile(__dirname + "/js/category.js")
+  res.sendFile(__dirname + "/js/admin/category.js")
 })
 app.get('/menu', (req, res) => {
-  res.sendFile(__dirname + "/js/menu.js")
+  res.sendFile(__dirname + "/js/admin/menu.js")
 })
 app.get('/order', (req, res) => {
-  res.sendFile(__dirname + "/js/order.js")
+  res.sendFile(__dirname + "/js/admin/order.js")
 })
 app.get('/modal', (req, res) => {
-  res.sendFile(__dirname + "/js/modal.js")
+  res.sendFile(__dirname + "/js/admin/modal.js")
 })
 app.get('/mp', (req, res) => { // 임시
   res.sendFile(__dirname + "/test/mouse_cursor.html")

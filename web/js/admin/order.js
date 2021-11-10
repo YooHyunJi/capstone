@@ -50,7 +50,7 @@ function getAllOrders() {
                     <td>${result.orders[i].totalPrice}</td>
                     <td class="orderCancel">`+cancelYn+`</td>
                     <td class="orderDetail" onclick="getOrderDetails('${result.orders[i].orderNo}')">-</td>
-                    <td class="changeStatusBtn" onclick="changeOrderStatus('${result.orders[i].orderStatus}', '${result.orders[i].cancelYn}', '${result.orders[i].orderNo}')">준비완료</td>
+                    <td class="changeStatusBtn" onclick="changeOrderStatus('${result.orders[i].orderStatus}', '${result.orders[i].cancelYn}', '${result.orders[i].orderNo}', '${result.orders[i].customerTel}')">준비완료</td>
                     <td class="orderCancelBtn" onclick="cancelOrder('${result.orders[i].orderStatus}', '${result.orders[i].cancelYn}', '${result.orders[i].orderNo}')">취소</td>
                     </tr>`
                 )
@@ -96,7 +96,7 @@ function cancelOrder(orderStatus, cancelYn, orderNo) {
     }
 }
 
-function changeOrderStatus(orderStatus, cancelYn, orderNo) {
+function changeOrderStatus(orderStatus, cancelYn, orderNo, customerTel) {
     if (cancelYn=='Y') {
         alert('취소된 주문임');
         location.href="/manage_order";
@@ -108,6 +108,7 @@ function changeOrderStatus(orderStatus, cancelYn, orderNo) {
         return;
     }
     else if (orderStatus=='0' && cancelYn=='N') {
+        // 주문상태 변경 서버와 통신
         $.ajax({
             type: 'POST',
             url: '/admin/changeOrderStatus',
@@ -121,6 +122,20 @@ function changeOrderStatus(orderStatus, cancelYn, orderNo) {
                 location.href="/manage_order";
             }
         })
+
+        // 픽업메시지 발송
+        /*$.ajax({
+            type: 'POST',
+            url: '/api/sens/order',
+            contentType: 'application/json',
+            data: JSON.stringify({'phone': customerTel, 'orderNo': orderNo}), 
+            success: function(res) {
+                console.log('send message success');
+            }, 
+            error: function(err) {
+                console.log('send message error', err);
+            }
+        });*/
     }
 }
 

@@ -131,10 +131,10 @@ function menuImgPreview(id, file) {
 }
 
 function addMenu() {
-    if (!$('#menuName') || !$('#menuPrice') || !$('#menuDetail') || !$('#menuImg').src) {
+    /*if (!$('#menuName') || !$('#menuPrice') || !$('#menuDetail') || !$('#menuImg').src) {
         alert('미입력');
         return;
-    }
+    }*/
 
     var form = $('#add_menu_form')[0];
     var formData = new FormData(form);
@@ -203,10 +203,10 @@ function setValuesBeforeUpdateMenu(menuNo, menuName, menuPrice, menuDetail) {
 }
 
 function updateMenu() {
-    if (!$('#menu_name') || !$('#menu_price') || !$('#menu_detail') || !$('#menu_img').src) {
+    /*if (!$('#menu_name') || !$('#menu_price') || !$('#menu_detail') || !$('#menu_img').src) {
         alert('미입력');
         return;
-    }
+    }*/
 
     var form = $('#modify_menu_form')[0];
     var formData = new FormData(form);
