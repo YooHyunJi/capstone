@@ -1,7 +1,6 @@
 let path = require('path');
 let moment = require('moment');
 const config = require('../../config/db_config');
-const { runInNewContext } = require('vm');
 const connection = config.init();
 connection.connect();
 

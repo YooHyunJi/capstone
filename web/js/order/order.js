@@ -196,7 +196,7 @@ $(document).ready(function() {
                 class: 'menuTitle',
             })).append($('<h4 />', {
                 class: 'menuPrice',
-                text: priceGetComma(data.menuPrice,) + '원'
+                text: '₩' + priceGetComma(data.menuPrice,)
             })))
         });
     }
@@ -294,8 +294,8 @@ $(document).ready(function() {
                 text: 'CANCEL',
                 click: function() {
                     totalPrice -= shoppingCartList[$(this).parent().attr('id')]["totalPrice"];
-                    $('#totalPriceSpan').text(totalPrice + '원');
-                    $('#totalPriceDiv').text('총 결제 금액 ' + totalPrice + '원');
+                    $('#totalPriceSpan').text(priceGetComma(totalPrice) + '원');
+                    $('#totalPriceDiv').text('총 결제 금액 ' + priceGetComma(totalPrice) + '원');
                     if (delete shoppingCartList[$(this).parent().attr('id')]) {
                         $(this).parent().remove();
                         // deleteCookie("shoppingCart"); 

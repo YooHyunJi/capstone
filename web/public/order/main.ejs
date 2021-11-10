@@ -911,21 +911,24 @@
     var middle;
         
     if (results.multiHandLandmarks) {
-      for (const landmarks of results.multiHandLandmarks) { // landmarks.length == 21 (0-20)
+      for (const landmarks of results.multiHandLandmarks) { 
         
+        // 미디어파이프를 통해 얻은 랜드마크 이용하여 손모양 표현
         drawConnectors(canvasCtx, landmarks, HAND_CONNECTIONS, {color: '#f0c697', lineWidth: 20});
         drawLandmarks(canvasCtx, landmarks, {color: '#f5c9a9', lineWidth: 10});
-        
-
+      
+        // 검지손가락(8번) 좌표
         var x = landmarks[8]['x'];
         var y = landmarks[8]['y'];
-        x = width - width * x;
+        x = width - width * x; // 웹캠 좌우반전
         y = height * y;
 
+        // canvas(미디어파이프 결과 영상) 위 검지손가락에 포인트 달아줌
         // canvasCtx.fillStyle = "black";
         // canvasCtx.fillRect((width - x), y, 10, 10);
 
-        // socket.emit('location', [x, y]); // 소켓 이용하여 손가락 좌표 정보 전달
+        // 소켓 이용하여 서버에 검지손가락 좌표값 전달
+        socket.emit('location', [x, y]); 
       }
     }
     canvasCtx.restore();
