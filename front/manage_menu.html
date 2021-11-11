@@ -494,31 +494,7 @@
         </div>
     </div>
 
-    <div id="modifyCategoryModal" class="modal">
-        <!-- <a><div class="modalClose"></div></a>
-        <div class="menuFormArea">
-            <form name="add_menu_form" action="#" method="post">
-                <br><br>
-                <h2>메뉴 수정</h2><br>
-                <label>카테고리</label>
-                <select name="category_no">
-                    <option value="coffee">COFFEE</option>
-                    <option value="juice">JUICE</option>
-                    <option value="ade">ADE</option>
-                    <option value="tea" selected="selected">TEA</option>
-                    <option value="smoothie">SMOOTHIE</option>
-                    <option value="cake">CAKE</option>
-                    <option value="beer">BEER</option>
-                </select>
-                <br><br><br>
-                <label>이름</label><input type="text" name="menu_name" value="레몬라임"><br><br><br>
-                <label>가격</label><input type="number" name="menu_price" value=3500><br><br><br>
-                <label>상세 정보</label><input type="text" name="menu_detail" value="non-caffeine"><br><br><br>
-                <label>메뉴 이미지</label><input type="file" name="menu_img"><br>
-                <br>
-                <input type="button" value="메뉴 수정" onclick="alert('메뉴가 수정되었습니다'); location.href='manage_menu.html'">
-            </form>
-        </div> -->
+    <div id="modifyMenuModal" class="modal">
         <a><div class="modalClose"></div></a>
         <div class="menuFormArea">
             <div class="menuImageArea">
@@ -563,7 +539,7 @@
 
     $(function modifyMenu(){
         $(".modifyMenu").on("click", function(){
-            modal('modifyCategoryModal');
+            modal('modifyMenuModal');
         });
     });
 
