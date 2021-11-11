@@ -159,21 +159,20 @@ app.get('/common', (req, res) => {
 // socket & robotjs 마우스 커서 조작
 io.on('connection', (socket) => { // 소켓 연결이 들어오면 실행
   // 클라이언트에서 수신받은 정보
+
+  // 미디어파이프 8번 손가락(검지) 위치 정보
   socket.on('location', (msg) => {
-      // console.log('Message received: ' + msg);
-
-      // var screenSize = robot.getScreenSize();
-      // var height = (screenSize.height / 2) - 10;
-      // var width = screenSize.width;
-
-      // 마우스 좌표
-      // var x = (width - msg[0] * width); // 좌우반전
-      // var y = msg[1] * height;
       var x = msg[0];
       var y = msg[1];
 
       robot.moveMouse(x, y);
   });
+
+  // 주문 완료 시
+  socket.on('orderInfo', (msg) => {
+    io.emit('orderInfo', msg);
+  });
+
 });
 
 server.listen(port, function() {

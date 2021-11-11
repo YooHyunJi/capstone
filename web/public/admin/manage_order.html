@@ -326,4 +326,14 @@
 <script src="http://code.jquery.com/jquery-latest.js"></script>
 <script type="text/javascript" src="/order"></script>
 <script src="/modal"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script type="text/javascript">
+
+    // 주문 시스템과 소켓 통신
+    var socket = io(); 
+    // orderInfo 데이터 수신 시
+    socket.on('orderInfo', (msg) => { 
+        alert('주문 발생! ' + msg["orderNo"]);
+    });
+</script>
 </html>

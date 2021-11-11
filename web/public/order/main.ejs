@@ -914,8 +914,8 @@
       for (const landmarks of results.multiHandLandmarks) { 
         
         // 미디어파이프를 통해 얻은 랜드마크 이용하여 손모양 표현
-        drawConnectors(canvasCtx, landmarks, HAND_CONNECTIONS, {color: '#f0c697', lineWidth: 20});
-        drawLandmarks(canvasCtx, landmarks, {color: '#f5c9a9', lineWidth: 10});
+        // drawConnectors(canvasCtx, landmarks, HAND_CONNECTIONS, {color: '#f0c697', lineWidth: 20});
+        // drawLandmarks(canvasCtx, landmarks, {color: '#f5c9a9', lineWidth: 10});
       
         // 검지손가락(8번) 좌표
         var x = landmarks[8]['x'];
@@ -928,7 +928,7 @@
         // canvasCtx.fillRect((width - x), y, 10, 10);
 
         // 소켓 이용하여 서버에 검지손가락 좌표값 전달
-        socket.emit('location', [x, y]); 
+        // socket.emit('location', [x, y]); 
       }
     }
     canvasCtx.restore();

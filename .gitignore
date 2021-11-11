@@ -1,3 +1,6 @@
+# 이미지파일 업로드
+web/uploads
+
 # DB config 정보
 web/config/db_config.js
 
