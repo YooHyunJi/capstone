@@ -131,13 +131,20 @@ function menuImgPreview(id, file) {
 }
 
 // 선택된 메뉴 이미지을 삭제하는 메서드
-function resetMenuImg(id) {
-    $(id).empty();
-    $(id).append(
-        `<img id="add_menuImg_frame" src="" class="menu_img" width="250px" height="250px">
+function resetMenuImg(area, code) {
+    $(area).empty();
+    let addHtml = ``;
+    if (code==0) { // 메뉴 등록 이미지의 경우
+        addHtml = `<img id="add_menuImg_frame" src="" class="menu_img" width="250px" height="250px">
         <label>메뉴 이미지</label><input type="file" id="menuImg" name="menuImg" onchange="menuImgPreview(add_menuImg_frame, event.target.files[0])">
-        <input type="button" value="초기화" onclick="resetMenuImg(`+id+`)">`
-    );
+        <input type="button" value="초기화" onclick="resetMenuImg(menuImageArea_addmenu, 0)">`
+    }
+    else if (code==1) { // 메뉴 수정 이미지의 경우
+        addHtml = `<img id="modify_menuImg_frame" src="" class="menu_img" width="250px" height="250px">
+        <label>메뉴 이미지</label><br><input type="file" id="menu_img" name="menu_img" onchange="menuImgPreview(modify_menuImg_frame, event.target.files[0])">
+        <input type="button" value="초기화" onclick="resetMenuImg(menuImageArea_modifymenu, 1)">`
+    }
+    $(area).append(addHtml);
 }
 
 function addMenu() {

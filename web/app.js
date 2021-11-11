@@ -78,7 +78,7 @@ app.use('/api/sens', sensApiRouter);
 
 // 메인
 app.get('/', (req, res) => {
-    res.sendFile(__dirname + "/public/main.html");
+    res.sendFile(__dirname + "/public/admin/main_logout.html");
 });
 
 // 미디어파이프 제스처 인식 테스트
@@ -95,9 +95,6 @@ app.get('/test/:id', (req, res) => {
 })
 
 // 관리 시스템 controller
-app.get('/admin', (req, res) => {
-    res.sendFile(__dirname + "/public/admin/main.html")
-})
 app.get('/join', (req, res) => {
   res.sendFile(__dirname + "/public/admin/join.html")
 })
@@ -139,12 +136,6 @@ app.get('/order', (req, res) => {
 })
 app.get('/modal', (req, res) => {
   res.sendFile(__dirname + "/js/admin/modal.js")
-})
-app.get('/mp', (req, res) => { // 임시
-  res.sendFile(__dirname + "/test/mouse_cursor.html")
-})
-app.get('/mp_copy', (req, res) => { // 임시
-  res.sendFile(__dirname + "/test/mouse_cursor_copy.html")
 })
 app.get('/test2', (req, res) => { // 임시
   res.sendFile(__dirname + "/public/admin/test.html")

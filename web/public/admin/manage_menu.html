@@ -368,7 +368,7 @@
                 <div class="menuImageArea" id="menuImageArea_addmenu">
                     <img id="add_menuImg_frame" src="" class="menu_img" width="250px" height="250px">
                     <label>메뉴 이미지</label><input type="file" id="menuImg" name="menuImg" onchange="menuImgPreview(add_menuImg_frame, event.target.files[0])">
-                    <input type="button" value="초기화" onclick="resetMenuImg(menuImageArea_addmenu)">
+                    <input type="button" value="초기화" onclick="resetMenuImg(menuImageArea_addmenu, 0)">
                 </div>
 
                 <div class="menuInfoArea">
@@ -401,7 +401,7 @@
                 <div class="menuImageArea" id="menuImageArea_modifymenu">
                     <img id="modify_menuImg_frame" src="" class="menu_img" width="250px" height="250px">
                     <label>메뉴 이미지</label><br><input type="file" id="menu_img" name="menu_img" onchange="menuImgPreview(modify_menuImg_frame, event.target.files[0])">
-                    <input type="button" value="초기화" onclick="resetMenuImg(menuImageArea_modifymenu)">
+                    <input type="button" value="초기화" onclick="resetMenuImg(menuImageArea_modifymenu, 1)">
                 </div>
 
                 <div class="menuInfoArea">
