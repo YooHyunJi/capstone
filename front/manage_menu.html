@@ -175,6 +175,10 @@
       border-radius: 10px;
     }
 
+    #addMenuModal select, #addMenuModal input[type="text"], #addMenuModal input[type="number"], #addMenuModal input[type="file"]{
+        margin-right: 140px;
+    }
+
     .modalClose{
       width: 20px;
       height: 20px;
@@ -204,10 +208,9 @@
 
     .menuFormArea form h2{
         color: rgb(99, 99, 99);
-        line-height: 30px;
+        line-height: 50px;
         width: 100%;
-        margin: 20px 0;
-        margin-top: 0px;
+        margin: 30px 0;
     }
 
     .menuFormArea form label{
@@ -237,7 +240,7 @@
         outline: 0.5px solid rgb(236, 236, 236);
         line-height: 30px;
         margin-bottom: 20px;
-        margin-right: 20%;
+        margin-right: 50px;
     }
 
     .menuFormArea form input:focus{
@@ -245,7 +248,7 @@
         outline: 0.5px solid rgb(135, 192, 184);
     }
 
-    .menuFormArea form input[value="새 메뉴 추가"], input[value="메뉴 수정"]{
+    .menuFormArea form input[value="새 메뉴 추가"]{
         width: 300px;
         line-height: 40px;
         height: 40px;
@@ -308,15 +311,34 @@
         float: left;
     }
 
-    .menuInfoArea select, input{
+    .menuInfoArea select, .menuInfoArea input{
         height: 22px;
         width: 200px;
         float: right;
         line-height: 22px;
         margin-bottom: 0px;
         margin-right: 50px;
-        margin-top: 50px;
+        margin-top: 45px;
         padding: 2px;
+    }
+
+    .menuInfoArea select{
+        height: 30px;
+        width: 208px;
+    }
+
+    .menuInfoArea input[value="메뉴 수정"]{
+        width: 280px;
+        line-height: 50px;
+        height: 50px;
+        font-size: 15px;
+        border: none;
+        border-radius: 10px;
+        background-color: rgb(200, 200, 200);
+        color: white;
+        cursor: pointer;
+        margin-right: 50px;
+        margin-top: 70px;
     }
 
   </style>
@@ -440,8 +462,7 @@
         <div class="menuFormArea">
             <!--메뉴 등록 폼-->
             <form name="add_menu_form" action="#" method="post">
-                <br><br>
-                <h2>새 메뉴 추가</h2><br>
+                <h2>새 메뉴 추가</h2>
                 <label>카테고리</label>
                 <select name="category_no">
                     <option value="coffee">COFFEE</option>
@@ -456,8 +477,7 @@
                 <label>이름</label><input type="text" name="menu_name"><br><br><br>
                 <label>가격</label><input type="number" name="menu_price"><br><br><br>
                 <label>상세 정보</label><input type="text" name="menu_detail"><br><br><br>
-                <label>메뉴 이미지</label><input type="file" name="menu_img"><br> <!-- 메뉴 이미지에 대한 컬럼이 부재하여 임의로 menu_img로 설정 -->
-                <br>
+                <label>메뉴 이미지</label><input type="file" name="menu_img"><br><br><br>
                 <input type="button" value="새 메뉴 추가" onclick="alert('메뉴가 추가되었습니다'); location.href='manage_menu.html'">
             </form>
         </div>
@@ -519,7 +539,8 @@
                 </select><br><br><br><br>
                 <span class="detailList">이름</span><input type="text" name="menu_name" value="레몬라임"><br><br><br><br>
                 <span class="detailList">가격</span><input type="number" name="menu_price" value=3500><br><br><br><br>
-                <span class="detailList">상세 정보</span><input type="text" name="menu_detail" value="non-caffeine">
+                <span class="detailList">상세 정보</span><input type="text" name="menu_detail" value="non-caffeine"><br>
+                <input type="button" value="메뉴 수정" onclick="alert('메뉴가 수정되었습니다'); location.href='manage_menu.html'">
             </div>
         </div>
     </div>
