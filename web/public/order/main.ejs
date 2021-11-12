@@ -517,13 +517,16 @@
   </style>
 </head>
 <body>
+  <!-- 서버에서 세션값으로 받아온 storeNo (ejs)-->
+  <a style="display: none;" id="storeNo"><%= storeNo %></a>
+
   <canvas class="output_canvas" width="1280px" height="720px"></canvas>
 
   <div id="container">
     <video class="input_video"></video>
-
     <div id="categoryArea">
       <div id="categoryBtn">
+        
         <div id="categoryBtnLeft" onclick="categoryScroll(this.id);">◀︎</div>
         <div id="categoryBtnRight" onclick="categoryScroll(this.id);">▶︎</div>
       </div>
@@ -570,7 +573,7 @@
             -->
           </div>
           <div id="totalPriceArea">
-            <span>총 결제 금액</span><span class="bagTotalPrice" id="totalPriceSpan">00원</span>
+            <span>총 결제 금액</span><span class="bagTotalPrice" id="totalPriceSpan">0원</span>
           </div>
       </div>
         <div id="orderControl">
@@ -588,7 +591,7 @@
         <div class="payment" id="payco" onclick="payingProcess(this.id);">페이코</div>
         <div class="payment" id="samsungPay" onclick="payingProcess(this.id);">삼성페이</div>
       </div>
-      <div id="totalPriceDiv">총 결제 금액 00원</div>
+      <div id="totalPriceDiv">총 결제 금액 0원</div>
       <a><div class="modalClose">이전 단계</div></a>
     </div>
   
@@ -651,9 +654,12 @@
   </div>
 </body>
 <script src="/socket.io/socket.io.js"></script>
-<script type="text/javascript" src="/cookie"></script>
-<script type="text/javascript" src="/orderjs"></script>
-<script type="text/javascript" src="/common"></script>
+<!-- <script type="text/javascript" src="/cookie"></script> -->
+<script src="/js/order/cookie.js"></script>
+<!-- <script type="text/javascript" src="/orderjs"></script> -->
+<script src="/js/order/order.js"></script>
+<!-- <script type="text/javascript" src="/common"></script> -->
+<script src="/js/common.js"></script>
 <script type="text/javascript">
   var socket = io(); // socket 통신 -> 마우스 커서 연결
 

@@ -1,6 +1,8 @@
 $(document).ready(function() {
     const baseUrl = $(location).attr('protocol') + '//' + $(location).attr('host');
-    const storeNo = location.href.split(baseUrl + "/order/")[1];
+
+    // const storeNo = location.href.split(baseUrl + "/order/")[1];
+    const storeNo = $('#storeNo').text(); // 서버에서 세션값으로 받아온 storeNo -> ejs
 
     let shoppingCartList = {};
     let paymentInfo = '';
@@ -75,27 +77,27 @@ $(document).ready(function() {
                             }),
                             success: function(res) {
                                 // 문자 메시지 전송
-                                // $.ajax({
-                                //     url: '/api/sens/order',
-                                //     type: 'POST',
-                                //     contentType: 'application/json',
-                                //     data: JSON.stringify({
-                                //         'phone': customerTel, // test
-                                //         'orderNo': orderNo
-                                //     }), success: function(res) {
-                                //         console.log('send message success');
-                                //         deleteCookie('shoppingCart');
-                                //         location.reload();
+                                $.ajax({
+                                    url: '/api/sens/order',
+                                    type: 'POST',
+                                    contentType: 'application/json',
+                                    data: JSON.stringify({
+                                        'phone': customerTel, // test
+                                        'orderNo': orderNo
+                                    }), success: function(res) {
+                                        console.log('send message success');
+                                        deleteCookie('shoppingCart');
+                                        location.reload();
 
                                         // server
                                         socket.emit('orderInfo', {
                                             'orderNo': orderNo,
                                             // TODO 필요한 정보 추가
                                         }); 
-                                //     }, error: function(err) {
-                                //         console.log('send message error ', err);
-                                //     }
-                                // });
+                                    }, error: function(err) {
+                                        console.log('send message error ', err);
+                                    }
+                                });
                             }, error: function(err) {
                                 console.log('add payemnt error ', err);
                             }
@@ -135,8 +137,9 @@ $(document).ready(function() {
                 }
             }).append($('<img />', {
                 alt: 'img',
-                src: '/img/bori.JPG',
-                img: 'manuImg',
+                // src: '/img/bori.JPG',
+                // img: 'manuImg',
+                id: 'img' + data.menuNo,
                 class: 'menuImg'
             })).append($('<h4 />', {
                 text: data.menuName,
@@ -145,8 +148,26 @@ $(document).ready(function() {
                 class: 'menuPrice',
                 text: '₩' + priceGetComma(data.menuPrice,)
             })))
+        
+            // 메뉴 이미지
+            $.ajax({
+                url: '/admin/getMenuImg/'+ data.menuNo,
+                cache: false,
+                xhr:function() {
+                    var xhr = new XMLHttpRequest();
+                    xhr.responseType= 'blob'
+                    return xhr;
+                },
+                success: function(result){
+                    var url = window.URL || window.webkitURL;
+                    var src = url.createObjectURL(result);
+                    $('#img' + data.menuNo).attr('src', src);
+                }
+            });
+
         });
     }
+    
 
     // 카테고리별 메뉴 리스트
     function getMenuByCategoryNo(categoryNo) {
