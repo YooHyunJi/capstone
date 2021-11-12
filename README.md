@@ -1,4 +1,5 @@
-## Capstone Design Team3
+Capstone Design Team3
+---
 
 <br>
 
