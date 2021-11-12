@@ -70,33 +70,50 @@ app.use('/admin', updateUserInfoRouter);
 app.use('/admin', changeOrderStatusRouter);
 
 // juran
+// js & static 경로설정
+app.use('/js', express.static(__dirname + '/js'));
+app.use(express.static('public')); 
+app.use(express.static('uploads')); 
+
 // order view 라우터
 app.use('/order', orderViewRouter);
 // order API 라우터
 app.use('/api/order', orderApiRouter);
 // sens API 라우터
 app.use('/api/sens', sensApiRouter);
-// js & static 경로설정
-app.use('/js', express.static(__dirname + '/js'));
-app.use(express.static('public')); 
 
 
 
-// 메인
+// 메인페이지
 app.get('/', (req, res) => {
   res.sendFile(__dirname + "/public/admin/main_logout.html");
 });
 
-// 미디어파이프 제스처 인식 테스트
+/**
+ * 테스트페이지
+ */
 app.get('/test', (req, res) => {
   res.sendFile(__dirname + "/public/test.html")
 });
-app.get('/test/:id', (req, res) => {
+app.get('/test/:id/:name', (req, res) => {
   // node 실행하여 테스트가 필요한 경우 추가
+  console.log(req.params.id);
   switch (req.params.id) {
     case 'mouse_cursor':
       res.sendFile(__dirname + "/test/mouse_cursor.html")
       break;
+    case 'click':
+      switch(req.params.name) {
+        case 'juran':
+          res.sendFile(__dirname + "/test/mouse-click/juran.html")
+          break;
+        case 'hyunji':
+          res.sendFile(__dirname + "/test/mouse-click/hyunji.html")
+          break;
+        case 'sumin':
+          res.sendFile(__dirname + "/test/mouse-click/sumin.html")
+          break;
+      }
   }
 })
 
@@ -132,13 +149,48 @@ app.get('/test2', (req, res) => { // 임시
 io.on('connection', (socket) => { // 소켓 연결이 들어오면 실행
   // 클라이언트에서 수신받은 정보
 
-  // 미디어파이프 8번 손가락(검지) 위치 정보
+  /**
+   * 이부분은 건들지 말아주세용!
+   */
+  // 미디어파이프 8번 손가락(검지) 위치 정보 
   socket.on('location', (msg) => {
       var x = msg[0];
       var y = msg[1];
 
       robot.moveMouse(x, y);
   });
+
+
+  /**
+   * 클릭이벤트 테스트용입니당!
+   */
+  // 소켓 이용 (주란ver)
+  socket.on('juran', (msg) => {
+    // console.log('juran!');
+    var x = msg[0];
+    var y = msg[1];
+
+    robot.moveMouse(x, y);
+  });
+
+  // 소켓 이용 (현지ver)
+  socket.on('hyunji', (msg) => {
+    // console.log('hyunji!');
+    var x = msg[0];
+    var y = msg[1];
+
+    robot.moveMouse(x, y);
+});
+
+// 소켓 이용 (수민ver)
+socket.on('sumin', (msg) => {
+  // console.log('sumin!');
+  var x = msg[0];
+  var y = msg[1];
+
+  robot.moveMouse(x, y);
+});
+
 
   // 주문 완료 시
   socket.on('orderInfo', (msg) => {

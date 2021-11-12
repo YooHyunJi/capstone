@@ -11,7 +11,7 @@ const orderMain = (req, res) => {
         return res.status(400).end();
     } 
 
-    let query1 = ' SELECT * FROM category WHERE storeNo = ?;';
+    let query1 = ' SELECT categoryNo, categoryName FROM category WHERE storeNo = ?;';
     let query2 = `  SELECT *
                     FROM menu
                     WHERE categoryNo IN (
@@ -42,7 +42,7 @@ const orderMain = (req, res) => {
 // 카테고리 리스트 조회
 const getCategoryByStoreNo = (req, res) => {
     let storeNo = parseInt(req.params.storeNo, 10);
-    let query = 'SELECT * FROM category WHERE storeNo = ?';
+    let query = 'SELECT categoryNo, categoryName FROM category WHERE storeNo = ?';
     connection.query(query, storeNo, function(err, result) {
         if(err) {
             console.log('error occured: ', err);
@@ -60,7 +60,7 @@ const getCategoryByStoreNo = (req, res) => {
 // 메뉴 리스트 조회
 const getMenuByCategoryNo = (req, res) => {
     let categoryNo = parseInt(req.params.categoryNo, 10);
-    let query = 'SELECT * FROM menu WHERE categoryNo = ?';
+    let query = 'SELECT menuNo, menuName, menuDetail, menuPrice, categoryNo, menuImg FROM menu WHERE categoryNo = ?';
     connection.query(query, categoryNo, function(err, result) {
         if(err) {
             console.log('error occured: ', err);

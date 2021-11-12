@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>주란 화이팅</title>
+  <meta charset="utf-8">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils@0.1/camera_utils.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils@0.1/control_utils.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils@0.2/drawing_utils.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands@0.1/hands.js" crossorigin="anonymous"></script>
+  <style>
+    html, body{
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      -ms-overflow-style: none;
+    }
+    
+    ::-webkit-scrollbar{ display:none; }
+
+    #container{
+      width: 1440px;
+      height: 735px;
+      float: left;
+    }
+
+    video{
+      transform: rotateY(180deg);
+      -webkit-transform:rotateY(180deg); /* Safari and Chrome */
+      -moz-transform:rotateY(180deg); /* Firefox */
+      visibility: hidden;
+      width: 0;
+      outline: none;
+      border: none;
+    }
+    
+    canvas{
+      transform: rotateY(180deg);
+      -webkit-transform:rotateY(180deg); /* Safari and Chrome */
+      -moz-transform:rotateY(180deg); /* Firefox */
+      position:fixed;
+      /* background-color: rgb(224, 224, 224); */
+      width: 100%;
+      height: 100%;
+      z-index: -5;
+    }
+
+    #categoryArea{
+      width: 100%;
+      height: 95px;
+      float: left;
+    }
+
+    #categoryArea #categoryBtn{
+      width: 15%;
+      height: 100%;
+      float: left;
+      text-align: center;
+      line-height: 95.6px;
+      font-size: 40px;
+      color: rgba(54, 146, 134, 0.5);
+      cursor: pointer;
+    }
+
+    #categoryArea #categoryBtn #categoryBtnLeft{
+      width: 50%;
+      height: 100%;
+      background: linear-gradient(to right,  rgba(179, 179, 179, 0.3), rgba(161, 161, 161, 0.3));
+      float: left;
+    }
+    #categoryArea #categoryBtn #categoryBtnLeft:hover{
+      background: linear-gradient(to bottom,  rgba(139, 139, 139, 0.3), rgba(116, 116, 116, 0.3));
+    }
+    
+    #categoryArea #categoryBtn #categoryBtnRight{
+      width: 50%;
+      height: 100%;
+      background: linear-gradient(to right,  rgba(179, 179, 179, 0.3), rgba(161, 161, 161, 0.3));
+      float: left;
+    }
+    #categoryArea #categoryBtn #categoryBtnRight:hover{
+      background: linear-gradient(to bottom,  rgba(139, 139, 139, 0.3), rgba(116, 116, 116, 0.3));
+    }
+
+    #categoryArea #categoryList{
+      color: rgba(255, 255, 255, 0.7);
+      width: 85%;
+      height: 100%;
+      list-style: none;
+      padding: 0px;
+      margin: 0px;
+      overflow: scroll;
+      white-space: nowrap;
+      float: left;
+    }
+
+    #categoryArea #categoryList .category{
+      background: linear-gradient( -45deg, rgba(54, 146, 134, 0.5), rgba(54, 146, 134, 0.55));
+      width: calc(100% / 6);
+      height: 95.6px;
+      text-align: center;
+      line-height: 95.6px;
+      display: inline-block;
+      cursor: pointer;
+    }
+    #categoryArea #categoryList .category:hover{
+      background: linear-gradient( -45deg, rgba(40, 116, 105, 0.5), rgba(40, 116, 105, 0.55));
+    }
+
+    #section{
+      height: 640px;
+      width: 1440px;
+      float: left;
+    }
+
+    #menuList{
+      width: 55%;
+      float: left;
+      height: 100%;
+      overflow: scroll;
+    }
+
+    .menu{
+      background: linear-gradient( -45deg, rgba(220, 220, 220, 0.5), rgba(241, 241, 241, 0.5));
+      float: left;
+      width: 25%;
+      height: 260px;
+      text-align: center;
+      border: none;
+      cursor: pointer;
+    }
+
+    .menu:hover{
+      background: linear-gradient( -45deg, rgba(168, 168, 168, 0.5), rgba(185, 185, 185, 0.5));
+    }
+
+    .menuImg{
+      width: 75%;
+      margin-top: 20px;
+    }
+
+    .menuTitle{
+      width: 100%;
+      line-height: 30px;
+      margin: 0 auto;
+      margin-top: 10px;
+    }
+
+    .menuPrice{
+      width: 80%;
+      line-height: 30px;
+      line-height: 30px;
+      margin: 0 auto;
+    }
+
+    #bag{
+      float: left;
+      width: 45%;
+      height: 100%;
+    }
+
+    #orderBucket{
+      width: 85%;
+      height: 100%;
+      float: left;
+    }
+
+    #orderList{
+      width: 100%;
+      height: 80%;
+      background-color: rgba(214, 230, 227, 0.5);
+      overflow: scroll;
+      font-size: 10px;
+    }
+
+    .orderMenu{
+      float: left;
+      width: 100%;
+      height: 20%;
+      background: linear-gradient(to bottom,  rgba(214, 224, 223, 0.3), rgba(214, 224, 223, 0.5));
+    }
+
+    .orderMenu div{
+      float: left;
+      text-align: center;
+      line-height: 99.2px;
+      font-size: 11px;
+    }
+
+    .orderMenu .orderMenuName{
+      width: 40%;
+    }
+
+    .orderMenu .orderMenuPrice{
+      width: 15%;
+    }
+
+    .orderMenu .orderQuantity{
+      width: 25%;
+      float: left;
+    }
+
+    .orderMenu .orderQuantity .orderMenuQuantityDec{
+      width: 40%;
+      font-size: 20px;
+      color: rgba(54, 146, 134, 0.5);
+      cursor: pointer;
+    }
+    .orderMenu .orderQuantity .orderMenuQuantityDec:hover{
+      width: 40%;
+      font-size: 20px;
+      background: linear-gradient(to bottom,  rgba(165, 184, 181, 0.3), rgba(165, 184, 181, 0.5));
+    }
+
+    .orderMenu .orderQuantity .orderMenuQuantity{
+      width: 20%;
+      font-size: 15px;
+    }
+
+    .orderMenu .orderQuantity .orderMenuQuantityInc{
+      width: 40%;
+      font-size: 20px;
+      color: rgba(54, 146, 134, 0.5);
+      cursor: pointer;
+    }
+    .orderMenu .orderQuantity .orderMenuQuantityInc:hover{
+      width: 40%;
+      font-size: 20px;
+      background: linear-gradient(to bottom,  rgba(165, 184, 181, 0.3), rgba(165, 184, 181, 0.5));
+    }
+
+    .orderMenu .orderMenuCancel{
+      width: 20%;
+      cursor: pointer;
+    }
+
+    .orderMenu .orderMenuCancel:hover{
+      background: linear-gradient(to bottom,  rgba(165, 184, 181, 0.3), rgba(165, 184, 181, 0.5));
+    }
+
+    #totalPriceArea{
+      width: 100%;
+      height: 20%;
+      background: linear-gradient( 45deg, rgba(59, 155, 142, 0.5), rgba(54, 146, 134, 0.55));
+    }
+
+    #totalPriceArea span{
+      font-size: 25px;
+      line-height: 140px;
+      display: inline-block;
+      margin-left: 10%;
+      width: 40%;
+      color: white;
+      font-weight: 400;
+    }
+
+    #totalPriceArea .bagTotalPrice{
+      font-size: 35px;
+      font-weight: 500;
+    }
+
+    #orderControl{
+      width: 15%;
+      height: 100%;
+      float: left;
+      cursor: pointer;
+    }
+
+    #orderListUp{
+      float: left;
+      width: 100%;
+      height: 25%;
+      background: linear-gradient(to bottom,  rgba(179, 179, 179, 0.3), rgba(161, 161, 161, 0.3));
+      text-align: center;
+      border: none;
+      padding: 0px;
+      font-size: 35px;
+      color: rgba(54, 146, 134, 0.5);
+      cursor: pointer;
+    }
+
+    #orderListUp:hover{
+      background: linear-gradient(to bottom,  rgba(139, 139, 139, 0.3), rgba(116, 116, 116, 0.3));
+    }
+
+    #orderListUp:active{
+      background: linear-gradient(to bottom,  rgba(107, 107, 107, 0.3), rgba(95, 95, 95, 0.3));
+    }
+
+    #orderListDown{
+      float: left;
+      width: 100%;
+      height: 25%;
+      background: linear-gradient(to bottom,  rgba(179, 179, 179, 0.3), rgba(161, 161, 161, 0.3));
+      text-align: center;
+      border: none;
+      padding: 0px;
+      font-size: 35px;
+      color: rgba(54, 146, 134, 0.5);
+      cursor: pointer;
+    }
+
+    #orderListDown:hover{
+      background: linear-gradient(to bottom,  rgba(139, 139, 139, 0.3), rgba(116, 116, 116, 0.3));
+    }
+
+    #orderListDown:active{
+      background: linear-gradient(to bottom,  rgba(107, 107, 107, 0.3), rgba(95, 95, 95, 0.3));
+    }
+
+    #orderButton{
+      float: left;
+      width: 100%;
+      height: 50%;
+      background-color: rgba(59, 155, 142, 0.5);
+      color: white;
+      text-align: center;
+      border: none;
+      padding: 0px;
+      cursor: pointer;
+    }
+
+    #orderButton:hover{
+      background: linear-gradient( -45deg, rgba(40, 116, 105, 0.5), rgba(40, 116, 105, 0.55));
+    }
+
+    .modal{
+      display: none;
+      width: 900px;
+      height: 700px;
+      background-color: rgba(247, 247, 247, 0.6);
+      border-radius: 10px;
+      text-align: center;
+    }
+
+    #payments{
+      width: 90%;
+      height: 300px;
+      /* background-color: thistle; */
+      display: inline-block;
+      text-align: center;
+      margin-top: 110px;
+    }
+
+    .payment{
+      width: 21%;
+      height: 100%;
+      background-color: rgba(54, 146, 134, 0.5);
+      color: white;
+      float: left;
+      text-align: center;
+      line-height: 300px;
+      margin: 0 2%;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+    .payment:hover{
+      background-color: rgba(45, 124, 114, 0.5);
+    }
+
+    #totalPriceDiv{
+      display: inline-block;
+      width: 80%;
+      height: 20px;
+      line-height: 20px;
+      font-size: 20px;
+      padding: 50px 0;
+      /* background-color: tomato; */
+    }
+
+    .modalClose, #phoneBtn{
+      width: 90%;
+      height: 50px;
+      display: inline-block;
+      background-color:rgba(184, 184, 184, 0.6);
+      line-height: 50px;
+      text-align: center;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+    .modalClose:hover, #phoneBtn:hover{
+      background-color:rgba(146, 146, 146, 0.6);
+    }
+
+    #processModal .processArea{
+      width: 200px;
+      height: 240px;
+      display: inline-block;
+      /* background-color: darkkhaki; */
+      margin-top: 230px;
+    }
+
+    #processModal .modalClose{
+      display: none;
+    }
+
+    .spinner {
+      display: inline-block;
+      /* background-color: cornsilk; */
+      vertical-align: middle;
+      margin-bottom: 60px;
+    }
+
+    .fas, .fa-spinner, .fa-10x{
+      animation: spin 2s linear infinite;
+      /* background-color: darkgreen; */
+      width: 100%;
+    }
+
+    @keyframes spin {
+      from {
+        transform: rotate(0);
+      }
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    #processModal .processArea span{
+      /* background-color: darkgreen; */
+      text-align: center;
+    }
+
+    #phoneModal .phoneArea{
+      width: 700px;
+      height: 550px;
+      /* background-color: darkkhaki; */
+      float: left;
+      margin-top: 75px;
+      margin-left: 100px;
+    }
+
+    #phoneModal .phoneArea .phoneOutput{
+      width: 50%;
+      height: 330px;
+      display: block;
+      float: left;
+      margin-top: 110px;
+      /* background-color: darksalmon; */
+    }
+
+    #phoneModal .phoneArea .phoneOutput span{
+      line-height: 30px;
+    }
+
+    #phoneModal .phoneArea .phoneOutput input[type="text"]{
+      line-height: 50px;
+      width: calc(100% - 26px);
+      border-radius: 10px;
+      border: 4px solid rgba(54, 146, 134, 0.65);
+      padding: 0 10px;
+      font-size: 30px;
+      margin: 80px 0;
+      text-align: center;
+    }
+
+    #phoneModal .phoneArea .phoneOutput input[type="text"]:focus{
+      outline: none;
+    }
+
+    #phoneModal .phoneArea .phoneOutput #phoneBtn{
+      width: 100%;
+    }
+
+    #phoneModal .phoneArea table{
+      margin: 0;
+      float: right;
+      border-radius: 20px;
+      border: 6px solid rgb(216, 216, 216);
+      background-color: rgba(255, 255, 255, 0.3);
+      padding: 0;
+      border-spacing: 0;
+      width: 270px;
+      height: 400px;
+      margin-top: 75px;
+    }
+
+    #phoneModal .phoneArea table tbody{
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
+    #phoneModal .phoneArea table tbody tr{
+      height: 100px;
+      /* background-color: darkslategrey; */
+      vertical-align: middle;
+    }
+
+    #phoneModal .phoneArea table tbody tr td{
+      width: 90px;
+      border-radius: 15px;
+      vertical-align: middle;
+      cursor: pointer;
+    }
+
+    #phoneModal .phoneArea table tbody tr td:hover{
+      background-color: rgba(54, 146, 134, 0.5);
+    }
+
+    #finishModal{
+      vertical-align: middle;
+    }
+
+    #finishModal .finishArea{
+      width: 100%;
+      height: 100px;
+      margin-top: 300px;
+    }
+
+    #finishModal .finishArea p{
+      font-size: 20px;
+      line-height: 50px;
+      margin: 0;
+    }
+  </style>
+</head>
+<body>
+  <!-- 로그인 필요 없이 가게 번호는 1로 지정해둘게용 -->
+  <a style="display: none;" id="storeNo">1</a>
+
+  <canvas class="output_canvas" width="1280px" height="720px"></canvas>
+
+  <div id="container">
+    <video class="input_video"></video>
+    <div id="categoryArea">
+      <div id="categoryBtn">
+        
+        <div id="categoryBtnLeft" onclick="categoryScroll(this.id);">◀︎</div>
+        <div id="categoryBtnRight" onclick="categoryScroll(this.id);">▶︎</div>
+      </div>
+      <ul id="categoryList">
+        <!--
+        <li class="category"> COFFEE
+        <li class="category"> TEA
+        <li class="category"> ADE
+        <li class="category"> JUICE
+        <li class="category"> BAKERY
+        <li class="category"> SMOOTHIE
+        <li class="category"> BEER
+        <li class="category"> CAKE
+          -->
+      </ul>
+    </div>
+    
+
+    <div id="section">
+      <div id="menuList">
+        <!-- 
+        <div class="menu" onclick="gestureButtonClick();">
+          <img class="menuImg" src="../img/img1.png" alt=" hippo">
+          <h4 class="menuTitle">  HIPPO1 </h4>
+          <h4 class="menuPrice"> ₩5,000 </h4>
+        </div> 
+        -->
+      </div>
+
+      <div id="bag">
+        <div id="orderBucket">
+          <div id="orderList">
+            <!--
+            <div class="orderMenu">
+                <div class="orderMenuName">  AMERICANO(ICE) </div>
+                <div class="orderMenuPrice"> 3,000 </div>
+                <div class="orderQuantity">
+                  <div class="orderMenuQuantityDec"> ▼ </div>
+                  <div class="orderMenuQuantity"> 3 </div>
+                  <div class="orderMenuQuantityInc"> ▲ </div>
+                </div>
+                <div class="orderMenuCancel"> CANCEL </div>
+            </div>
+            -->
+          </div>
+          <div id="totalPriceArea">
+            <span>총 결제 금액</span><span class="bagTotalPrice" id="totalPriceSpan">0원</span>
+          </div>
+      </div>
+        <div id="orderControl">
+          <button id="orderListUp" onclick="orderScroll(this.id);"> ▲ </button>
+          <button id="orderListDown" onclick="orderScroll(this.id);"> ▼ </button>
+          <button id="orderButton"> ORDER </button>
+        </div>
+        </div>
+      </div>    
+    </div>
+    <div id="paymentsModal" class="modal">
+      <div id="payments">
+        <div class="payment" id="creditCard" onclick="payingProcess(this.id);">신용카드</div>
+        <div class="payment" id="kakaoPay" onclick="payingProcess(this.id);">카카오페이</div>
+        <div class="payment" id="payco" onclick="payingProcess(this.id);">페이코</div>
+        <div class="payment" id="samsungPay" onclick="payingProcess(this.id);">삼성페이</div>
+      </div>
+      <div id="totalPriceDiv">총 결제 금액 0원</div>
+      <a><div class="modalClose">이전 단계</div></a>
+    </div>
+  
+    <div id="processModal" class="modal">
+      <div class="processArea">
+        <div class="spinner">
+          <i class="fas fa-spinner fa-10x"></i>
+        </div>
+        <br>
+        <span>결제 처리 중입니다 ...</span>
+      </div>
+      <a><div class="modalClose">이전 단계</div></a>
+    </div>
+
+    <div id="phoneModal" class="modal">
+      <div class="phoneArea">
+        <div class="phoneOutput">
+          <span>주문 메시지를 받을</span><br>
+          <span>휴대폰 번호를 입력해주세요</span><br>
+          <input type="text" id="inputPhone" autofocus/>
+          <a><div id="phoneBtn">입력 완료</div></a>
+        </div>
+  
+        <table class="phoneNumBtn">
+          <tr>
+              <td id='num1'>1</td>
+              <td id='num2'>2</td>
+              <td id='num3'>3</td>
+          </tr>
+  
+          <tr>
+            <td id='num4'>4</td>
+            <td id='num5'>5</td>
+            <td id='num6'>6</td>
+         </tr>
+  
+         <tr>
+          <td id='num7'>7</td>
+          <td id='num8'>8</td>
+          <td id='num9'>9</td>
+        </tr>
+  
+        <tr>
+          <td id='num010'>010</td>
+          <td id='num0'>0</td>
+          <td id='numCancel'>취소</td>
+        </tr>
+  
+      </table>
+      </div>
+    </div>
+  
+    <div id="finishModal" class="modal">
+      <div class="finishArea">
+        <p>주문이 완료되었습니다</p>
+        <p>준비가 완료되면 메시지를 발송해드립니다</p>
+      </div>
+    </div>
+
+  </div>
+</body>
+<script src="/socket.io/socket.io.js"></script>
+<!-- <script type="text/javascript" src="/cookie"></script> -->
+<script src="/js/order/cookie.js"></script>
+<!-- <script type="text/javascript" src="/orderjs"></script> -->
+<script src="/js/order/order.js"></script>
+<!-- <script type="text/javascript" src="/common"></script> -->
+<script src="/js/common.js"></script>
+<script type="text/javascript">
+  var socket = io(); // socket 통신 -> 마우스 커서 연결
+
+  // front script
+  function modal(id) {
+    var zIndex = 9999;
+    var modal = document.getElementById(id);
+    var canvas = document.getElementsByClassName('output_canvas')[0];
+    var container = document.getElementById('container');
+
+    // 모달 div 뒤에 희끄무레한 레이어
+    var bg = document.createElement('div');
+    bg.id = "bg";
+
+    bg.setStyle({
+        position: 'fixed',
+        zIndex: zIndex,
+        left: '0px',
+        top: '0px',
+        width: '100%',
+        height: '100%',
+        overflow: 'auto',
+        // 레이어 색갈은 여기서 바꾸면 됨
+        backgroundColor: 'rgba(0,0,0,0.2)'
+    });
+    document.body.append(bg);
+
+    container.style.display = 'none';
+
+    // 닫기 버튼 처리, 시꺼먼 레이어와 모달 div 지우기
+    modal.querySelector('.modalClose').addEventListener('click', function() {
+      bg.remove();
+      modal.style.display = 'none';
+      container.style.display = '';
+  });
+
+    modal.setStyle({
+        position: 'fixed',
+        display: 'block',
+        boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)',
+
+        // 시꺼먼 레이어 보다 한칸 위에 보이기
+        zIndex: zIndex + 1,
+
+        // div center 정렬
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        msTransform: 'translate(-50%, -50%)',
+        webkitTransform: 'translate(-50%, -50%)'
+    });
+  }
+
+  // 결제 진행 중 모달
+  function modal_process(id){
+    var zIndex = 9999;
+    var modal = document.getElementById(id);
+    var prevModal = document.getElementById('paymentsModal');
+
+    prevModal.style.display = 'none';
+
+    // 닫기 버튼 처리, 시꺼먼 레이어와 모달 div 지우기
+    modal.querySelector('.modalClose').addEventListener('click', function() {
+        modal.style.display = 'none';
+    });
+
+    modal.setStyle({
+        position: 'fixed',
+        display: 'block',
+        boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)',
+
+        // 시꺼먼 레이어 보다 한칸 위에 보이기
+        zIndex: zIndex + 2,
+
+        // div center 정렬
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        msTransform: 'translate(-50%, -50%)',
+        webkitTransform: 'translate(-50%, -50%)'
+    });
+  }
+
+  // 전화번호 입력 모달
+  function modal_phone(id){
+    var zIndex = 9999;
+    var modal = document.getElementById(id);
+
+    // 닫기 버튼 처리, 시꺼먼 레이어와 모달 div 지우기
+    modal.querySelector('#phoneBtn').addEventListener('click', function() {
+        modal.style.display = 'none';
+    });
+
+    modal.setStyle({
+        position: 'fixed',
+        display: 'block',
+        boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)',
+
+        // 시꺼먼 레이어 보다 한칸 위에 보이기
+        zIndex: zIndex + 1,
+
+        // div center 정렬
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        msTransform: 'translate(-50%, -50%)',
+        webkitTransform: 'translate(-50%, -50%)'
+    });
+  }
+
+  // 결제 완료 모달
+  function modal_finish(id){
+    var zIndex = 9999;
+    var modal = document.getElementById(id);
+    var container = document.getElementById('container');
+
+    modal.setStyle({
+        position: 'fixed',
+        display: 'block',
+        boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)',
+
+        // 시꺼먼 레이어 보다 한칸 위에 보이기
+        zIndex: zIndex + 1,
+
+        // div center 정렬
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        msTransform: 'translate(-50%, -50%)',
+        webkitTransform: 'translate(-50%, -50%)'
+    });
+  }
+
+  // Element 에 style 한번에 오브젝트로 설정하는 함수 추가
+  Element.prototype.setStyle = function(styles) {
+    for (var k in styles) this.style[k] = styles[k];
+    return this;
+  };
+
+  document.getElementById('orderButton').addEventListener('click', function() {
+     // 모달창 띄우기
+     
+     // back - 장바구니 비었는지 확인
+     if(checkCart()) { // true 장바구니 있음
+        modal('paymentsModal');
+     } else { // false 장바구니 비었음
+        alert('메뉴를 선택해 주세요');
+     }
+  });
+
+  function payingProcess(id){
+
+    // 쿠키 확인
+    if(checkCart()) { // 장바구니 안비었을 때
+      setCookie('payment', id, 3); // 쿠키 설정
+
+      modal_process('processModal');
+      
+      var modal = document.getElementById('processModal');
+
+      setTimeout(function() {
+        modal.style.display = 'none';
+        modal_phone('phoneModal');
+      }, 3000);
+
+    } else {
+        alert('메뉴를 선택해주세요');
+        location.reload();
+    }
+  }
+
+  document.getElementById('phoneBtn').addEventListener('click', function() {
+     // 모달창 띄우기
+     modal_finish('finishModal');
+
+    var modals = document.getElementsByClassName('modal');
+    var bg = document.getElementById('bg');
+
+    setTimeout(function() {
+      for(var i=0; i<modals.length; i++){
+        modals[i].style.display = 'none';
+      }
+      bg.style.display = 'none';
+      container.style.display = '';
+    }, 3000);
+  });
+
+  function gestureButtonClick(){
+    // document.getElementById('btn1').click();
+    console.log(document.getElementsByClassName('menuTitle').text());
+  }
+
+  function categoryScroll(clicked_id){
+    const categoryList = document.getElementById('categoryList');
+    const clickedButton = document.getElementById(clicked_id);
+
+    if(clicked_id == 'categoryBtnLeft'){
+      categoryList.scrollBy(-204, 0);
+    }
+
+    else{
+      categoryList.scrollBy(204, 0);
+    }
+  }
+
+  function orderScroll(clicked_id){
+    const orderList = document.getElementById('orderList');
+    const clickedButton = document.getElementById(clicked_id);
+
+    if(clicked_id == 'orderListUp'){
+      orderList.scrollBy(0, -99.2);
+    }
+
+    else{
+      orderList.scrollBy(0, 99.2);
+    }
+  }
+
+</script>
+<script type="module">
+  // mediapipe script
+  const videoElement = document.getElementsByClassName('input_video')[0];
+  const canvasElement = document.getElementsByClassName('output_canvas')[0];
+  const canvasCtx = canvasElement.getContext('2d');
+  const width = $(window).width(); // 윈도우 크기
+  const height = $(window).height(); 
+
+  function dist(x1, y1, x2, y2) { // 두 점 사이의 거리를 반환
+    return Math.sqrt(Math.pow(x1-x2, 2)) + Math.sqrt(Math.pow(y1-y2, 2));
+  }
+
+  function getAngle(x1, y1, x2, y2){ // 두 점 사이의 각도를 반환
+    var rad = Math.atan2(y2-y1, x2-x1);
+    return (rad*180 / Math.PI);
+  }
+
+  function handHover(x1, y1){
+    hand_x = -(x1 * window.width);
+    hand_y = y1 * window.height;
+  }
+
+  function sleep(ms) {
+    const wakeUpTime = Date.now() + ms;
+    while (Date.now() < wakeUpTime) {}
+  }
+
+  function onResults(results) {
+    canvasCtx.save();
+    canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
+    // canvas 웹캠 이미지 삭제
+    // canvasCtx.drawImage(
+    //     results.image, 0, 0, canvasElement.width, canvasElement.height);
+
+    var print_x, print_y;
+    var middle;
+        
+    if (results.multiHandLandmarks) {
+      for (const landmarks of results.multiHandLandmarks) { 
+        
+        // 미디어파이프를 통해 얻은 랜드마크 이용하여 손모양 표현
+        drawConnectors(canvasCtx, landmarks, HAND_CONNECTIONS, {color: '#f0c697', lineWidth: 20});
+        drawLandmarks(canvasCtx, landmarks, {color: '#f5c9a9', lineWidth: 10});
+      
+        // 검지손가락(8번) 좌표
+        var x = landmarks[8]['x'];
+        var y = landmarks[8]['y'];
+        x = width - width * x; // 웹캠 좌우반전
+        y = height * y;
+
+        // 소켓 이용하여 서버에 검지손가락 좌표값 전달
+        socket.emit('juran', [x, y]); 
+      }
+    }
+    canvasCtx.restore();
+  }
+
+  const hands = new Hands({locateFile: (file) => {
+    return `https://cdn.jsdelivr.net/npm/@mediapipe/hands@0.1/${file}`;
+  }});
+
+  hands.setOptions({
+    maxNumHands: 1,
+    minDetectionConfidence: 0.5,
+    minTrackingConfidence: 0.5
+  });
+
+  hands.onResults(onResults);
+
+  const camera = new Camera(videoElement, {
+    onFrame: async () => {
+      await hands.send({image: videoElement});
+    },
+    width: 1280,
+    height: 720
+  });
+
+  camera.start();
+  </script>
+  </html>

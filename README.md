@@ -1,33 +1,38 @@
-Capstone Design Team3
----
-
+<div align="center"> <h1>Capstone Design Team3</h1> </div>
 <br>
 
-#### 🛠 개발환경
+## 개발환경
 - NodeJS
 - MySQL
 - Mediapipe@1.0
-
 <br>
 
-#### 📌 node 환경세팅
-- web 폴더 이동
+## 실행 환경 세팅
+web 폴더 이동
 ``` shell
 cd web
 ```
-- package.json 라이브러리 설치
+package.json 라이브러리 설치
 ```
 npm install
 ```
-- 실행
+서비스 실행
 ```
 npm start 또는 node app.js
 ```
 
 <br>
 
-#### 👩‍👧‍👧 팀원소개
+## 팀원소개
 
-- [FRONT & AI] 유현지 https://github.com/YooHyunJi
-- [BACK & AI] 강수민 https://github.com/kksswkd
-- [BACK & AI] 임주란 https://github.com/ijo0r98
+👩🏼‍💻 유현지 
+- FRONTEND & AI
+- https://github.com/YooHyunJi
+
+👩🏻‍💻 강수민
+- BACKEND & AI
+- https://github.com/kksswkd
+
+👩🏽‍💻 임주란
+- FRONTEND & AI
+- https://github.com/ijo0r98

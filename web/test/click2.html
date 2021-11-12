@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils@0.1/camera_utils.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils@0.1/control_utils.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils@0.2/drawing_utils.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands@0.1/hands.js" crossorigin="anonymous"></script>
+
+  <!-- 웹캠 화면의 좌우 반전 -->
+  <style>
+    html, body{
+      width: 100%;
+      height: 100%;
+      margin: 0;
+    }
+
+    #container{
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      float: left;
+    }
+
+    video{
+      transform: rotateY(180deg);
+      -webkit-transform:rotateY(180deg); /* Safari and Chrome */
+      -moz-transform:rotateY(180deg); /* Firefox */
+      visibility: hidden;
+      width: 0;
+      outline: none;
+      border: none;
+    }
+    
+    canvas{
+      transform: rotateY(180deg);
+      -webkit-transform:rotateY(180deg); /* Safari and Chrome */
+      -moz-transform:rotateY(180deg); /* Firefox */
+      position:fixed;
+      /* background-color: rgb(224, 224, 224); */
+      width: 100%;
+      height: 100%;
+    }
+
+    #categoryList{
+      color: rgba(255, 255, 255, 0.7);
+      position: relative;
+      width: 100%;
+      height: 100px;
+      float: left;
+      list-style: none;
+      padding: 0px;
+      margin: 0px;
+    }
+
+    .category{
+      background: linear-gradient( -45deg, rgba(54, 146, 134, 0.5), rgba(54, 146, 134, 0.55));
+      position: relative;
+      float: left;
+      width: 20%;
+      height: 100px;
+      margin: 0;
+      float: left;
+      text-align: center;
+      line-height: 100px;
+    }
+
+    #menuList{
+      /* background-color: rgb(214, 156, 156); */
+      position: relative;
+      width: 100%;
+      float: left;
+      height: 400*2px;
+    }
+
+    .menu{
+      background: linear-gradient( -45deg, rgba(220, 220, 220, 0.5), rgba(241, 241, 241, 0.5));
+      position: relative;
+      float: left;
+      width: 25%;
+      height: 400px;
+      text-align: center;
+      border: none;
+    }
+
+    .menuImg{
+      width: 80%;
+      position: relative;
+      margin-top: -50px;
+    }
+
+    .menuTitle{
+      width: 80%;
+      line-height: 30px;
+      position: relative;
+      line-height: 50px;
+      margin: 0 auto;
+      margin-top: 20px;
+    }
+
+    .menuPrice{
+      width: 80%;
+      line-height: 30px;
+      position: relative;
+      line-height: 30px;
+      margin: 0 auto;
+    }
+
+    #bag{
+      position: relative;
+      float: left;
+      width: 100%;
+      height: 400px;
+    }
+
+    #orderList{
+      position: relative;
+      float: left;
+      width: 80%;
+      height: 400px;
+      background-color: rgba(214, 230, 227, 0.5);
+    }
+
+    .orderMenu{
+      position: relative;
+      float: left;
+      width: 100%;
+      height: 80px;
+      background: linear-gradient(to bottom,  rgba(189, 209, 206, 0.3), rgba(189, 209, 206, 0.5));
+    }
+
+    .orderMenu div{
+      position: relative;
+      float: left;
+      width: 25%;
+      height: 80px;
+      text-align: center;
+      line-height: 80px;
+    }
+
+    #orderButton{
+      position: relative;
+      float: left;
+      width: 20%;
+      height: 400px;
+      background-color: rgba(59, 155, 142, 0.5);
+      text-align: center;
+      line-height: 400px;
+      border: none;
+      padding: 0px;
+    }
+  </style>
+
+</head>
+<body>
+  <canvas class="output_canvas" width="1280px" height="720px"></canvas>
+
+  <div id="container">
+    <video class="input_video"></video>
+    
+    <ul id="categoryList">
+      <li class="category"> COFFEE </li>
+      <li class="category"> TEA </li>
+      <li class="category"> ADE </li>
+      <li class="category"> JUICE </li>
+      <li class="category"> BAKERY </li>
+    </ul>
+
+    <div id="menuList">
+        <button class="menu" onclick="gestureButtonClick();">
+          <img class="menuImg" src="img1.png" alt=" hippo">
+          <h4 class="menuTitle">  HIPPO1 </h4>
+          <h4 class="menuPrice"> ₩5,000 </h4>
+        </button> 
+        <button class="menu" onclick="gestureButtonClick();">
+          <img class="menuImg" src="img2.png" alt=" laon">
+          <h4 class="menuTitle">  BEAR1 </h4>
+          <h4 class="menuPrice"> ₩9,000 </h4>
+        </button> 
+        <button class="menu" onclick="gestureButtonClick();">
+          <img class="menuImg" src="img1.png" alt=" hippo">
+          <h4 class="menuTitle">  HIPPO2 </h4>
+          <h4 class="menuPrice"> ₩5,000 </h4>
+        </button> 
+        <button class="menu" onclick="gestureButtonClick();">
+          <img class="menuImg" src="img2.png" alt=" laon">
+          <h4 class="menuTitle">  BEAR2 </h4>
+          <h4 class="menuPrice"> ₩9,000 </h4>
+        </button> 
+        <button class="menu" onclick="gestureButtonClick();">
+          <img class="menuImg" src="img1.png" alt=" laon">
+          <h4 class="menuTitle">  BEAR3 </h4>
+          <h4 class="menuPrice"> ₩9,000 </h4>
+        </button> 
+        <button class="menu" onclick="gestureButtonClick();">
+          <img class="menuImg" src="img2.png" alt=" hippo">
+          <h4 class="menuTitle">  HIPPO3 </h4>
+          <h4 class="menuPrice"> ₩5,000 </h4>
+        </button> 
+    </div>
+
+    <div id="bag">
+      <div id="orderList">
+        <div class="orderMenu">
+            <div class="orderMenuName">  HIPPO2 </div>
+            <div class="orderMenuPrice"> 5,000 </div>
+            <div class="orderQuantity">
+              <div class="orderMenuQuantityDec"> ▼ </div>
+              <div class="orderMenuQuantity"> 3 </div>
+              <div class="orderMenuQuantityInc"> ▲ </div>
+            </div>
+            <div class="orderMenuCancel"> CANCEL </div>
+        </div>
+        <div class="orderMenu">
+            <div class="orderMenuName">  BEAR1 </div>
+            <div class="orderMenuPrice"> 9,000 </div>
+            <div class="orderQuantity">
+              <div class="orderMenuQuantityDec"> ▼ </div>
+              <div class="orderMenuQuantity"> 2 </div>
+              <div class="orderMenuQuantityInc"> ▲ </div>
+            </div>
+            <div class="orderMenuCancel"> CANCEL </div>
+        </div>
+      </div>
+
+      <button id="orderButton"> ORDER </button>
+    </div>    
+  </div>
+
+</body>
+</html>
+
+<script>
+  function gestureButtonClick(){
+    // document.getElementById('btn1').click();
+    console.log(document.getElementsByClassName('menuTitle').text());
+  }
+</script>
+
+
+<script type="module">
+const videoElement = document.getElementsByClassName('input_video')[0];
+const canvasElement = document.getElementsByClassName('output_canvas')[0];
+const canvasCtx = canvasElement.getContext('2d');
+ 
+// check handpose
+const compareIndex = [[18, 4], [6, 8], [10, 12], [14, 16], [18, 20]]
+var open = [false, false, false, false, false]
+const gesture = [[true, true, true, true, true, "HI"], [false, true, false, false, false, "검지만 펴짐"], [true, true, false, false, false, "검지만 펴짐_2"], [true, false, false, false, false, "엄지만 펴짐"]]
+
+function dist(x1, y1, x2, y2) { // 두 점 사이의 거리를 반환
+  return Math.sqrt(Math.pow(x1-x2, 2)) + Math.sqrt(Math.pow(y1-y2, 2));
+}
+
+function getAngle(x1, y1, x2, y2){ // 두 점 사이의 각도를 반환
+  var rad = Math.atan2(y2-y1, x2-x1);
+  return (rad*180 / Math.PI);
+}
+
+function handHover(x1, y1){
+  hand_x = -(x1 * window.width);
+  hand_y = y1 * window.height;
+}
+
+function sleep(ms) {
+  const wakeUpTime = Date.now() + ms;
+  while (Date.now() < wakeUpTime) {}
+}
+
+function onResults(results) {
+  canvasCtx.save();
+  canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
+  // canvas 웹캠 이미지 삭제
+  // canvasCtx.drawImage(
+  //     results.image, 0, 0, canvasElement.width, canvasElement.height);
+
+  var print_x, print_y;
+  var middle;
+      
+  if (results.multiHandLandmarks) {
+    for (const landmarks of results.multiHandLandmarks) { // landmarks.length == 21 (0-20)
+      // 현재 사용자의 손 상태 판별
+      for (var i=0; i<5; i++) {
+        // true 펼쳐짐, false 접힘
+          open[i] = dist(landmarks[0]['x'], landmarks[0]['y'], landmarks[compareIndex[i][0]]['x'], landmarks[compareIndex[i][0]]['y']) 
+                  < dist(landmarks[0]['x'], landmarks[0]['y'], landmarks[compareIndex[i][1]]['x'], landmarks[compareIndex[i][1]]['y'])
+      }
+
+      // 지정된 제스처와 비교
+      for (var i=0; i<4; i++) {
+        var flag = true;
+        for (var j=0; j<5; j++) {
+          if (gesture[i][j] != open[j]) {
+            flag = false
+          }
+        }
+        if (flag == true) { // 지정된 제스처와 동일할 때
+          // 선택 모션을 취할 때(검지를 굽힘)
+          if((i==1) || (i==2)){
+            // console.log('검지 ㅇㅅㅇ');
+
+            // 검지가 위를 향하고 있을 때만 동작하게 하여 검지가 아래를 향하고 있을 때는 동작하지 않게
+            if(getAngle(landmarks[8]['x'], landmarks[8]['y'],landmarks[6]['x'], landmarks[6]['y'])>0){
+              // 검지 끝이 검지 두 번째 마디보다 내려갔을 때(클릭 모션을 취했을 때) 콘솔에 좌표 출력
+              if(getAngle(landmarks[7]['x'], landmarks[7]['y'],landmarks[8]['x'], landmarks[8]['y'])>0){
+                console.log('선택되었습니다' + '\nx좌표 : ' + (1 - landmarks[8]['x']) * window.innerWidth + '\ny좌표 : ' + landmarks[8]['y'] * window.innerHeight);
+                sleep(300);
+              }
+            }
+          }
+
+          // 엄지를 제외한 손가락을 모두 접은 제스처일 때(엄지만 편 상태)
+          else if(i==3){
+            // 엄지 손가락 끝이 새끼 손가락 끝보다 위쪽에 있으면 'Good'으로 인식
+            if (getAngle(landmarks[4]['x'], landmarks[4]['y'],landmarks[20]['x'], landmarks[20]['y'])>0){
+              // console.log('GOOD');
+              // sleep(500);
+            }
+            // 엄지 손가락 끝이 새끼 손가락 끝보다 아래쪽에 있으면 'Bad'으로 인식
+            else{
+              // console.log('BAD');
+              // sleep(500);
+            }
+          }
+          else{
+            // console.log(gesture[i][5]);
+          }
+        }
+      }
+      drawConnectors(canvasCtx, landmarks, HAND_CONNECTIONS, {color: '#f0c697', lineWidth: 20});
+      drawLandmarks(canvasCtx, landmarks, {color: '#f5c9a9', lineWidth: 10});
+      // 손의 각 포인트를 보기 위해 빨간색으로 표시
+      // drawLandmarks(canvasCtx, landmarks, {color: 'red', lineWidth: 10});
+    }
+  }
+  canvasCtx.restore();
+}
+
+const hands = new Hands({locateFile: (file) => {
+  return `https://cdn.jsdelivr.net/npm/@mediapipe/hands@0.1/${file}`;
+}});
+
+hands.setOptions({
+  maxNumHands: 1,
+  minDetectionConfidence: 0.5,
+  minTrackingConfidence: 0.5
+});
+
+hands.onResults(onResults);
+
+const camera = new Camera(videoElement, {
+  onFrame: async () => {
+    await hands.send({image: videoElement});
+  },
+  width: 1280,
+  height: 720
+});
+
+camera.start();
+</script>

@@ -129,6 +129,9 @@ $(document).ready(function() {
     function addMenuList(result) {
         $('#menuList').empty();
         $.each(result, function(index, data){
+            // console.log(data.menuImg);
+            // var url = window.URL || window.webkitURL;
+            // var src = url.createObjectURL(new Blob(new Uint8Array(data.menuImg), { type: 'application/octet-stream' }));
             $('#menuList').append($('<div />', {
                 class: 'menu',
                 id: data.menuNo,
@@ -137,8 +140,7 @@ $(document).ready(function() {
                 }
             }).append($('<img />', {
                 alt: 'img',
-                // src: '/img/bori.JPG',
-                // img: 'manuImg',
+                // src: src,
                 id: 'img' + data.menuNo,
                 class: 'menuImg'
             })).append($('<h4 />', {
@@ -147,7 +149,7 @@ $(document).ready(function() {
             })).append($('<h4 />', {
                 class: 'menuPrice',
                 text: '₩' + priceGetComma(data.menuPrice,)
-            })))
+            })));
         
             // 메뉴 이미지
             $.ajax({
@@ -310,3 +312,11 @@ function checkCart () {
         return true;
     }
 }
+
+function toBase64(arr) {
+    //arr = new Uint8Array(arr) if it's an ArrayBuffer
+    return btoa(
+       arr.reduce((data, byte) => data + String.fromCharCode(byte), '')
+    );
+ }
+ 
