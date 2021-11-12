@@ -3,7 +3,7 @@ import mediapipe as mp
 import numpy as np
 import time, os
 
-actions = ['Hi!', 'up', 'select']
+actions = ['click', 'flip', 'click']
 seq_length = 30 # window 크기
 secs_for_action = 30 # action을 녹화하는 시간
 

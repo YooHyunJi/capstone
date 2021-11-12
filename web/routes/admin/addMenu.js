@@ -32,7 +32,6 @@ router.post('/addMenu', upload.single('menuImg'), function (req, res) {
     var query = `SELECT categoryNo FROM category WHERE storeNo = ${req.session.user.storeNo} AND categoryName = ?`;
 
     connection.query(query, categoryName, function (err, result) {
-      console.log(query);
       if(err) { // 에러 발생시
             console.log("error ocurred: ", err);
             res.json({ "code": 404, "result": "error ocurred" })
@@ -42,7 +41,6 @@ router.post('/addMenu', upload.single('menuImg'), function (req, res) {
             
             // DB에 메뉴 등록
             connection.query(query, [menuName, menuDetail, menuPrice, menuImg, categoryNo], function (err, result) {
-              console.log(query);
               if(err) { // 에러 발생시
                     console.log("error ocurred: ", err);
                     res.json({ "code": 400, "result": "error ocurred" })

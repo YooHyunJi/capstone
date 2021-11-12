@@ -3,7 +3,7 @@ import mediapipe as mp
 import numpy as np
 import tensorflow.keras
 
-actions = ['Hi!', 'up', 'select']
+actions = ['click', 'flip', 'click']
 seq_length = 30
 
 model = tensorflow.keras.models.load_model('models/model.h5')
