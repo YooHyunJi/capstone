@@ -72,10 +72,10 @@ function sendPickupMsg(req, res) {
     
     const date = Date.now().toString();
 
-    const serviceId = process.env.SENS_SERVICE_ID; 
+    /*const serviceId = process.env.SENS_SERVICE_ID; 
     const secretKey = process.env.SENS_SECRET_ID; 
     const accessKey = process.env.SENS_ACCESS_ID; 
-    const my_number = process.env.SENS_MYNUM; 
+    const my_number = process.env.SENS_MYNUM;*/
     
     const method = "POST";
     const space = " ";

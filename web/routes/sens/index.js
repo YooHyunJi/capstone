@@ -8,6 +8,6 @@ const ctrl = require('../sens/sens.ctrl');
 // api/sens/~
 
 router.post('/order', ctrl.sendOrderMsg); // 주문 완료
-router.post('/order', ctrl.sendPickupMsg);
+router.post('/sendPickupMsg', ctrl.sendPickupMsg);
 
 module.exports = router;

@@ -338,7 +338,7 @@
       margin-top: 70px;
   }
 
-  .menu_no, .menu_no_input{
+  .menu_no{
       display: none;
   }
 
@@ -400,7 +400,7 @@
                     <span class="detailList">가격</span><input type="text" id="menuPrice" name="menuPrice"><br><br><br>
                     <span class="detailList">상세 정보</span><input type="text" id="menuDetail" name="menuDetail"><br><br><br>
                     <input type="button" value="새 메뉴 추가" onclick="addMenu()"><br><br><br>
-                    <span class="menu_no">메뉴번호</span><input type="text" class="menu_no_input" id="menuNo" name="menuNo">
+                    <span class="menu_no">메뉴번호</span><input type="text" class="menu_no" id="menuNo" name="menuNo">
                 </div>
             </form>
         </div>
@@ -433,13 +433,13 @@
                     <span class="detailList">가격</span><input type="text" id="menu_price" name="menu_price"><br><br><br>
                     <span class="detailList">상세 정보</span><input type="text" id="menu_detail" name="menu_detail"><br><br><br>
                     <input type="button" value="메뉴 수정" onclick="updateMenu()"><br><br><br>
-                    <span class="menu_no">메뉴번호</span><input type="text" class="menu_no_input" id="menu_no" name="menu_no">
+                    <span class="menu_no">메뉴번호</span><input type="text" class="menu_no" id="menu_no" name="menu_no">
                 </div>
             </form>
         </div>
     </div>
 </body>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script type="text/javascript" src="/menu"></script>
-<script src="/modal"></script>
+<script type="text/javascript" src="/js/admin/menu.js"></script>
+<script src="/js/admin/modal.js"></script>
 </html>

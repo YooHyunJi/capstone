@@ -124,9 +124,9 @@ function changeOrderStatus(orderStatus, cancelYn, orderNo, customerTel) {
         })
 
         // 픽업메시지 발송
-        /*$.ajax({
+        $.ajax({
             type: 'POST',
-            url: '/api/sens/order',
+            url: '/api/sens/sendPickupMsg',
             contentType: 'application/json',
             data: JSON.stringify({'phone': customerTel, 'orderNo': orderNo}), 
             success: function(res) {
@@ -135,7 +135,7 @@ function changeOrderStatus(orderStatus, cancelYn, orderNo, customerTel) {
             error: function(err) {
                 console.log('send message error', err);
             }
-        });*/
+        });
     }
 }
 

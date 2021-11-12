@@ -83,9 +83,9 @@ app.use(express.static('public'));
 
 
 // 메인
-// app.get('/', (req, res) => {
-//     res.sendFile(__dirname + "/public/admin/main_logout.html");
-// });
+app.get('/', (req, res) => {
+  res.sendFile(__dirname + "/public/admin/main_logout.html");
+});
 
 // 미디어파이프 제스처 인식 테스트
 app.get('/test', (req, res) => {
@@ -100,7 +100,6 @@ app.get('/test/:id', (req, res) => {
   }
 })
 
-// 관리 시스템 controller
 app.get('/join', (req, res) => {
   res.sendFile(__dirname + "/public/admin/join.html")
 })
@@ -125,29 +124,9 @@ app.get('/manage_category', (req, res) => {
 app.get('/manage_menu', (req, res) => {
   res.sendFile(__dirname + "/public/admin/manage_menu.html")
 })
-app.get('/user', (req, res) => {
-  res.sendFile(__dirname + "/js/admin/user.js")
-})
-app.get('/store', (req, res) => {
-  res.sendFile(__dirname + "/js/admin/store.js")
-})
-app.get('/category', (req, res) => {
-  res.sendFile(__dirname + "/js/admin/category.js")
-})
-app.get('/menu', (req, res) => {
-  res.sendFile(__dirname + "/js/admin/menu.js")
-})
-// 주문페이지 경로와 겹쳐서 js 경로 제외
-// app.get('/order', (req, res) => {
-//   res.sendFile(__dirname + "/js/admin/order.js")
-// })
-app.get('/modal', (req, res) => {
-  res.sendFile(__dirname + "/js/admin/modal.js")
-})
 app.get('/test2', (req, res) => { // 임시
   res.sendFile(__dirname + "/public/admin/test.html")
 })
-
 
 // socket & robotjs 마우스 커서 조작
 io.on('connection', (socket) => { // 소켓 연결이 들어오면 실행
