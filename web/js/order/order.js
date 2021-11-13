@@ -114,14 +114,34 @@ $(document).ready(function() {
     function addCategoryList(result) { 
         $('#categoryList').empty();
         $.each(result, function(index, data){
-            $('#categoryList').append($('<li />', {
-                id: data.categoryNo,
-                text: data.categoryName,
-                class: 'category',
-                click: function() {
-                    getMenuByCategoryNo(data.categoryNo);
-                }
-            }));
+            // 첫 로딩 시 처음 카테고리에 selected 클래스 부여, 클릭될 때 이전 selected 카테고리 해제 및 현재 카테고리에 selected 클래스 추가
+            if(index==0){
+                $('#categoryList').append($('<li />', {
+                    id: data.categoryNo,
+                    text: data.categoryName,
+                    class: 'category selected',
+                    click: function() {
+                        var prev_category = $('.selected');
+                        prev_category.removeClass('selected');
+                        $(this).addClass('selected');
+                        getMenuByCategoryNo(data.categoryNo);
+                    }
+                }));
+            }
+            // 처음 카테고리가 아닐 경우 selected 클래스 부여하지 않고 append, 클릭될 때 이전 selected 카테고리 해제 및 현재 카테고리에 selected 클래스 추가
+            else{
+                $('#categoryList').append($('<li />', {
+                    id: data.categoryNo,
+                    text: data.categoryName,
+                    class: 'category',
+                    click: function() {
+                        var prev_category = $('.selected');
+                        prev_category.removeClass('selected');
+                        $(this).addClass('selected');
+                        getMenuByCategoryNo(data.categoryNo);
+                    }
+                }));
+            }
         });
     }
 
