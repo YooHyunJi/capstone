@@ -7,6 +7,7 @@
   <script src="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils@0.1/control_utils.js" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils@0.2/drawing_utils.js" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands@0.1/hands.js" crossorigin="anonymous"></script>
+  <script src="https://use.fontawesome.com/releases/v5.2.0/js/all.js"></script>
   <style>
     html, body{
       width: 100%;
@@ -102,6 +103,11 @@
       display: inline-block;
       cursor: pointer;
     }
+
+    #categoryArea #categoryList .selected{
+      background: linear-gradient( -45deg, rgba(40, 116, 105, 0.5), rgba(40, 116, 105, 0.55));
+    }
+
     #categoryArea #categoryList .category:hover{
       background: linear-gradient( -45deg, rgba(40, 116, 105, 0.5), rgba(40, 116, 105, 0.55));
     }
