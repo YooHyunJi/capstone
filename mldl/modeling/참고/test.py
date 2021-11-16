@@ -7,7 +7,8 @@ actions = ['none', 'click']
 seq_length = 30
 
 model = tensorflow.keras.models.load_model('models/model(1).h5')
-#model(1) - flip
+#211116 : model(1),(2),(3)
+#model(1) - click = flip 동작, 이 모델이 제일 나았음, np.load('seq_none_1636895240.npy'), np.load('seq_click_1636895240.npy')
 #손자체를 움직여서 클릭 
 #model(2) - np.load('seq_none_1637050583.npy'), np.load('seq_click_1637050583.npy')
 #model(3) - np.load('seq_none_1636895240.npy'), np.load('seq_click_1637050583.npy')
