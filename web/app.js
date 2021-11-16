@@ -169,8 +169,11 @@ io.on('connection', (socket) => { // 소켓 연결이 들어오면 실행
     // console.log('juran!');
     var x = msg[0];
     var y = msg[1];
-
     robot.moveMouse(x, y);
+  });
+  socket.on('juran_click', (flg) => {
+    console.log('click!');
+    robot.mouseClick("left");
   });
 
   // 소켓 이용 (현지ver)

@@ -1,7 +1,7 @@
 // NCP SENS API (juran)
 
 const CryptoJS = require('crypto-js');
-const request = require('request');
+// const request = require('request');
 const axios = require('axios');
 require('dotenv').config();
 
