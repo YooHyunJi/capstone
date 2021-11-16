@@ -34,5 +34,5 @@ npm start 또는 node app.js
 - https://github.com/kksswkd
 
 👩🏽‍💻 임주란
-- FRONTEND & AI
+- BACKEND & AI
 - https://github.com/ijo0r98
