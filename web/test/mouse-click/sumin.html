@@ -519,7 +519,7 @@
 </head>
 <body>
   <!-- 로그인 필요 없이 가게 번호는 1로 지정해둘게용 -->
-  <a style="display: none;" id="storeNo">1</a>
+  <a style="display: none;" id="storeNo">6</a>
 
   <canvas class="output_canvas" width="1280px" height="720px"></canvas>
 
@@ -888,6 +888,11 @@
   const width = $(window).width(); // 윈도우 크기
   const height = $(window).height(); 
 
+  // check handpose
+  const compareIndex = [[18, 4], [6, 8], [10, 12], [14, 16], [18, 20]]
+  var open = [false, false, false, false, false]
+  const gesture = [false, true, true, false, false, "click!"]
+
   function dist(x1, y1, x2, y2) { // 두 점 사이의 거리를 반환
     return Math.sqrt(Math.pow(x1-x2, 2)) + Math.sqrt(Math.pow(y1-y2, 2));
   }
@@ -907,6 +912,15 @@
     while (Date.now() < wakeUpTime) {}
   }
 
+  // 임의의 좌표에 클릭 이벤트 발생시키는 메서드
+  function simulateClick(x,y) {
+    console.log("클릭 이벤트 발생!");
+    var evt = document.createEvent("MouseEvents");
+    evt.initMouseEvent("click", true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+    var cb = document.elementFromPoint(x,y);
+    cb.dispatchEvent(evt);
+  }
+
   function onResults(results) {
     canvasCtx.save();
     canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
@@ -918,17 +932,37 @@
     var middle;
         
     if (results.multiHandLandmarks) {
-      for (const landmarks of results.multiHandLandmarks) { 
-        
-        // 미디어파이프를 통해 얻은 랜드마크 이용하여 손모양 표현
-        drawConnectors(canvasCtx, landmarks, HAND_CONNECTIONS, {color: '#f0c697', lineWidth: 20});
-        drawLandmarks(canvasCtx, landmarks, {color: '#f5c9a9', lineWidth: 10});
-      
+      for (const landmarks of results.multiHandLandmarks) {
         // 검지손가락(8번) 좌표
         var x = landmarks[8]['x'];
         var y = landmarks[8]['y'];
         x = width - width * x; // 웹캠 좌우반전
-        y = height * y;
+        y = height * y; 
+
+        for (var i=0; i<5; i++) {
+          // true 펼쳐짐, false 접힘
+          open[i] = dist(landmarks[0]['x'], landmarks[0]['y'], landmarks[compareIndex[i][0]]['x'], landmarks[compareIndex[i][0]]['y']) 
+            < dist(landmarks[0]['x'], landmarks[0]['y'], landmarks[compareIndex[i][1]]['x'], landmarks[compareIndex[i][1]]['y'])
+        }
+
+        // 지정된 제스처와 비교
+        var flag = true;
+        for (var i=0; i<5; i++) {
+          if (gesture[i] != open[i]) {
+            flag = false
+          }
+        }
+        if (flag == true) { // 지정된 제스처와 동일할 때
+          //var x = (1 - landmarks[9]['x']) * window.innerWidth;
+          //var y = landmarks[9]['y'] * window.innerHeight;
+          console.log('선택되었습니다' + '\nx좌표 : ' + x + '\ny좌표 : ' + y);
+          simulateClick(x,y);
+          sleep(700);
+        }
+        
+        // 미디어파이프를 통해 얻은 랜드마크 이용하여 손모양 표현
+        drawConnectors(canvasCtx, landmarks, HAND_CONNECTIONS, {color: '#f0c697', lineWidth: 20});
+        drawLandmarks(canvasCtx, landmarks, {color: '#f5c9a9', lineWidth: 10});
 
         // 소켓 이용하여 서버에 검지손가락 좌표값 전달
         socket.emit('sumin', [x, y]); 
