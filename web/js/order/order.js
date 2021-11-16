@@ -158,12 +158,15 @@ $(document).ready(function() {
                 click: function () {
                     addShoppingCart(data.menuNo, data.menuName, data.menuPrice);
                 }
+            }).append($('<div />', {
+                class: 'imgWrapper'
             }).append($('<img />', {
                 alt: 'img',
                 // src: src,
                 id: 'img' + data.menuNo,
                 class: 'menuImg'
-            })).append($('<h4 />', {
+            }))
+            ).append($('<h4 />', {
                 text: data.menuName,
                 class: 'menuTitle',
             })).append($('<h4 />', {
@@ -188,6 +191,27 @@ $(document).ready(function() {
             });
 
         });
+
+            
+        var div = $('.imgWrapper'); // 이미지를 감싸는 div
+        var img = $('.menuImg'); // 이미지
+
+        for(var i=0; i<div.length; i++){
+            var divAspect = 1; // div의 가로세로비는 알고 있는 값이다
+            var imgAspect = img[i].height / img[i].width;
+
+            if (imgAspect < divAspect) {
+                // 이미지가 div보다 납작한 경우 세로를 div에 맞추고 가로는 잘라낸다
+                var imgWidthActual = div[i].offsetHeight / imgAspect;
+                var imgWidthToBe = div[i].offsetHeight / divAspect;
+                var marginLeft = -(Math.round((imgWidthActual - imgWidthToBe) / 2));
+                img[i].style.cssText = 'width: auto; height: 100%; margin-left: ' + marginLeft + 'px;';
+            }
+            else {
+                // 이미지가 div보다 길쭉한 경우 가로를 div에 맞추고 세로를 잘라낸다
+                img[i].style.cssText = 'width: 100%; height: auto; margin-left: 0; margin-top:' + marginLeft + 'px;';
+            }
+        }
     }
     
 

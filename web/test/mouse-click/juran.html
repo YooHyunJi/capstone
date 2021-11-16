@@ -885,8 +885,12 @@
   const videoElement = document.getElementsByClassName('input_video')[0];
   const canvasElement = document.getElementsByClassName('output_canvas')[0];
   const canvasCtx = canvasElement.getContext('2d');
-  const width = $(window).width(); // 윈도우 크기
+  const width = $(window).width(); 
   const height = $(window).height(); 
+
+  const compareIndex = [[18, 4], [6, 8], [10, 12], [14, 16], [18, 20]];
+  var open = [false, false, false, false, false];
+  const gesture = [true, true, false, false, false, "index"]; // 엄지의 경우 접거나 펼치거나 모두 가능
 
   function dist(x1, y1, x2, y2) { // 두 점 사이의 거리를 반환
     return Math.sqrt(Math.pow(x1-x2, 2)) + Math.sqrt(Math.pow(y1-y2, 2));
@@ -910,32 +914,46 @@
   function onResults(results) {
     canvasCtx.save();
     canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
-    // canvas 웹캠 이미지 삭제
-    // canvasCtx.drawImage(
-    //     results.image, 0, 0, canvasElement.width, canvasElement.height);
 
-    var print_x, print_y;
-    var middle;
+    // 웹캠 이미지 삭제
+    // canvasCtx.drawImage(results.image, 0, 0, canvasElement.width, canvasElement.height);
         
     if (results.multiHandLandmarks) {
       for (const landmarks of results.multiHandLandmarks) { 
         
-        // 미디어파이프를 통해 얻은 랜드마크 이용하여 손모양 표현
-        drawConnectors(canvasCtx, landmarks, HAND_CONNECTIONS, {color: '#f0c697', lineWidth: 20});
-        drawLandmarks(canvasCtx, landmarks, {color: '#f5c9a9', lineWidth: 10});
-      
-        // 검지손가락(8번) 좌표
-        var x = landmarks[8]['x'];
-        var y = landmarks[8]['y'];
-        x = width - width * x; // 웹캠 좌우반전
-        y = height * y;
+        var x = width - width * landmarks[9]['x'];
+        var y = height * landmarks[9]['y'];
+        
+        for (var i=0; i<5; i++) {
+          // true 펼쳐짐, false 접힘
+            open[i] = dist(landmarks[0]['x'], landmarks[0]['y'], landmarks[compareIndex[i][0]]['x'], landmarks[compareIndex[i][0]]['y']) 
+                    < dist(landmarks[0]['x'], landmarks[0]['y'], landmarks[compareIndex[i][1]]['x'], landmarks[compareIndex[i][1]]['y'])
+        }
+        
+        var flag = true;
+        for (var i=1; i<5; i++) {
+          if (gesture[i] != open[i]) {
+            flag = false
+          }
+        }
+        if (flag == true) {
+          // 검지가 위를 향하고 있을 때만 동작하게 하여 검지가 아래를 향하고 있을 때는 동작하지 않게
+          if(getAngle(landmarks[8]['x'], landmarks[8]['y'],landmarks[6]['x'], landmarks[6]['y'])>0){
+            // 검지 끝이 검지 두 번째 마디보다 내려갔을 때(클릭 모션을 취했을 때) 콘솔에 좌표 출력
+            if(getAngle(landmarks[7]['x'], landmarks[7]['y'],landmarks[8]['x'], landmarks[8]['y'])>0){
+              console.log('click!');
+              socket.emit('juran_click', true);
+              // sleep(300);
+            }
+          }
+        }
 
-        // 소켓 이용하여 서버에 검지손가락 좌표값 전달
-        socket.emit('juran', [x, y]); 
+        socket.emit('juran', [x, y]);  
       }
     }
     canvasCtx.restore();
   }
+
 
   const hands = new Hands({locateFile: (file) => {
     return `https://cdn.jsdelivr.net/npm/@mediapipe/hands@0.1/${file}`;
