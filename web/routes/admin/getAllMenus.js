@@ -47,8 +47,8 @@ router.get('/getMenuImg/:menuNo', function (req, res) {
             res.json({ "code": 400, "result": "error ocurred" })
         } else {
             console.log("get menuImg success");
-            //res.json({"code": 200, "result": "get menuImg success", "menuImg": result[0].menuImg})
-            res.send(result[0].menuImg);
+            res.json({"code": 200, "result": "get menuImg success", "menuImg": result[0].menuImg})
+            //res.send(result[0].menuImg);
         }
     })
 })

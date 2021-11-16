@@ -100,8 +100,25 @@ function getMenusByCategory(categoryName) {
 
 function getMenuDetail(menuNo, categoryName, menuName, menuPrice, menuDetail) {
     modal('menuDetailModal');
-
     $.ajax({
+        type: 'GET',
+        url:`/admin/getMenuImg/`+menuNo,
+        success: function(result) {
+            var src = JSON.stringify(result.menuImg);
+            $('#menuFormArea').empty();
+            $('#menuFormArea').append(
+                `<div class="imgWrapper">
+                    <img src=`+src+` class="menu_img">
+                </div>
+                <span class="detailList">카테고리</span><span class="category_no">`+categoryName+`</span><br><br><br><br>
+                <span class="detailList">이름</span><span class="menu_name">`+menuName+`</span><br><br><br><br>
+                <span class="detailList">가격</span><span class="menu_price">`+menuPrice+`</span><br><br><br><br>
+                <span class="detailList">상세 정보</span><span class="menu_detail">`+menuDetail+`</span>`
+            )
+        }
+    });
+
+    /*$.ajax({
         url:`/admin/getMenuImg/`+menuNo,
         cache:false,
         xhr:function(){
@@ -123,36 +140,11 @@ function getMenuDetail(menuNo, categoryName, menuName, menuPrice, menuDetail) {
                 <span class="detailList">상세 정보</span><span class="menu_detail">`+menuDetail+`</span>`
             )
         }
-    });
-
-    
+    });*/
 }
 
 function menuImgPreview(id, file) {
     id.src=URL.createObjectURL(file);
-}
-
-// 선택된 메뉴 이미지를 삭제하는 메서드
-function resetMenuImg(area, code) {
-    $(area).empty();
-    let addHtml = ``;
-    if (code==0) { // 메뉴 등록 이미지의 경우
-        addHtml = 
-        `<div class="imgWrapper">
-            <img id="add_menuImg_frame" src="" class="menu_img" onerror="this.src='img/test_img.png'">
-        </div>
-        <label>메뉴 이미지</label><input type="file" id="menuImg" name="menuImg" onchange="menuImgPreview(add_menuImg_frame, event.target.files[0])">
-        <input type="button" value="초기화" onclick="resetMenuImg(menuImageArea_addmenu, 0)">`
-    }
-    else if (code==1) { // 메뉴 수정 이미지의 경우
-        addHtml = 
-        `<div class="imgWrapper">
-            <img id="modify_menuImg_frame" src="" class="menu_img" onerror="this.src='img/test_img.png'">
-        </div>
-        <label>메뉴 이미지</label><br><input type="file" id="menu_img" name="menu_img" onchange="menuImgPreview(modify_menuImg_frame, event.target.files[0])">
-        <input type="button" value="초기화" onclick="resetMenuImg(menuImageArea_modifymenu, 1)">`
-    }
-    $(area).append(addHtml);
 }
 
 function addMenu() {
@@ -209,6 +201,13 @@ function setValuesBeforeUpdateMenu(menuNo, menuName, menuPrice, menuDetail) {
     $('#menu_detail').val(menuDetail);
 
     $.ajax({
+        type: 'GET',
+        url:`/admin/getMenuImg/`+menuNo,
+        success: function(result) {
+            $('#modify_menuImg_frame').attr('src', "/"+result.menuImg);
+        }
+    });
+    /*$.ajax({
         url:`/admin/getMenuImg/`+menuNo,
         cache:false,
         xhr:function(){
@@ -219,7 +218,7 @@ function setValuesBeforeUpdateMenu(menuNo, menuName, menuPrice, menuDetail) {
         success: function(data){
             menuImgPreview(modify_menuImg_frame, data)
         }
-    });
+    });*/
 
 }
 
@@ -246,4 +245,27 @@ function updateMenu() {
             location.href="/manage_menu";
         }
     });
+}
+
+// 선택된 메뉴 이미지를 삭제하는 메서드
+function resetMenuImg(area, code) {
+    $(area).empty();
+    let addHtml = ``;
+    if (code==0) { // 메뉴 등록 이미지의 경우
+        addHtml = 
+        `<div class="imgWrapper">
+            <img id="add_menuImg_frame" src="" class="menu_img" onerror="this.src='img/test_img.png'">
+        </div>
+        <label>메뉴 이미지</label><input type="file" id="menuImg" name="menuImg" onchange="menuImgPreview(add_menuImg_frame, event.target.files[0])">
+        <input type="button" value="초기화" onclick="resetMenuImg(menuImageArea_addmenu, 0)">`
+    }
+    else if (code==1) { // 메뉴 수정 이미지의 경우
+        addHtml = 
+        `<div class="imgWrapper">
+            <img id="modify_menuImg_frame" src="" class="menu_img" onerror="this.src='img/test_img.png'">
+        </div>
+        <label>메뉴 이미지</label><br><input type="file" id="menu_img" name="menu_img" onchange="menuImgPreview(modify_menuImg_frame, event.target.files[0])">
+        <input type="button" value="초기화" onclick="resetMenuImg(menuImageArea_modifymenu, 1)">`
+    }
+    $(area).append(addHtml);
 }

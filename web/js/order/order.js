@@ -173,9 +173,17 @@ $(document).ready(function() {
                 class: 'menuPrice',
                 text: '₩' + priceGetComma(data.menuPrice,)
             })));
+
+            $.ajax({
+                type: 'GET',
+                url:`/admin/getMenuImg/`+data.menuNo,
+                success: function(result) {
+                    $('#img' + data.menuNo).attr('src', "/"+result.menuImg);
+                }
+            });
         
             // 메뉴 이미지
-            $.ajax({
+            /*$.ajax({
                 url: '/admin/getMenuImg/'+ data.menuNo,
                 cache: false,
                 xhr:function() {
@@ -188,7 +196,8 @@ $(document).ready(function() {
                     var src = url.createObjectURL(result);
                     $('#img' + data.menuNo).attr('src', src);
                 }
-            });
+            });*/
+            
 
         });
 

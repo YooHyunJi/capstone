@@ -27,8 +27,8 @@ router.post('/addMenu', upload.single('menuImg'), function (req, res) {
     var menuName = req.body.menuName; // 메뉴명
     var menuDetail = req.body.menuDetail; // 메뉴 세부사항
     var menuPrice = req.body.menuPrice; // 메뉴 가격
-    var menuImg = readImageFile(__dirname + '/../../uploads/' + fileName); // 메뉴 이미지
-    var categoryName = req.body.selectCategory; // 카테고리 번호
+    var menuImg = fileName;//readImageFile(__dirname + '/../../uploads/' + fileName); // 메뉴 이미지
+    var categoryName = req.body.selectCategory; // 카테고리명
     var query = `SELECT categoryNo FROM category WHERE storeNo = ${req.session.user.storeNo} AND categoryName = ?`;
 
     connection.query(query, categoryName, function (err, result) {
