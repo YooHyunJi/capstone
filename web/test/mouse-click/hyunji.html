@@ -8,6 +8,15 @@
   <script src="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils@0.1/control_utils.js" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils@0.2/drawing_utils.js" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands@0.1/hands.js" crossorigin="anonymous"></script>
+  <script src="https://use.fontawesome.com/releases/v5.2.0/js/all.js"></script>
+
+  <!--
+    ** 제스처가 4개 ! 사용 방법 ^__^ **
+    1. 컨트롤 F -> '방법' 검색
+    2. 사용할 제스처에서 주석 해제, 기존 제스처에 주석 처리
+    3. 방법마다 주석처리할 게 두 개예용(1_좌표값 전달, 2_클릭 이벤트)
+   -->
+
   <style>
     html, body{
       width: 100%;
@@ -134,9 +143,15 @@
       background: linear-gradient( -45deg, rgba(168, 168, 168, 0.5), rgba(185, 185, 185, 0.5));
     }
 
+    .imgWrapper{
+      width: 150px;
+      height: 150px;
+      margin: 20px 0 0 24px;
+      overflow: hidden;
+    }
+
     .menuImg{
-      width: 75%;
-      margin-top: 20px;
+      width: 100%;
     }
 
     .menuTitle{
@@ -661,6 +676,9 @@
 <script src="/js/order/order.js"></script>
 <!-- <script type="text/javascript" src="/common"></script> -->
 <script src="/js/common.js"></script>
+
+
+
 <script type="text/javascript">
   var socket = io(); // socket 통신 -> 마우스 커서 연결
 
@@ -879,6 +897,12 @@
     }
   }
 
+  function leftClick(x, y){
+    var evt = document.createEvent("MouseEvents");
+    evt.initMouseEvent("click", true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+    var cb = document.elementFromPoint(x, y);
+    cb.dispatchEvent(evt);
+  }
 </script>
 <script type="module">
   // mediapipe script
@@ -888,6 +912,11 @@
   const width = $(window).width(); // 윈도우 크기
   const height = $(window).height(); 
 
+  const compareIndex = [[18, 4], [6, 8], [10, 12], [14, 16], [18, 20]]
+  var open = [false, false, false, false, false]
+  const gesture = [[true, true, true, true, true, "싸닥션"], [false, false, false, false, false, "불주먹"], [false, true, false, false, false, "검지만 펴짐_1"], [true, true, false, false, false, "검지만 펴짐_2"], [false, true, false, false, true, "검지_새퀴_1"], [true, true, false, false, true, "검지_새퀴_2"]];
+
+
   function dist(x1, y1, x2, y2) { // 두 점 사이의 거리를 반환
     return Math.sqrt(Math.pow(x1-x2, 2)) + Math.sqrt(Math.pow(y1-y2, 2));
   }
@@ -895,11 +924,6 @@
   function getAngle(x1, y1, x2, y2){ // 두 점 사이의 각도를 반환
     var rad = Math.atan2(y2-y1, x2-x1);
     return (rad*180 / Math.PI);
-  }
-
-  function handHover(x1, y1){
-    hand_x = -(x1 * window.width);
-    hand_y = y1 * window.height;
   }
 
   function sleep(ms) {
@@ -919,19 +943,94 @@
         
     if (results.multiHandLandmarks) {
       for (const landmarks of results.multiHandLandmarks) { 
+        for (var i=0; i<5; i++) {
+        // true 펼쳐짐, false 접힘
+        open[i] = dist(landmarks[0]['x'], landmarks[0]['y'], landmarks[compareIndex[i][0]]['x'], landmarks[compareIndex[i][0]]['y']) 
+                  < dist(landmarks[0]['x'], landmarks[0]['y'], landmarks[compareIndex[i][1]]['x'], landmarks[compareIndex[i][1]]['y'])
+        }
+
+        // 지정된 제스처와 비교
+      for (var i=0; i<6; i++) {
+        var flag = true;
+        for (var j=0; j<5; j++) {
+          if (gesture[i][j] != open[j]) {
+            flag = false
+          }
+        }
+        if (flag == true) { // 지정된 제스처와 동일할 때
+          // // 방법 1) 검지를 굽힘
+          // if((i==2) || (i==3)){
+          //   // 검지가 위를 향하고 있을 때만 동작하게 하여 검지가 아래를 향하고 있을 때는 동작하지 않게
+          //   if(getAngle(landmarks[8]['x'], landmarks[8]['y'],landmarks[6]['x'], landmarks[6]['y'])>0){
+          //     // 검지 끝이 검지 두 번째 마디보다 내려갔을 때(클릭 모션을 취했을 때) 콘솔에 좌표 출력
+          //     if(getAngle(landmarks[7]['x'], landmarks[7]['y'],landmarks[8]['x'], landmarks[8]['y'])>0){
+          //       var mouse_x = (1 - landmarks[8]['x']) * window.innerWidth;
+          //       var mouse_y = landmarks[8]['y'] * window.innerHeight;
+          //       console.log('선택되었습니다' + '\nx좌표 : ' + mouse_x + '\ny좌표 : ' + mouse_y);
+          //       leftClick(mouse_x, mouse_y);
+          //       sleep(300);
+          //     }
+          //   }
+          // }
+
+          // // 방법 2) 손바닥을 쥠
+          // if(i==1){
+          //   var mouse_x = (1 - landmarks[9]['x']) * window.innerWidth;
+          //       var mouse_y = landmarks[9]['y'] * window.innerHeight;
+          //       console.log('선택되었습니다' + '\nx좌표 : ' + mouse_x + '\ny좌표 : ' + mouse_y);
+          //       leftClick(mouse_x, mouse_y);
+          //       sleep(300);
+          // }
+
+          // // 방법 3) 좌표는 검지에, 클릭은 새끼손가락을 펼 때
+          // if((i==4) || (i==5)){
+          //   var mouse_x = (1 - landmarks[8]['x']) * window.innerWidth;
+          //   var mouse_y = landmarks[8]['y'] * window.innerHeight;
+          //   console.log('선택되었습니다' + '\nx좌표 : ' + mouse_x + '\ny좌표 : ' + mouse_y);
+          //   leftClick(mouse_x, mouse_y);
+          //   sleep(300);
+          // }
+
+          // 방법 4) 엄지와 검지로 div를 찌부
+          if(dist(landmarks[4]['x'], landmarks[4]['y'], landmarks[8]['x'], landmarks[8]['y']) < 0.05){
+            // console.log(dist(landmarks[4]['x'], landmarks[4]['y'], landmarks[8]['x'], landmarks[8]['y']));
+            var mouse_x = (1 - landmarks[4]['x']) * window.innerWidth;
+            var mouse_y = landmarks[4]['y'] * window.innerHeight;
+            console.log('선택되었습니다' + '\nx좌표 : ' + mouse_x + '\ny좌표 : ' + mouse_y);
+            leftClick(mouse_x, mouse_y);
+            sleep(300);
+          }
+
+          else{
+            // console.log(gesture[i][5]);
+          }
+        }
+      }
         
         // 미디어파이프를 통해 얻은 랜드마크 이용하여 손모양 표현
         drawConnectors(canvasCtx, landmarks, HAND_CONNECTIONS, {color: '#f0c697', lineWidth: 20});
         drawLandmarks(canvasCtx, landmarks, {color: '#f5c9a9', lineWidth: 10});
       
-        // 검지손가락(8번) 좌표
-        var x = landmarks[8]['x'];
-        var y = landmarks[8]['y'];
+        // // 방법 1,방법 3) 검지손가락(8번) 좌표
+        // var x = landmarks[8]['x'];
+        // var y = landmarks[8]['y'];
+        // x = width - width * x; // 웹캠 좌우반전
+        // y = height * y;
+
+        // // 방법 2) 손바닥 가운데(9번) 좌표
+        // var x = landmarks[9]['x'];
+        // var y = landmarks[9]['y'];
+        // x = width - width * x; // 웹캠 좌우반전
+        // y = height * y;
+
+        // 방법 4) 엄지손가락(4번) 좌표
+        var x = landmarks[4]['x'];
+        var y = landmarks[4]['y'];
         x = width - width * x; // 웹캠 좌우반전
         y = height * y;
 
         // 소켓 이용하여 서버에 검지손가락 좌표값 전달
-        socket.emit('hyunji', [x, y]); 
+        socket.emit('hyunji', [x, y + 100]); 
       }
     }
     canvasCtx.restore();
