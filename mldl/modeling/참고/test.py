@@ -3,10 +3,14 @@ import mediapipe as mp
 import numpy as np
 import tensorflow.keras
 
-actions = ['click', 'flip', 'click']
+actions = ['none', 'click']
 seq_length = 30
 
-model = tensorflow.keras.models.load_model('models/model.h5')
+model = tensorflow.keras.models.load_model('models/model(1).h5')
+#model(1) - flip
+#손자체를 움직여서 클릭 
+#model(2) - np.load('seq_none_1637050583.npy'), np.load('seq_click_1637050583.npy')
+#model(3) - np.load('seq_none_1636895240.npy'), np.load('seq_click_1637050583.npy')
 
 # MediaPipe hands model
 mp_hands = mp.solutions.hands
