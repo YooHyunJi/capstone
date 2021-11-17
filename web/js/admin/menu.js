@@ -2,7 +2,7 @@
 // Author : Sumin, Created : 2021.10.27, Modified : 2021.11.04
 $(document).ready(function () {
     getAllMenus();
-    getAllCategoryNames();
+    getAllCategories();
 })
 
 function getAllMenus() {
@@ -39,12 +39,12 @@ function getAllMenus() {
     })    
 }
 
-function getAllCategoryNames() {
+function getAllCategories() {
     $('#category').empty();
     $('#selectCategory').empty();
     $.ajax({
         type: 'GET',
-        url: '/admin/getAllCategoryNames',
+        url: '/admin/getAllCategories',
         success: function (result) {
             for (let i=0; i<result.categories.length; i++) {
                 $('#categoryList').append(

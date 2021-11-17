@@ -201,8 +201,7 @@ $(document).ready(function() {
 
         });
 
-            
-        var div = $('.imgWrapper'); // 이미지를 감싸는 div
+        /*var div = $('.imgWrapper'); // 이미지를 감싸는 div
         var img = $('.menuImg'); // 이미지
 
         for(var i=0; i<div.length; i++){
@@ -220,7 +219,7 @@ $(document).ready(function() {
                 // 이미지가 div보다 길쭉한 경우 가로를 div에 맞추고 세로를 잘라낸다
                 img[i].style.cssText = 'width: 100%; height: auto; margin-left: 0; margin-top:' + marginLeft + 'px;';
             }
-        }
+        }*/
     }
     
 
