@@ -24,6 +24,26 @@
       margin: 0;
       -ms-overflow-style: none;
     }
+
+    body{
+      cursor: none;
+    }
+
+    .cursor{
+      width: 2rem;
+      height: 2rem;
+      border: 4px solid #ff253a;
+      border-radius: 50%;
+      background-color: #ff253a29;
+      position: absolute;
+      z-index: 110000;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      transition: all 0.3s ease;
+      transition-property: background, transform;
+      transform-origin: 100% 100%;
+      background-size: cover;
+    }
     
     ::-webkit-scrollbar{ display:none; }
 
@@ -68,7 +88,6 @@
       line-height: 95.6px;
       font-size: 40px;
       color: rgba(54, 146, 134, 0.5);
-      cursor: pointer;
     }
 
     #categoryArea #categoryBtn #categoryBtnLeft{
@@ -110,7 +129,6 @@
       text-align: center;
       line-height: 95.6px;
       display: inline-block;
-      cursor: pointer;
     }
     #categoryArea #categoryList .category:hover{
       background: linear-gradient( -45deg, rgba(40, 116, 105, 0.5), rgba(40, 116, 105, 0.55));
@@ -136,7 +154,6 @@
       height: 260px;
       text-align: center;
       border: none;
-      cursor: pointer;
     }
 
     .menu:hover{
@@ -219,7 +236,6 @@
       width: 40%;
       font-size: 20px;
       color: rgba(54, 146, 134, 0.5);
-      cursor: pointer;
     }
     .orderMenu .orderQuantity .orderMenuQuantityDec:hover{
       width: 40%;
@@ -236,7 +252,6 @@
       width: 40%;
       font-size: 20px;
       color: rgba(54, 146, 134, 0.5);
-      cursor: pointer;
     }
     .orderMenu .orderQuantity .orderMenuQuantityInc:hover{
       width: 40%;
@@ -246,7 +261,6 @@
 
     .orderMenu .orderMenuCancel{
       width: 20%;
-      cursor: pointer;
     }
 
     .orderMenu .orderMenuCancel:hover{
@@ -278,7 +292,6 @@
       width: 15%;
       height: 100%;
       float: left;
-      cursor: pointer;
     }
 
     #orderListUp{
@@ -291,7 +304,7 @@
       padding: 0px;
       font-size: 35px;
       color: rgba(54, 146, 134, 0.5);
-      cursor: pointer;
+      line-height: 160px;
     }
 
     #orderListUp:hover{
@@ -312,7 +325,7 @@
       padding: 0px;
       font-size: 35px;
       color: rgba(54, 146, 134, 0.5);
-      cursor: pointer;
+      line-height: 160px;
     }
 
     #orderListDown:hover{
@@ -332,7 +345,7 @@
       text-align: center;
       border: none;
       padding: 0px;
-      cursor: pointer;
+      line-height: 320px;
     }
 
     #orderButton:hover{
@@ -346,6 +359,67 @@
       background-color: rgba(247, 247, 247, 0.6);
       border-radius: 10px;
       text-align: center;
+    }
+
+    #cameraTestModal{
+      width: calc(100% - 50px);
+      height: calc(100% - 50px);
+      background: linear-gradient( -45deg, rgb(72, 182, 165), rgb(16, 148, 165));
+    }
+
+    /* #testArea{
+      width: calc(100% - 50px);
+      height: calc(100% - 100px);
+      background-color: skyblue;
+      margin: 0 auto;
+      margin-top: 75px;
+    } */
+
+    .announcement{
+      -ms-user-select: none; 
+      -moz-user-select: -moz-none;
+      -khtml-user-select: none;
+      -webkit-user-select: none;
+      user-select: none;
+      color: rgba(255, 255, 255, 0.9);
+    }
+
+    #announcement_1{
+      font-size: 20px;
+      margin-top: 80px;
+    }
+    #announcement_2{
+      font-size: 18px;
+      margin-top: 20px;
+    }
+
+    /*마우스 클릭 효과*/
+    .clickEffect{
+      position: fixed;
+      width: 30px;
+      height: 30px;
+      border-style: solid;
+      color:#ffffff77;
+      /* background-color:#ff253b77; */
+      border-radius: 50%;
+      animation:clickEffect 1s ease-out;
+      z-index: 5;
+    }
+    @keyframes clickEffect{
+      0%{
+        opacity: 1;
+        width: 0.5em;
+        height: 0.5em;
+        margin: 0.4em;
+        border-width: 0.3em;
+      }
+      100%{
+        opacity: 0.1;
+        width: 30em;
+        height: 30em;
+        margin: -14.5em;
+        border-width: 0.1em;
+      }
     }
 
     #payments{
@@ -367,7 +441,6 @@
       line-height: 300px;
       margin: 0 2%;
       border-radius: 10px;
-      cursor: pointer;
     }
 
     .payment:hover{
@@ -392,7 +465,6 @@
       line-height: 50px;
       text-align: center;
       border-radius: 10px;
-      cursor: pointer;
     }
 
     .modalClose:hover, #phoneBtn:hover{
@@ -508,7 +580,6 @@
       width: 90px;
       border-radius: 15px;
       vertical-align: middle;
-      cursor: pointer;
     }
 
     #phoneModal .phoneArea table tbody tr td:hover{
@@ -533,6 +604,8 @@
   </style>
 </head>
 <body>
+  <div class="cursor"></div>
+
   <!-- 로그인 필요 없이 가게 번호는 1로 지정해둘게용 -->
   <a style="display: none;" id="storeNo">1</a>
 
@@ -593,13 +666,24 @@
           </div>
       </div>
         <div id="orderControl">
-          <button id="orderListUp" onclick="orderScroll(this.id);"> ▲ </button>
-          <button id="orderListDown" onclick="orderScroll(this.id);"> ▼ </button>
-          <button id="orderButton"> ORDER </button>
+          <div id="orderListUp" onclick="orderScroll(this.id);"> ▲ </div>
+          <div id="orderListDown" onclick="orderScroll(this.id);"> ▼ </div>
+          <div id="orderButton"> ORDER </div>
         </div>
         </div>
       </div>    
     </div>
+
+    <!-- 카메라 테스트 모달창 -->
+    <div id="cameraTestModal" class="modal">
+      <div id="testArea">
+        <p id="announcement_1" class="announcement"> 검지를 굽혀 클릭해 호수에 물결을 일으켜보세요 ! </p>
+        <p id="announcement_2" class="announcement"> 충분히 적응하셨다면 👍🏻를 만들어 주문을 진행해주세요 </p>
+      </div>
+      <a><div class="modalClose" style="display: none;"></div></a>
+    </div>
+
+    <!-- 결제수단 선택 모달창 -->
     <div id="paymentsModal" class="modal">
       <div id="payments">
         <div class="payment" id="creditCard" onclick="payingProcess(this.id);">신용카드</div>
@@ -610,7 +694,8 @@
       <div id="totalPriceDiv">총 결제 금액 0원</div>
       <a><div class="modalClose">이전 단계</div></a>
     </div>
-  
+
+    <!-- 결제 진행 중(spinner) 모달창 -->
     <div id="processModal" class="modal">
       <div class="processArea">
         <div class="spinner">
@@ -622,6 +707,7 @@
       <a><div class="modalClose">이전 단계</div></a>
     </div>
 
+    <!-- 전화번호 입력 모달창 -->
     <div id="phoneModal" class="modal">
       <div class="phoneArea">
         <div class="phoneOutput">
@@ -658,13 +744,16 @@
   
       </table>
       </div>
+      <a><div class="modalClose" style="display: none;"></div></a>
     </div>
-  
+
+    <!-- 주문 완료 모달창 -->
     <div id="finishModal" class="modal">
       <div class="finishArea">
         <p>주문이 완료되었습니다</p>
         <p>준비가 완료되면 메시지를 발송해드립니다</p>
       </div>
+      <a><div class="modalClose" style="display: none;"></div></a>
     </div>
 
   </div>
@@ -677,14 +766,54 @@
 <!-- <script type="text/javascript" src="/common"></script> -->
 <script src="/js/common.js"></script>
 
+<!-- 커스텀 커서로 사용할 div를 시스탬 마우스 커서 위치에 붙이기 -->
+<script>
+  let mouseCursor = document.querySelector('.cursor');
+  let cameraTestModal = document.querySelector('#cameraTestModal');
 
+  //커스텀 커서의 left값과 top값을 커서의 XY좌표값과 일치시킴
+  function cursor(e) {
+    mouseCursor.style.left = e.pageX + "px";
+    mouseCursor.style.top = e.pageY - scrollY + "px";
+    }
+
+    function clickEffect(e){
+    var d = document.createElement("div");
+  
+    d.className = "clickEffect";
+    d.style.left = e.pageX - 40 + "px";
+    d.style.top = e.pageY - scrollY - 40 + "px";
+    cameraTestModal.appendChild(d);
+    d.addEventListener('animationend',function(){d.parentElement.removeChild(d);}.bind(this));
+  }
+  
+  //window 객체에 scroll & mouse 이벤트를 추가하고 cursor함수 실행되도록 함
+  window.addEventListener("scroll", cursor);
+  window.addEventListener("mousemove", cursor);
+  cameraTestModal.addEventListener('click', clickEffect);
+</script>
+
+<!--마우스 클릭 효과-->
+<script>
+  // function clickEffect(e){
+  //   let cameraTestModal = document.querySelector('#cameraTestModal');
+  //   var d = document.createElement("div");
+  
+  //   d.className = "clickEffect";
+  //   d.style.left = e.pageX + "px";
+  //   d.style.top = e.pageY + "px";
+  //   cameraTestModal.appendChild(d);
+  //   // d.addEventListener('animationend',function(){d.parentElement.removeChild(d);}.bind(this));
+  // }
+  // cameraTestModal.addEventListener('click', clickEffect);
+</script>
 
 <script type="text/javascript">
   var socket = io(); // socket 통신 -> 마우스 커서 연결
 
   // front script
   function modal(id) {
-    var zIndex = 9999;
+    var zIndex = 100;
     var modal = document.getElementById(id);
     var canvas = document.getElementsByClassName('output_canvas')[0];
     var container = document.getElementById('container');
@@ -734,7 +863,7 @@
 
   // 결제 진행 중 모달
   function modal_process(id){
-    var zIndex = 9999;
+    var zIndex = 100;
     var modal = document.getElementById(id);
     var prevModal = document.getElementById('paymentsModal');
 
@@ -764,7 +893,7 @@
 
   // 전화번호 입력 모달
   function modal_phone(id){
-    var zIndex = 9999;
+    var zIndex = 100;
     var modal = document.getElementById(id);
 
     // 닫기 버튼 처리, 시꺼먼 레이어와 모달 div 지우기
@@ -791,7 +920,7 @@
 
   // 결제 완료 모달
   function modal_finish(id){
-    var zIndex = 9999;
+    var zIndex = 100;
     var modal = document.getElementById(id);
     var container = document.getElementById('container');
 
@@ -817,6 +946,10 @@
     for (var k in styles) this.style[k] = styles[k];
     return this;
   };
+
+  // window.onload = function(){
+  //   modal('cameraTestModal');
+  // }
 
   document.getElementById('orderButton').addEventListener('click', function() {
      // 모달창 띄우기
@@ -914,7 +1047,7 @@
 
   const compareIndex = [[18, 4], [6, 8], [10, 12], [14, 16], [18, 20]]
   var open = [false, false, false, false, false]
-  const gesture = [[true, true, true, true, true, "싸닥션"], [false, false, false, false, false, "불주먹"], [false, true, false, false, false, "검지만 펴짐_1"], [true, true, false, false, false, "검지만 펴짐_2"], [false, true, false, false, true, "검지_새퀴_1"], [true, true, false, false, true, "검지_새퀴_2"]];
+  const gesture = [[true, true, true, true, true, "싸닥션"], [false, false, false, false, false, "불주먹"], [false, true, false, false, false, "검지만 펴짐_1"], [true, true, false, false, false, "검지만 펴짐_2"], [false, true, false, false, true, "검지_새퀴_1"], [true, true, false, false, true, "검지_새퀴_2"], [true, false, false, false, false, "엄지만 펴짐"]];
 
 
   function dist(x1, y1, x2, y2) { // 두 점 사이의 거리를 반환
@@ -958,20 +1091,20 @@
           }
         }
         if (flag == true) { // 지정된 제스처와 동일할 때
-          // // 방법 1) 검지를 굽힘
-          // if((i==2) || (i==3)){
-          //   // 검지가 위를 향하고 있을 때만 동작하게 하여 검지가 아래를 향하고 있을 때는 동작하지 않게
-          //   if(getAngle(landmarks[8]['x'], landmarks[8]['y'],landmarks[6]['x'], landmarks[6]['y'])>0){
-          //     // 검지 끝이 검지 두 번째 마디보다 내려갔을 때(클릭 모션을 취했을 때) 콘솔에 좌표 출력
-          //     if(getAngle(landmarks[7]['x'], landmarks[7]['y'],landmarks[8]['x'], landmarks[8]['y'])>0){
-          //       var mouse_x = (1 - landmarks[8]['x']) * window.innerWidth;
-          //       var mouse_y = landmarks[8]['y'] * window.innerHeight;
-          //       console.log('선택되었습니다' + '\nx좌표 : ' + mouse_x + '\ny좌표 : ' + mouse_y);
-          //       leftClick(mouse_x, mouse_y);
-          //       sleep(300);
-          //     }
-          //   }
-          // }
+          // 방법 1) 검지를 굽힘
+          if((i==2) || (i==3)){
+            // 검지가 위를 향하고 있을 때만 동작하게 하여 검지가 아래를 향하고 있을 때는 동작하지 않게
+            if(getAngle(landmarks[8]['x'], landmarks[8]['y'],landmarks[6]['x'], landmarks[6]['y'])>0){
+              // 검지 끝이 검지 두 번째 마디보다 내려갔을 때(클릭 모션을 취했을 때) 콘솔에 좌표 출력
+              if(getAngle(landmarks[7]['x'], landmarks[7]['y'],landmarks[8]['x'], landmarks[8]['y'])>0){
+                var mouse_x = (1 - landmarks[9]['x']) * window.innerWidth;
+                var mouse_y = landmarks[9]['y'] * window.innerHeight;
+                console.log('선택되었습니다' + '\nx좌표 : ' + mouse_x + '\ny좌표 : ' + mouse_y);
+                leftClick(mouse_x, mouse_y);
+                sleep(300);
+              }
+            }
+          }
 
           // // 방법 2) 손바닥을 쥠
           // if(i==1){
@@ -991,15 +1124,15 @@
           //   sleep(300);
           // }
 
-          // 방법 4) 엄지와 검지로 div를 찌부
-          if(dist(landmarks[4]['x'], landmarks[4]['y'], landmarks[8]['x'], landmarks[8]['y']) < 0.05){
-            // console.log(dist(landmarks[4]['x'], landmarks[4]['y'], landmarks[8]['x'], landmarks[8]['y']));
-            var mouse_x = (1 - landmarks[4]['x']) * window.innerWidth;
-            var mouse_y = landmarks[4]['y'] * window.innerHeight;
-            console.log('선택되었습니다' + '\nx좌표 : ' + mouse_x + '\ny좌표 : ' + mouse_y);
-            leftClick(mouse_x, mouse_y);
-            sleep(300);
-          }
+          // // 방법 4) 엄지와 검지로 div를 찌부
+          // if(dist(landmarks[4]['x'], landmarks[4]['y'], landmarks[8]['x'], landmarks[8]['y']) < 0.05){
+          //   // console.log(dist(landmarks[4]['x'], landmarks[4]['y'], landmarks[8]['x'], landmarks[8]['y']));
+          //   var mouse_x = (1 - landmarks[4]['x']) * window.innerWidth;
+          //   var mouse_y = landmarks[4]['y'] * window.innerHeight;
+          //   console.log('선택되었습니다' + '\nx좌표 : ' + mouse_x + '\ny좌표 : ' + mouse_y);
+          //   leftClick(mouse_x, mouse_y);
+          //   sleep(300);
+          // }
 
           else{
             // console.log(gesture[i][5]);
@@ -1008,8 +1141,8 @@
       }
         
         // 미디어파이프를 통해 얻은 랜드마크 이용하여 손모양 표현
-        drawConnectors(canvasCtx, landmarks, HAND_CONNECTIONS, {color: '#f0c697', lineWidth: 20});
-        drawLandmarks(canvasCtx, landmarks, {color: '#f5c9a9', lineWidth: 10});
+        // drawConnectors(canvasCtx, landmarks, HAND_CONNECTIONS, {color: '#f0c697', lineWidth: 20});
+        // drawLandmarks(canvasCtx, landmarks, {color: '#f5c9a9', lineWidth: 10});
       
         // // 방법 1,방법 3) 검지손가락(8번) 좌표
         // var x = landmarks[8]['x'];
@@ -1017,17 +1150,17 @@
         // x = width - width * x; // 웹캠 좌우반전
         // y = height * y;
 
-        // // 방법 2) 손바닥 가운데(9번) 좌표
-        // var x = landmarks[9]['x'];
-        // var y = landmarks[9]['y'];
-        // x = width - width * x; // 웹캠 좌우반전
-        // y = height * y;
-
-        // 방법 4) 엄지손가락(4번) 좌표
-        var x = landmarks[4]['x'];
-        var y = landmarks[4]['y'];
+        // 방법 2) 손바닥 가운데(9번) 좌표
+        var x = landmarks[9]['x'];
+        var y = landmarks[9]['y'];
         x = width - width * x; // 웹캠 좌우반전
         y = height * y;
+
+        // // 방법 4) 엄지손가락(4번) 좌표
+        // var x = landmarks[4]['x'];
+        // var y = landmarks[4]['y'];
+        // x = width - width * x; // 웹캠 좌우반전
+        // y = height * y;
 
         // 소켓 이용하여 서버에 검지손가락 좌표값 전달
         socket.emit('hyunji', [x, y + 100]); 
