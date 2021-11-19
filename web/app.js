@@ -156,6 +156,10 @@ io.on('connection', (socket) => { // 소켓 연결이 들어오면 실행
 
     robot.moveMouse(x, y);
   });
+  socket.on('hyunji_click', (flg) => {
+    console.log('click!');
+    robot.mouseClick("left");
+  });
 
   // 소켓 이용 (수민ver)
   socket.on('sumin', (msg) => {

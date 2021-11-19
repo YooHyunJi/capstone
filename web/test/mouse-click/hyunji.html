@@ -947,9 +947,9 @@
     return this;
   };
 
-  // window.onload = function(){
-  //   modal('cameraTestModal');
-  // }
+  window.onload = function(){
+    modal('cameraTestModal');
+  }
 
   document.getElementById('orderButton').addEventListener('click', function() {
      // 모달창 띄우기
@@ -1100,7 +1100,8 @@
                 var mouse_x = (1 - landmarks[9]['x']) * window.innerWidth;
                 var mouse_y = landmarks[9]['y'] * window.innerHeight;
                 console.log('선택되었습니다' + '\nx좌표 : ' + mouse_x + '\ny좌표 : ' + mouse_y);
-                leftClick(mouse_x, mouse_y);
+                // leftClick(mouse_x, mouse_y);
+                socket.emit('hyunji_click', true);
                 sleep(300);
               }
             }
