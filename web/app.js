@@ -115,19 +115,21 @@ app.get('/test2', (req, res) => { // 임시
   res.sendFile(__dirname + "/public/admin/test.html")
 })
 
-// socket & robotjs 마우스 커서 조작
+// socket.io
 io.on('connection', (socket) => { // 소켓 연결이 들어오면 실행
   // 클라이언트에서 수신받은 정보
 
-  /**
-   * 이부분은 건들지 말아주세용!
-   */
-  // 미디어파이프 8번 손가락(검지) 위치 정보 
+  // 미디어파이프 8번 손가락(검지) 위치 정보 이용하여 마우스 커서 이동 
   socket.on('location', (msg) => {
       var x = msg[0];
       var y = msg[1];
 
       robot.moveMouse(x, y);
+  });
+
+  // 주문 완료 시
+  socket.on('orderInfo', (msg) => { // 주문 시스템 -주문번호-> 서버 
+    io.emit('orderInfo', msg); // 서버 -주문번호-> 관리 시스템
   });
 
 
@@ -153,21 +155,15 @@ io.on('connection', (socket) => { // 소켓 연결이 들어오면 실행
     var y = msg[1];
 
     robot.moveMouse(x, y);
-});
+  });
 
-// 소켓 이용 (수민ver)
-socket.on('sumin', (msg) => {
-  // console.log('sumin!');
-  var x = msg[0];
-  var y = msg[1];
+  // 소켓 이용 (수민ver)
+  socket.on('sumin', (msg) => {
+    // console.log('sumin!');
+    var x = msg[0];
+    var y = msg[1];
 
-  robot.moveMouse(x, y);
-});
-
-
-  // 주문 완료 시
-  socket.on('orderInfo', (msg) => {
-    io.emit('orderInfo', msg);
+    robot.moveMouse(x, y);
   });
 
 });

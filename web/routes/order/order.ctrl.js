@@ -6,37 +6,38 @@ connection.connect();
 
 // 카테고리 리스트 + 첫번째 카테고리 메뉴리스트
 const orderMain = (req, res) => {
-    let storeNo = parseInt(req.params.storeNo, 10);
-    if (Number.isNaN(storeNo) || !storeNo) { // 가게일련번호가 잘못되었을 때
-        return res.status(400).end();
-    } 
+    if ( req.params.storeNo == undefined ) {
+        res.status(400).end();
+    } else {
+        let storeNo = parseInt(req.params.storeNo, 10);
 
-    let query1 = ' SELECT categoryNo, categoryName FROM category WHERE storeNo = ?;';
-    let query2 = `  SELECT *
-                    FROM menu
-                    WHERE categoryNo IN (
-                        SELECT categoryNo
-                        FROM (
+        let query1 = ' SELECT categoryNo, categoryName FROM category WHERE storeNo = ?;';
+        let query2 = `  SELECT *
+                        FROM menu
+                        WHERE categoryNo IN (
                             SELECT categoryNo
-                            FROM category C
-                            WHERE C.storeNo = ?
-                            LIMIT 1
-                                ) AS tmp
-                        );`;
-    
-    connection.query(query1 + query2, [storeNo, storeNo], function(err, result) {
-        if(err) {
-            console.log('error occured: ', err);
-            return res.status(400).end();
-        } else {
-            console.log('select category & first menu success');
-            let data = {
-                'category': result[0],
-                'menu': result[1]
+                            FROM (
+                                SELECT categoryNo
+                                FROM category C
+                                WHERE C.storeNo = ?
+                                LIMIT 1
+                                    ) AS tmp
+                            );`;
+        
+        connection.query(query1 + query2, [storeNo, storeNo], function(err, result) {
+            if(err) {
+                console.log('error occured: ', err);
+                return res.status(400).end();
+            } else {
+                console.log('select category & first menu success');
+                let data = {
+                    'category': result[0],
+                    'menu': result[1]
+                }
+                return res.status(200).json(data).end();
             }
-            return res.status(200).json(data).end();
-        }
-    });
+        });
+    }
 }
 
 // 카테고리 리스트 조회

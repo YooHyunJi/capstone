@@ -162,7 +162,6 @@ $(document).ready(function() {
                 class: 'imgWrapper'
             }).append($('<img />', {
                 alt: 'img',
-                // src: src,
                 id: 'img' + data.menuNo,
                 class: 'menuImg'
             }))
@@ -197,7 +196,6 @@ $(document).ready(function() {
                     $('#img' + data.menuNo).attr('src', src);
                 }
             });*/
-            
 
         });
 
