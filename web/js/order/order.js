@@ -87,7 +87,8 @@ $(document).ready(function() {
                                     }), success: function(res) {
                                         console.log('send message success');
                                         deleteCookie('shoppingCart');
-                                        location.reload();
+                                        // 주문 완료 안내 띄우고 3초 후 재시작
+                                        setTimeout(function() {location.reload();}, 3000);
 
                                         // server
                                         socket.emit('orderInfo', {
