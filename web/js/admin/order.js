@@ -168,9 +168,13 @@ function getOrderDetails(orderNo) {
                 $('#orderDetailArea__2').append( // 메뉴, 수량, 가격
                     `<span class="menu_name">${result.orderList[i].menuName}</span>
                     <span class="count">${result.orderList[i].count}</span>
-                    <span class="orderDetailPrice">`+numberWithCommas(result.orderList[i].orderDetailPrice)+`</span><br><hr>`
+                    <span class="orderDetailPrice">`+numberWithCommas(result.orderList[i].orderDetailPrice)+`</span><br>`
                 )
             }
+            // 가로 선은 최종 가격 위에 한 번만 표시
+            $('#orderDetailArea__2').append(
+                `<hr>`
+            )
 
             $('#orderDetailArea__2').append( // 총 주문금액
                 `<span class="totalPrice">`+numberWithCommas(result.totalPrice[0].totalPrice)+`</span>`
