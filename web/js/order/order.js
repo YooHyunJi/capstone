@@ -51,7 +51,7 @@ $(document).ready(function() {
             let orderNo;
 
             if (customerTel == '') {
-                alert('전화번호를 입력해 주세요');
+                // 전화번호 입력하지 않았을 때 동작하지 않음
             } else {
                 $.ajax({
                     url: '/api/order/add/orderInfo',

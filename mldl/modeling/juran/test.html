@@ -34,8 +34,6 @@
 <script src="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils@0.1/control_utils.js" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils@0.2/drawing_utils.js" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands@0.1/hands.js" crossorigin="anonymous"></script>
-<!--socket.io-->
-<!-- <script src="/socket.io/socket.io.js"></script> -->
 <!--tjfs-->
 <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.0.0/dist/tf.min.js"></script>
 <!--numpy-->
@@ -48,7 +46,6 @@ $('#btn').on({
   }
 })
 
-// var socket = io();
 const videoElement = document.getElementsByClassName('input_video')[0];
 const canvasElement = document.getElementsByClassName('output_canvas')[0];
 const canvasCtx = canvasElement.getContext('2d');
@@ -97,8 +94,6 @@ function onResults(results) {
         drawConnectors(canvasCtx, landmarks, HAND_CONNECTIONS, {color: '#4badb3', lineWidth: 5});
         drawLandmarks(canvasCtx, landmarks, {color: '#e04e04', lineWidth: 2});
 
-        // socket.emit('location', [x, y]);  
-
         var joint = nj.zeros((21, 4));
         var v1 = nj.zeros((21, 4));
         var v2 = nj.zeros((21, 4));
@@ -120,24 +115,10 @@ function onResults(results) {
             var y = v1[i][1] - v2[i][1];
             v[i] = [(v1[i][0]-v2[i][0]), (v1[i][1]-v2[i][1]), (v1[i][2]-v2[i][2])]
         }
+        console.log(v);
         
-        v = v / nj.linalg.norm(v, axis=1)[:, nj.newaxis];
+        v = v / nj.linalg.norm(v, axis=1)[[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19], nj.newaxis];
         xv = nj.arccos(nj.einsum('nt,nt->n', v));
-        
-
-
-        
-        // var v1 = joint.map(v => v.slice(0, 19));
-        // console.log(v1)
-        // var v2 = joint[[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]];
-
-        var v = v2-v1;
-        
-        v = v / nj.linalg.norm(v, axis=1)[:, nj.newaxis];
-
-        var angle = nj.arccos(nj.einsum('nt,nt->n',
-                        v[[0,1,2,4,5,6,8,9,10,12,13,14,16,17,18],:], 
-                        v[[1,2,3,5,6,7,9,10,11,13,14,15,17,18,19],:]));
 
         angle = nj.degrees(angle);
 
@@ -149,7 +130,7 @@ function onResults(results) {
             continue;
         }
 
-        input_data = nj.expand_dims(nj.array(seq[-seq_length:], dtype=nj.float32), axis=0);
+        input_data = nj.expand_dims(nj.array(seq[-seq_length], dtype=nj.float32), axis=0);
 
         y_pred = model.predict(input_data).squeeze();
 

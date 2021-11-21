@@ -8,14 +8,32 @@
   <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils@0.2/drawing_utils.js" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands@0.1/hands.js" crossorigin="anonymous"></script>
   <script src="https://use.fontawesome.com/releases/v5.2.0/js/all.js"></script>
-  <script src="https://code.jqeury.com/jquery-3.4.1.min.js"></script>
-  
   <style>
     html, body{
       width: 100%;
       height: 100%;
       margin: 0;
       -ms-overflow-style: none;
+    }
+
+    body{
+      cursor: none;
+    }
+
+    .cursor{
+      width: 2rem;
+      height: 2rem;
+      border: 4px solid #ff253a;
+      border-radius: 50%;
+      background-color: #ff253a29;
+      position: absolute;
+      z-index: 110000;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      transition: all 0.3s ease;
+      transition-property: background, transform;
+      transform-origin: 100% 100%;
+      background-size: cover;
     }
     
     ::-webkit-scrollbar{ display:none; }
@@ -61,7 +79,6 @@
       line-height: 95.6px;
       font-size: 40px;
       color: rgba(54, 146, 134, 0.5);
-      cursor: pointer;
     }
 
     #categoryArea #categoryBtn #categoryBtnLeft{
@@ -103,13 +120,7 @@
       text-align: center;
       line-height: 95.6px;
       display: inline-block;
-      cursor: pointer;
     }
-
-    #categoryArea #categoryList .selected{
-      background: linear-gradient( -45deg, rgba(40, 116, 105, 0.5), rgba(40, 116, 105, 0.55));
-    }
-
     #categoryArea #categoryList .category:hover{
       background: linear-gradient( -45deg, rgba(40, 116, 105, 0.5), rgba(40, 116, 105, 0.55));
     }
@@ -134,7 +145,6 @@
       height: 260px;
       text-align: center;
       border: none;
-      cursor: pointer;
     }
 
     .menu:hover{
@@ -150,7 +160,6 @@
 
     .menuImg{
       width: 100%;
-      /* height: 100%; */
     }
 
     .menuTitle{
@@ -218,7 +227,6 @@
       width: 40%;
       font-size: 20px;
       color: rgba(54, 146, 134, 0.5);
-      cursor: pointer;
     }
     .orderMenu .orderQuantity .orderMenuQuantityDec:hover{
       width: 40%;
@@ -235,7 +243,6 @@
       width: 40%;
       font-size: 20px;
       color: rgba(54, 146, 134, 0.5);
-      cursor: pointer;
     }
     .orderMenu .orderQuantity .orderMenuQuantityInc:hover{
       width: 40%;
@@ -245,7 +252,6 @@
 
     .orderMenu .orderMenuCancel{
       width: 20%;
-      cursor: pointer;
     }
 
     .orderMenu .orderMenuCancel:hover{
@@ -277,7 +283,6 @@
       width: 15%;
       height: 100%;
       float: left;
-      cursor: pointer;
     }
 
     #orderListUp{
@@ -290,7 +295,7 @@
       padding: 0px;
       font-size: 35px;
       color: rgba(54, 146, 134, 0.5);
-      cursor: pointer;
+      line-height: 160px;
     }
 
     #orderListUp:hover{
@@ -311,7 +316,7 @@
       padding: 0px;
       font-size: 35px;
       color: rgba(54, 146, 134, 0.5);
-      cursor: pointer;
+      line-height: 160px;
     }
 
     #orderListDown:hover{
@@ -331,7 +336,7 @@
       text-align: center;
       border: none;
       padding: 0px;
-      cursor: pointer;
+      line-height: 320px;
     }
 
     #orderButton:hover{
@@ -345,6 +350,67 @@
       background-color: rgba(247, 247, 247, 0.6);
       border-radius: 10px;
       text-align: center;
+    }
+
+    #cameraTestModal{
+      width: calc(100% - 50px);
+      height: calc(100% - 50px);
+      background: linear-gradient( -45deg, rgb(72, 182, 165), rgb(16, 148, 165));
+    }
+
+    /* #testArea{
+      width: calc(100% - 50px);
+      height: calc(100% - 100px);
+      background-color: skyblue;
+      margin: 0 auto;
+      margin-top: 75px;
+    } */
+
+    .announcement{
+      -ms-user-select: none; 
+      -moz-user-select: -moz-none;
+      -khtml-user-select: none;
+      -webkit-user-select: none;
+      user-select: none;
+      color: rgba(255, 255, 255, 0.9);
+    }
+
+    #announcement_1{
+      font-size: 20px;
+      margin-top: 80px;
+    }
+    #announcement_2{
+      font-size: 18px;
+      margin-top: 20px;
+    }
+
+    /*마우스 클릭 효과*/
+    .clickEffect{
+      position: fixed;
+      width: 30px;
+      height: 30px;
+      border-style: solid;
+      color:#ffffff77;
+      /* background-color:#ff253b77; */
+      border-radius: 50%;
+      animation:clickEffect 1s ease-out;
+      z-index: 5;
+    }
+    @keyframes clickEffect{
+      0%{
+        opacity: 1;
+        width: 0.5em;
+        height: 0.5em;
+        margin: 0.4em;
+        border-width: 0.3em;
+      }
+      100%{
+        opacity: 0.1;
+        width: 30em;
+        height: 30em;
+        margin: -14.5em;
+        border-width: 0.1em;
+      }
     }
 
     #payments{
@@ -366,7 +432,6 @@
       line-height: 300px;
       margin: 0 2%;
       border-radius: 10px;
-      cursor: pointer;
     }
 
     .payment:hover{
@@ -391,7 +456,6 @@
       line-height: 50px;
       text-align: center;
       border-radius: 10px;
-      cursor: pointer;
     }
 
     .modalClose:hover, #phoneBtn:hover{
@@ -507,7 +571,6 @@
       width: 90px;
       border-radius: 15px;
       vertical-align: middle;
-      cursor: pointer;
     }
 
     #phoneModal .phoneArea table tbody tr td:hover{
@@ -532,6 +595,8 @@
   </style>
 </head>
 <body>
+  <!-- 마우스 커서 커스텀 -->
+  <div class="cursor"></div>
   <!-- 서버에서 세션값으로 받아온 storeNo (ejs)-->
   <a style="display: none;" id="storeNo"><%= storeNo %></a>
 
@@ -599,6 +664,17 @@
         </div>
       </div>    
     </div>
+    
+    <!-- 카메라 테스트 모달창 -->
+    <div id="cameraTestModal" class="modal">
+      <div id="testArea">
+        <p id="announcement_1" class="announcement"> 검지를 굽혀 클릭해 호수에 물결을 일으켜보세요 ! </p>
+        <p id="announcement_2" class="announcement"> 충분히 적응하셨다면 👍🏻를 만들어 주문을 진행해주세요 </p>
+      </div>
+      <a><div class="modalClose" style="display: none;"></div></a>
+    </div>
+
+    <!-- 결제수단 선택 모달창 -->
     <div id="paymentsModal" class="modal">
       <div id="payments">
         <div class="payment" id="creditCard" onclick="payingProcess(this.id);">신용카드</div>
@@ -675,15 +751,57 @@
 <script src="/js/order/order.js"></script>
 <!-- <script type="text/javascript" src="/common"></script> -->
 <script src="/js/common.js"></script>
-<script type="text/javascript">
-  var socket = io(); // socket 통신 -> 마우스 커서 연결
+<script>
+  // 커스텀 커서로 사용할 div를 시스탬 마우스 커서 위치에 붙이기  
+  let mouseCursor = document.querySelector('.cursor');
+  let cameraTestModal = document.querySelector('#cameraTestModal');
 
-  // front script
+  //커스텀 커서의 left값과 top값을 커서의 XY좌표값과 일치시킴
+  function cursor(e) {
+    mouseCursor.style.left = e.pageX + "px";
+    mouseCursor.style.top = e.pageY - scrollY + "px";
+    }
+
+    function clickEffect(e){
+    var d = document.createElement("div");
+  
+    d.className = "clickEffect";
+    d.style.left = e.pageX - 40 + "px";
+    d.style.top = e.pageY - scrollY - 40 + "px";
+    cameraTestModal.appendChild(d);
+    d.addEventListener('animationend',function(){d.parentElement.removeChild(d);}.bind(this));
+  }
+  
+  //window 객체에 scroll & mouse 이벤트를 추가하고 cursor함수 실행되도록 함
+  window.addEventListener("scroll", cursor);
+  window.addEventListener("mousemove", cursor);
+  cameraTestModal.addEventListener('click', clickEffect);
+</script>
+
+<!--마우스 클릭 효과-->
+<script>
+  // function clickEffect(e){
+  //   let cameraTestModal = document.querySelector('#cameraTestModal');
+  //   var d = document.createElement("div");
+  
+  //   d.className = "clickEffect";
+  //   d.style.left = e.pageX + "px";
+  //   d.style.top = e.pageY + "px";
+  //   cameraTestModal.appendChild(d);
+  //   // d.addEventListener('animationend',function(){d.parentElement.removeChild(d);}.bind(this));
+  // }
+  // cameraTestModal.addEventListener('click', clickEffect);
+</script>
+<script type="text/javascript"> // front + back
+  var socket = io(); // socket 통신 
+
   function modal(id) {
     var zIndex = 9999;
     var modal = document.getElementById(id);
     var canvas = document.getElementsByClassName('output_canvas')[0];
     var container = document.getElementById('container');
+    const width = $(window).width(); // 윈도우 크기
+    const height = $(window).height(); 
 
     // 모달 div 뒤에 희끄무레한 레이어
     var bg = document.createElement('div');
@@ -814,15 +932,19 @@
     return this;
   };
 
+  // 카메라테스트 모달
+  // window.onload = function(){
+  //  modal('cameraTestModal');
+  // }
+
   document.getElementById('orderButton').addEventListener('click', function() {
      // 모달창 띄우기
      
      // back - 장바구니 비었는지 확인
      if(checkCart()) { // true 장바구니 있음
         modal('paymentsModal');
-     } else { // false 장바구니 비었음
-        alert('메뉴를 선택해 주세요');
-     }
+     } 
+     // 메뉴를 아무것도 선택하지 않았을 때 아무 동작도 일어나지 않음
   });
 
   function payingProcess(id){
@@ -839,11 +961,7 @@
         modal.style.display = 'none';
         modal_phone('phoneModal');
       }, 3000);
-
-    } else {
-        alert('메뉴를 선택해주세요');
-        location.reload();
-    }
+    } 
   }
 
   document.getElementById('phoneBtn').addEventListener('click', function() {
@@ -894,14 +1012,18 @@
   }
 
 </script>
-<script type="module">
-  // mediapipe script
+<script type="module"> // mediapipe script
   const videoElement = document.getElementsByClassName('input_video')[0];
   const canvasElement = document.getElementsByClassName('output_canvas')[0];
   const canvasCtx = canvasElement.getContext('2d');
   const width = $(window).width();
   const height = $(window).height();
 
+  const compareIndex = [[18, 4], [6, 8], [10, 12], [14, 16], [18, 20]]
+  var open = [false, false, false, false, false]
+  const static_gesture = [true, false, false, false, false, 'Thumb']; // 정적 제스처 - 엄지 올린 경우
+  const dynamic_gesture = [false, true, false, false, false, 'Index']; // 동적 제스처 - 검지 올린 경우
+  
   function dist(x1, y1, x2, y2) { // 두 점 사이의 거리를 반환
     return Math.sqrt(Math.pow(x1-x2, 2)) + Math.sqrt(Math.pow(y1-y2, 2));
   }
@@ -937,19 +1059,50 @@
         // 미디어파이프를 통해 얻은 랜드마크 이용하여 손모양 표현
         // drawConnectors(canvasCtx, landmarks, HAND_CONNECTIONS, {color: '#f0c697', lineWidth: 20});
         // drawLandmarks(canvasCtx, landmarks, {color: '#f5c9a9', lineWidth: 10});
+
+        for (var i=0; i<5; i++) {
+          // true 펼쳐짐, false 접힘
+            open[i] = dist(landmarks[0]['x'], landmarks[0]['y'], landmarks[compareIndex[i][0]]['x'], landmarks[compareIndex[i][0]]['y']) 
+                    < dist(landmarks[0]['x'], landmarks[0]['y'], landmarks[compareIndex[i][1]]['x'], landmarks[compareIndex[i][1]]['y'])
+        }
+        
+        // 클릭 모션
+        var dynamic_flag = true;
+        for (var i=1; i<5; i++) { 
+          if (dynamic_gesture[i] != open[i]) {
+            dynamic_flag = false;
+          }
+        }
+        if (dynamic_flag) {
+          if(getAngle(landmarks[8]['x'], landmarks[8]['y'],landmarks[6]['x'], landmarks[6]['y'])>0){
+            if(getAngle(landmarks[7]['x'], landmarks[7]['y'],landmarks[8]['x'], landmarks[8]['y'])>0){
+              console.log('click!');
+              socket.emit('click', true);
+              sleep(300);
+            }
+          }
+        }
+
+        var test_flag = true;
+        for (var i=0; i<5; i++) { 
+          if (static_gesture[i] != open[i]) {
+            test_flag = false;
+          }
+        }
+        if (test_flag) {
+          if(landmarks[0]['y'] > landmarks[4]['y']) {
+            // console.log('up!');
+            // $('#cameraTestModal').attr('style', "display:none;");
+            // TODO 카메라테스트 모달 종료
+          }
+        }
+
       
-        // 검지손가락(8번) 좌표
-        var x = landmarks[8]['x'];
-        var y = landmarks[8]['y'];
-        x = width - width * x; // 웹캠 좌우반전
-        y = height * y;
-
-        // canvas(미디어파이프 결과 영상) 위 검지손가락에 포인트 달아줌
-        // canvasCtx.fillStyle = "black";
-        // canvasCtx.fillRect((width - x), y, 10, 10);
-
+        // 손바닥 위 9번 랜드마크에 마우스 커서 연결
+        var mouse_x = (1 - landmarks[9]['x']) * window.innerWidth;
+        var mouse_y = landmarks[9]['y'] * window.innerHeight + 100;
         // 소켓 이용하여 서버에 검지손가락 좌표값 전달
-        // socket.emit('location', [x, y]); 
+        socket.emit('location', [mouse_x, mouse_y]); 
       }
     }
     canvasCtx.restore();

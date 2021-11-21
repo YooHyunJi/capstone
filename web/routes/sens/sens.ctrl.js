@@ -51,7 +51,7 @@ function sendOrderMsg(req, res) {
             type: "SMS",
             countryCode: "82",
             from: my_number, 
-            content : `주문이 완료되었습니다. 주문번호는 ${orderNo} 입니다.`,
+            content : `주문이 완료되었습니다. 주문번호는 ${orderNo}번 입니다.`,
             messages: [
                 { to: `${phone}`, },],
         },
