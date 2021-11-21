@@ -268,6 +268,43 @@
         /* background-color: rgb(70, 28, 35); */
     }
 
+    #orderAlert{
+        position: fixed;
+        width: 400px;
+        height: 300px;
+        background-color: rgb(50, 50, 50);
+        color: white;
+        border-radius: 10px;
+        margin-left: calc((100% - 400px)/2);
+        top: -320px;
+        /* animation: alertEffect 5s ease; */
+        z-index: 5;
+    }
+    @keyframes alertEffect{
+      20%{
+        top: -130px;
+      }
+      80%{
+        top: -130px;
+      }
+      100%{
+        top: -320px;
+      }
+    }
+
+    #orderAlert #alertArea{
+        width: 200px;
+        height: 20px;
+        /* background-color: tomato; */
+        margin-top: 200px;
+        text-align: center;
+        margin-left: 100px;
+    }
+
+    #orderAlert #alertArea span{
+        line-height: 21px;
+    }
+
   </style>
 </head>
 
@@ -288,6 +325,7 @@
                 <li><a class="nav-li" href="/manage_menu">메뉴 관리</a></li>
             </ul>
         </div>
+
         <div id="mode">
             <table id="orders">
                 <th>주문 번호</th>
@@ -317,7 +355,13 @@
             <div class="orderDetailArea__3" id="orderDetailArea__3">
                 <!-- 결제 정보 -->
             </div>
-            
+        </div>
+    </div>
+
+    <div id="orderAlert">
+        <div id="alertArea">
+            <span id="orderNo"></span>
+            <span class="orderAnnouncement">번 주문이 접수되었습니다</span>
         </div>
     </div>
 </body>
@@ -329,9 +373,17 @@
 <script>
     // 주문 시스템과 소켓 통신
     var socket = io(); 
+
     // orderInfo 데이터 수신 시
-    socket.on('orderInfo', (msg) => { 
-        alert('주문 발생! ' + msg["orderNo"]);
+    socket.on('orderInfo', (msg) => {
+        $("#orderNo").html(msg["orderNo"]);
+        $('#orderAlert').css('animation', 'alertEffect 5s ease');
+        // $("#orders").load("manage_order #orders");
+        setTimeout(function() {
+            $('#orderAlert').css('animation', '');
+            location.reload();
+        }
+            ,3000);
     });
 </script>
 </html>
