@@ -4,7 +4,7 @@ import numpy as np
 import tensorflow.keras
 
 
-actions = ['click', 'flip', 'click2']
+actions = ['none', 'click']
 seq_length = 30
 
 model = tensorflow.keras.models.load_model('models/model(1).h5')

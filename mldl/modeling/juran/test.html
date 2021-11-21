@@ -1,0 +1,213 @@
+<!-- 
+    11.15
+    ver1. tfjs 모델 적용
+-->
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+</head>
+<!-- 웹캠 화면의 좌우 반전 -->
+  <style>
+    video{
+      transform: rotateY(180deg);
+      -webkit-transform:rotateY(180deg); /* Safari and Chrome */
+      -moz-transform:rotateY(180deg); /* Firefox */
+    }
+    canvas{
+      transform: rotateY(180deg);
+      -webkit-transform:rotateY(180deg); /* Safari and Chrome */
+      -moz-transform:rotateY(180deg); /* Firefox */
+    }
+  </style>
+<body>
+  <div class="container" >
+    <video class="input_video" style="display:none;"></video>
+    <canvas class="output_canvas" width="700px" height="400px"></canvas>
+    <button style="padding: 50px 50px 50px 50px;" id="btn">button</button>
+  </div>
+  
+</body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<!--mediapipe-->
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils@0.1/camera_utils.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils@0.1/control_utils.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils@0.2/drawing_utils.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands@0.1/hands.js" crossorigin="anonymous"></script>
+<!--socket.io-->
+<!-- <script src="/socket.io/socket.io.js"></script> -->
+<!--tjfs-->
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.0.0/dist/tf.min.js"></script>
+<!--numpy-->
+<script src="https://cdn.jsdelivr.net/gh/nicolaspanel/numjs@0.15.1/dist/numjs.min.js"></script>
+
+<script type="text/javascript">
+$('#btn').on({
+  click: function () {
+    console.log('button click!');
+  }
+})
+
+// var socket = io();
+const videoElement = document.getElementsByClassName('input_video')[0];
+const canvasElement = document.getElementsByClassName('output_canvas')[0];
+const canvasCtx = canvasElement.getContext('2d');
+const width = $(window).width(); 
+const height = $(window).height(); 
+ 
+// check handpose
+const compareIndex = [[18, 4], [6, 8], [10, 12], [14, 16], [18, 20]]
+var open = [false, false, false, false, false]
+const gesture = [true, true, false, false, false, "index"] // 엄지의 경우 접거나 펼치거나 모두 가능
+
+function dist(x1, y1, x2, y2) { // 두 점 사이의 거리를 반환
+  return Math.sqrt(Math.pow(x1-x2, 2)) + Math.sqrt(Math.pow(y1-y2, 2));
+}
+
+function getAngle(x1, y1, x2, y2){ // 두 점 사이의 각도를 반환
+  var rad = Math.atan2(y2-y1, x2-x1);
+  return (rad*180 / Math.PI);
+}
+
+function handHover(x1, y1){
+  hand_x = -(x1 * window.width);
+  hand_y = y1 * window.height;
+}
+
+function sleep(ms) {
+  const wakeUpTime = Date.now() + ms;
+  while (Date.now() < wakeUpTime) {}
+}
+
+const seq = [];
+const actions = ['none', 'click'];
+function onResults(results) {
+  canvasCtx.save();
+  canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
+  canvasCtx.drawImage(results.image, 0, 0, canvasElement.width, canvasElement.height);
+  var print_x, print_y;
+  var middle;
+      
+
+  if (results.multiHandLandmarks) {
+    for (const landmarks of results.multiHandLandmarks) { 
+        var x = width - width * landmarks[8]['x'];
+        var y = height * landmarks[8]['y'];
+        
+        drawConnectors(canvasCtx, landmarks, HAND_CONNECTIONS, {color: '#4badb3', lineWidth: 5});
+        drawLandmarks(canvasCtx, landmarks, {color: '#e04e04', lineWidth: 2});
+
+        // socket.emit('location', [x, y]);  
+
+        var joint = nj.zeros((21, 4));
+        var v1 = nj.zeros((21, 4));
+        var v2 = nj.zeros((21, 4));
+        var v = nj.zeros((20, 4));
+        var k = 0;
+        for (var i=0; i<landmarks.length; i++) {
+            joint[i] = [landmarks[i]['x'], landmarks[i]['y'], landmarks[i]['z']];
+            if (i <= 19) {
+                v1[k] = [landmarks[i]['x'], landmarks[i]['y'], landmarks[i]['z']];
+            }
+            if (i > 0) {
+                v2[k-1] = [landmarks[i]['x'], landmarks[i]['y'], landmarks[i]['z']];
+            }
+            k ++ ;
+        }
+
+        for (var i=0; i<20; i++) {
+            var x = v1[i][0] - v2[i][0];
+            var y = v1[i][1] - v2[i][1];
+            v[i] = [(v1[i][0]-v2[i][0]), (v1[i][1]-v2[i][1]), (v1[i][2]-v2[i][2])]
+        }
+        
+        v = v / nj.linalg.norm(v, axis=1)[:, nj.newaxis];
+        xv = nj.arccos(nj.einsum('nt,nt->n', v));
+        
+
+
+        
+        // var v1 = joint.map(v => v.slice(0, 19));
+        // console.log(v1)
+        // var v2 = joint[[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]];
+
+        var v = v2-v1;
+        
+        v = v / nj.linalg.norm(v, axis=1)[:, nj.newaxis];
+
+        var angle = nj.arccos(nj.einsum('nt,nt->n',
+                        v[[0,1,2,4,5,6,8,9,10,12,13,14,16,17,18],:], 
+                        v[[1,2,3,5,6,7,9,10,11,13,14,15,17,18,19],:]));
+
+        angle = nj.degrees(angle);
+
+        d = nj.concatenate([joint.flatten(), angle]);
+
+        seq.append(d);
+
+        if (len(seq) < seq_length) {
+            continue;
+        }
+
+        input_data = nj.expand_dims(nj.array(seq[-seq_length:], dtype=nj.float32), axis=0);
+
+        y_pred = model.predict(input_data).squeeze();
+
+        i_pred = parseInt(nj.argmax(y_pred));
+        var conf = y_pred[i_pred];
+
+        if (conf < 0.9) {
+            continue;
+        }
+
+        action = actions[i_pred];
+        action_seq.append(action);
+
+        if (action_seq.length < 3){
+            continue;
+        }
+
+        var this_action = '?'
+        if (action_seq[-1] == action_seq[-2]) {
+            this_action = action
+        }
+
+        console.log(this_action);
+    
+    }
+    
+  }
+  canvasCtx.restore();
+  
+}
+
+const hands = new Hands({locateFile: (file) => {
+  return `https://cdn.jsdelivr.net/npm/@mediapipe/hands@0.1/${file}`;
+}});
+
+hands.setOptions({
+  maxNumHands: 1,
+  minDetectionConfidence: 0.5,
+  minTrackingConfidence: 0.5
+});
+
+hands.onResults(onResults);
+
+const camera = new Camera(videoElement, {
+  onFrame: async () => {
+    await hands.send({image: videoElement});
+  },
+  width: 1280,
+  height: 720
+});
+
+const simulateClick = (x, y) => {
+  var evt = document.createEvent("MouseEvents");
+  evt.initMouseEvent("click", true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+  var cb = document.elementFromPoint(x, y);
+  cb.dispatchEvent(evt);
+}
+
+camera.start();
+</script>
+</html>
