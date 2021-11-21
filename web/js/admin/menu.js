@@ -25,12 +25,12 @@ function getAllMenus() {
                 let menuNo=i+1;
                 $('#menuList').append(
                     `<tr class="menu">
-                    <td>`+menuNo+`</td>
+                    <td>${result.menus[i].menuNo}</td>
                     <td>${result.menus[i].categoryName}</td>
                     <td>${result.menus[i].menuName}</td>
                     <td>${result.menus[i].menuPrice}</td>
                     <td class="menuDetail" onclick="getMenuDetail('${result.menus[i].menuNo}', '${result.menus[i].categoryName}', '${result.menus[i].menuName}', '${result.menus[i].menuPrice}', '${result.menus[i].menuDetail}')">${result.menus[i].menuDetail}</td>
-                    <td class="modifyMenu" onclick="setValuesBeforeUpdateMenu('${result.menus[i].menuNo}', '${result.menus[i].menuName}', '${result.menus[i].menuPrice}', '${result.menus[i].menuDetail}')">수정</td>
+                    <td class="modifyMenu" onclick="setValuesBeforeUpdateMenu('${result.menus[i].categoryName}', '${result.menus[i].menuNo}', '${result.menus[i].menuName}', '${result.menus[i].menuPrice}', '${result.menus[i].menuDetail}')">수정</td>
                     <td class="deleteMenu" onclick="deleteMenu('${result.menus[i].menuNo}')">삭제</td>
                     </tr>`
                 )
@@ -84,12 +84,12 @@ function getMenusByCategory(categoryName) {
                 let menuNo=i+1;
                 $('#menuList').append(
                     `<tr class="menu">
-                    <td>`+menuNo+`</td>
+                    <td>${result.menus[i].menuNo}</td>
                     <td>${result.menus[i].categoryName}</td>
                     <td>${result.menus[i].menuName}</td>
                     <td>${result.menus[i].menuPrice}</td>
                     <td class="menuDetail" onclick="getMenuDetail('${result.menus[i].menuNo}', '${result.menus[i].categoryName}', '${result.menus[i].menuName}', '${result.menus[i].menuPrice}', '${result.menus[i].menuDetail}')">${result.menus[i].menuDetail}</td>
-                    <td class="modifyMenu" onclick="setValuesBeforeUpdateMenu('${result.menus[i].menuNo}', '${result.menus[i].menuName}', '${result.menus[i].menuPrice}', '${result.menus[i].menuDetail}')">수정</td>
+                    <td class="modifyMenu" onclick="setValuesBeforeUpdateMenu('${result.menus[i].categoryName}', '${result.menus[i].menuNo}', '${result.menus[i].menuName}', '${result.menus[i].menuPrice}', '${result.menus[i].menuDetail}')">수정</td>
                     <td class="deleteMenu" onclick="deleteMenu('${result.menus[i].menuNo}')">삭제</td>
                     </tr>`
                 )
@@ -192,9 +192,10 @@ function deleteMenu(menuNo) {
     
 }
 
-function setValuesBeforeUpdateMenu(menuNo, menuName, menuPrice, menuDetail) {
+function setValuesBeforeUpdateMenu(categoryName, menuNo, menuName, menuPrice, menuDetail) {
     modal('modifyMenuModal');
 
+    $('#select_category').val(categoryName);
     $('#menu_no').val(menuNo);
     $('#menu_name').val(menuName);
     $('#menu_price').val(menuPrice);
