@@ -47,7 +47,7 @@ $(document).ready(function() {
             shoppingCartList = JSON.parse(getCookie('shoppingCart'));
             paymentInfo = getCookie('payment');
             let customerTel = $('#inputPhone').val();
-            let totalPrice = 10000; // test
+            let totalPrice = parseInt($('#totalPriceSpan').text().slice(0, -1).replace(',', ''));
             let orderNo;
 
             if (customerTel == '') {
