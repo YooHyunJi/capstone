@@ -49,8 +49,6 @@ $('#btn').on({
 const videoElement = document.getElementsByClassName('input_video')[0];
 const canvasElement = document.getElementsByClassName('output_canvas')[0];
 const canvasCtx = canvasElement.getContext('2d');
-const width = $(window).width(); 
-const height = $(window).height(); 
  
 // check handpose
 const compareIndex = [[18, 4], [6, 8], [10, 12], [14, 16], [18, 20]]
@@ -78,83 +76,36 @@ function sleep(ms) {
 
 const seq = [];
 const actions = ['none', 'click'];
+const index_point = [[8, 7, 6], [7, 6, 5], [6, 5, 0]];
 function onResults(results) {
   canvasCtx.save();
   canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
   canvasCtx.drawImage(results.image, 0, 0, canvasElement.width, canvasElement.height);
-  var print_x, print_y;
-  var middle;
       
-
   if (results.multiHandLandmarks) {
     for (const landmarks of results.multiHandLandmarks) { 
-        var x = width - width * landmarks[8]['x'];
-        var y = height * landmarks[8]['y'];
         
         drawConnectors(canvasCtx, landmarks, HAND_CONNECTIONS, {color: '#4badb3', lineWidth: 5});
         drawLandmarks(canvasCtx, landmarks, {color: '#e04e04', lineWidth: 2});
 
-        var joint = nj.zeros((21, 4));
-        var v1 = nj.zeros((21, 4));
-        var v2 = nj.zeros((21, 4));
-        var v = nj.zeros((20, 4));
-        var k = 0;
-        for (var i=0; i<landmarks.length; i++) {
-            joint[i] = [landmarks[i]['x'], landmarks[i]['y'], landmarks[i]['z']];
-            if (i <= 19) {
-                v1[k] = [landmarks[i]['x'], landmarks[i]['y'], landmarks[i]['z']];
-            }
-            if (i > 0) {
-                v2[k-1] = [landmarks[i]['x'], landmarks[i]['y'], landmarks[i]['z']];
-            }
-            k ++ ;
+        point_info = nj.zeros((21, 2));
+        for(var i=0; i<21; i++) {
+          point_info[i] = [landmarks[i]['x'], landmarks[i]['y']];
         }
 
-        for (var i=0; i<20; i++) {
-            var x = v1[i][0] - v2[i][0];
-            var y = v1[i][1] - v2[i][1];
-            v[i] = [(v1[i][0]-v2[i][0]), (v1[i][1]-v2[i][1]), (v1[i][2]-v2[i][2])]
+        var angles = [];
+        for(const point of index_point) {
+          // console.log(point_info[point[0]][0] - point_info[point[1]][0]);
+          ba = [point_info[point[0]][0] - point_info[point[1]][0], point_info[point[0]][1] - point_info[point[1]][1]]
+          bc = [point_info[point[2]][0] - point_info[point[1]][0], point_info[point[1]][1] - point_info[point[1]][1]]
+          cosine_angle = nj.dot(ba, bc) / (nj.linalg.norm(ba) * nj.linalg.norm(bc));
+          // angle = nj.arccos(cosine_angle);
+          // pAngle = nj.degrees(angle);
+          // angles.append(pAngle);
         }
-        console.log(v);
+
+        // console.log(angles);
         
-        v = v / nj.linalg.norm(v, axis=1)[[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19], nj.newaxis];
-        xv = nj.arccos(nj.einsum('nt,nt->n', v));
-
-        angle = nj.degrees(angle);
-
-        d = nj.concatenate([joint.flatten(), angle]);
-
-        seq.append(d);
-
-        if (len(seq) < seq_length) {
-            continue;
-        }
-
-        input_data = nj.expand_dims(nj.array(seq[-seq_length], dtype=nj.float32), axis=0);
-
-        y_pred = model.predict(input_data).squeeze();
-
-        i_pred = parseInt(nj.argmax(y_pred));
-        var conf = y_pred[i_pred];
-
-        if (conf < 0.9) {
-            continue;
-        }
-
-        action = actions[i_pred];
-        action_seq.append(action);
-
-        if (action_seq.length < 3){
-            continue;
-        }
-
-        var this_action = '?'
-        if (action_seq[-1] == action_seq[-2]) {
-            this_action = action
-        }
-
-        console.log(this_action);
-    
     }
     
   }
