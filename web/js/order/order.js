@@ -112,7 +112,7 @@ $(document).ready(function() {
     })
 
     // 카테고리 리스트
-    function addCategoryList(result) { 
+    function addCategoryList(result) {
         $('#categoryList').empty();
         $.each(result, function(index, data){
             // 첫 로딩 시 처음 카테고리에 selected 클래스 부여, 클릭될 때 이전 selected 카테고리 해제 및 현재 카테고리에 selected 클래스 추가
@@ -144,7 +144,30 @@ $(document).ready(function() {
                 }));
             }
         });
+
+        var categoryCnt = $(".category").length;
+        var categoryWidth;
+
+        // 카테고리 개수가 5개 미만이면 (100/카테고리 개수)%로 지정해서 꽉차도록
+        if(categoryCnt < 5){
+            categoryWidth = 100 / categoryCnt;}
+        // 카테고리 개수가 5개 이상이면 20%%로 지정해서 최대 5개가 나타나고 버튼으로 좌우 이동
+        else{
+            categoryWidth = 20;}
+            
+        $('.category').css('width', categoryWidth + '%');
     }
+
+    // 카테고리 가로 이동 버튼
+    $("#categoryBtnLeft").on({
+    click: function() {
+        categoryList.scrollBy(-$('.category').width(), 0);
+        }})
+    $("#categoryBtnRight").on({
+        click: function() {
+            categoryList.scrollBy($('.category').width(), 0);
+        }
+    })
 
     // 메뉴 리스트
     function addMenuList(result) {
