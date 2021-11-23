@@ -47,11 +47,11 @@ $(document).ready(function() {
             shoppingCartList = JSON.parse(getCookie('shoppingCart'));
             paymentInfo = getCookie('payment');
             let customerTel = $('#inputPhone').val();
-            let totalPrice = 10000; // test
+            let totalPrice = parseInt($('#totalPriceSpan').text().slice(0, -1).replace(',', ''));
             let orderNo;
 
             if (customerTel == '') {
-                alert('전화번호를 입력해 주세요');
+                // 전화번호 입력하지 않았을 때 동작하지 않음
             } else {
                 $.ajax({
                     url: '/api/order/add/orderInfo',
@@ -87,7 +87,8 @@ $(document).ready(function() {
                                     }), success: function(res) {
                                         console.log('send message success');
                                         deleteCookie('shoppingCart');
-                                        location.reload();
+                                        // 주문 완료 안내 띄우고 3초 후 재시작
+                                        setTimeout(function() {location.reload();}, 3000);
 
                                         // server
                                         socket.emit('orderInfo', {
@@ -111,7 +112,7 @@ $(document).ready(function() {
     })
 
     // 카테고리 리스트
-    function addCategoryList(result) { 
+    function addCategoryList(result) {
         $('#categoryList').empty();
         $.each(result, function(index, data){
             // 첫 로딩 시 처음 카테고리에 selected 클래스 부여, 클릭될 때 이전 selected 카테고리 해제 및 현재 카테고리에 selected 클래스 추가
@@ -143,7 +144,30 @@ $(document).ready(function() {
                 }));
             }
         });
+
+        var categoryCnt = $(".category").length;
+        var categoryWidth;
+
+        // 카테고리 개수가 5개 미만이면 (100/카테고리 개수)%로 지정해서 꽉차도록
+        if(categoryCnt < 5){
+            categoryWidth = 100 / categoryCnt;}
+        // 카테고리 개수가 5개 이상이면 20%%로 지정해서 최대 5개가 나타나고 버튼으로 좌우 이동
+        else{
+            categoryWidth = 20;}
+            
+        $('.category').css('width', categoryWidth + '%');
     }
+
+    // 카테고리 가로 이동 버튼
+    $("#categoryBtnLeft").on({
+    click: function() {
+        categoryList.scrollBy(-$('.category').width(), 0);
+        }})
+    $("#categoryBtnRight").on({
+        click: function() {
+            categoryList.scrollBy($('.category').width(), 0);
+        }
+    })
 
     // 메뉴 리스트
     function addMenuList(result) {

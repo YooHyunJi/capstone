@@ -120,15 +120,17 @@ io.on('connection', (socket) => { // 소켓 연결이 들어오면 실행
 
   // 미디어파이프 8번 손가락(검지) 위치 정보 이용하여 마우스 커서 이동 
   socket.on('location', (msg) => {
-      var x = msg[0];
-      var y = msg[1];
-
-      robot.moveMouse(x, y);
+      robot.moveMouse(msg[0], msg[1]);
   });
 
   // 주문 완료 시
   socket.on('orderInfo', (msg) => { // 주문 시스템 -주문번호-> 서버 
     io.emit('orderInfo', msg); // 서버 -주문번호-> 관리 시스템
+  });
+
+  // 동적 제스처 클릭 모션 시
+  socket.on('click', (flg) => {
+    robot.mouseClick("left");
   });
 
 
