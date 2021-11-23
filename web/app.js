@@ -15,6 +15,7 @@ const menuRouter = require('./routes/admin/menu');
 const categoryRouter = require('./routes/admin/category');
 const userRouter = require('./routes/admin/user');
 const orderRouter = require('./routes/admin/order');
+//const testRouter = require('./routes/admin/testjs');
 
 const orderViewRouter = require('./routes/order/views.js'); // 주문 시스템 VIEWS 라우터
 const orderApiRouter = require('./routes/order'); // 주문 시스템 API 라우터 index.js
@@ -38,6 +39,7 @@ app.use('/admin', menuRouter);
 app.use('/admin', categoryRouter);
 app.use('/admin', userRouter);
 app.use('/admin', orderRouter);
+//app.use('/admin', testRouter);
 
 // juran
 // js & static 경로설정
@@ -110,9 +112,6 @@ app.get('/manage_category', (req, res) => {
 })
 app.get('/manage_menu', (req, res) => {
   res.sendFile(__dirname + "/public/admin/manage_menu.html")
-})
-app.get('/test2', (req, res) => { // 임시
-  res.sendFile(__dirname + "/public/admin/test.html")
 })
 
 // socket.io

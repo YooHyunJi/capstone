@@ -78,7 +78,7 @@ function deleteUser() {
             }
             else if (result.code == 200) {
                 alert('회원탈퇴 성공');
-                location.href="/main_logout";
+                location.href="/login";
             }
         }
     })

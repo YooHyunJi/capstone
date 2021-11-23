@@ -114,6 +114,7 @@ router.get('/logout', function (req, res) {
     req.session.destroy(function(){
         req.session.user;
     });
+    // req.session.destroy();
     console.log('로그아웃 성공');
 });
 
@@ -137,7 +138,7 @@ router.post('/findid', function (req, res) {
     })
 });
 
-// 4. Pw찾기 라우터
+// 5. Pw찾기 라우터
 router.post('/findpw', function (req, res) {
     var storeId = req.body.storeId; // 매장 아이디
     var email = req.body.email; // 이메일 주소
@@ -216,10 +217,10 @@ router.post('/findpw', function (req, res) {
     });
 });
 
-// 5. 회원탈퇴 라우터
+// 6. 회원탈퇴 라우터
 router.post('/deleteUser', function (req, res) {
     var storePw = req.body.storePw; // 비밀번호
-    var query = `SELECT storePw, salt FROM store WHERE storeNo = ${req.session.user.storeNo}`;
+    var query = `SELECT storePw, salt FROM store WHERE storeNo = "${req.session.user.storeNo}"`;
 
     connection.query(query, function (err, result) {
         var salt = result[0].salt;
@@ -234,7 +235,7 @@ router.post('/deleteUser', function (req, res) {
                 }
                 else { // password 옳게 입력한 경우 회원탈퇴 진행
                     // res.json({'code': 200, 'result': 'Password is correct'});
-                    query = `DELETE FROM store WHERE storeId = ${req.session.user.storeId}` // 회원탈퇴 쿼리문
+                    query = `DELETE FROM store WHERE storeId = "${req.session.user.storeId}"` // 회원탈퇴 쿼리문
                     connection.query(query, function (err, result) {
                         if(err) { // 에러 발생시
                             console.log("error ocurred: ", err);
@@ -249,21 +250,9 @@ router.post('/deleteUser', function (req, res) {
         }
     })
 
-    // DB 에서 사용자 정보 삭제
-    /*query = `DELETE FROM store WHERE storeId = ${req.session.user.storeId}` // 회원탈퇴 쿼리문
-    connection.query(query, storeId, function (err, result) {
-        if(err) { // 에러 발생시
-            console.log("error ocurred: ", err);
-            res.json({ "code": 400, "result": "error ocurred" })
-        } else {
-            console.log("delete user success");
-            res.json({"code": 200, "result": "delete user success"})
-        }
-    })*/
-
 });
 
-// 6. 회원정보조회 라우터
+// 7. 회원정보조회 라우터
 router.get('/getUserInfo', function (req, res) {
     var query = `SELECT storeName, storeTel, storeLoc, crn, managerName, managerTel FROM store WHERE storeNo=${req.session.user.storeNo}`; // 메뉴 수정 쿼리문
 
@@ -280,7 +269,7 @@ router.get('/getUserInfo', function (req, res) {
 
 });
 
-// 7. 회원정보수정 라우터
+// 8. 회원정보수정 라우터
 router.post('/updateUserInfo', function (req, res) {
     var storePw = ''; // 비밀번호
     var salt = ''; // 비밀번호 암호화 요소
@@ -290,7 +279,7 @@ router.post('/updateUserInfo', function (req, res) {
     var crn = req.body.crn; // 사업자등록번호
     var managerName = req.body.managerName; // 매니저명
     var managerTel = req.body.managerTel; // 매니저 연락처
-    var query = `UPDATE store SET storePw = ?, salt = ?, storeName = ?, storeTel = ?, storeLoc = ?, crn = ?, managerName = ?, managerTel = ? WHERE storeNo = 6`; // 회원정보수정 쿼리문
+    var query = `UPDATE store SET storePw = ?, salt = ?, storeName = ?, storeTel = ?, storeLoc = ?, crn = ?, managerName = ?, managerTel = ? WHERE storeNo = ${req.session.user.storeNo}`; // 회원정보수정 쿼리문
 
      // salt 값 랜덤 생성
      crypto.randomBytes(64, (err, buf) => { 
