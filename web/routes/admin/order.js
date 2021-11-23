@@ -10,7 +10,13 @@ var moment = require('moment');
 
 // 1. 주문내역 조회 라우터
 router.get('/getAllOrders', function (req, res) {
-    var query = `SELECT orderNo, DATE_FORMAT(orderTime, '%Y-%m-%d %H:%m:%s') AS orderTime, orderStatus, customerTel, totalPrice, cancelYn FROM orders WHERE storeNo = ${req.session.user.storeNo}`; // 주문 조회 쿼리문
+    // 주문 조회 쿼리문
+    var query = `SELECT orderNo, DATE_FORMAT(orderTime, '%Y-%m-%d %H:%m:%s') AS orderTime, orderStatus, customerTel, totalPrice, cancelYn FROM orders `;
+    +`WHERE storeNo = ${req.session.user.storeNo}`;
+    /*`SELECT orderNo, DATE_FORMAT(orderTime, '%Y-%m-%d %H:%m:%s') AS orderTime, orderStatus, customerTel, totalPrice, cancelYn FROM orders `
+    +`WHERE storeNo = ${req.session.user.storeNo} AND cancelYn="N" ORDER BY orderStatus=0;` 
+    +`SELECT orderNo, DATE_FORMAT(orderTime, '%Y-%m-%d %H:%m:%s') AS orderTime, orderStatus, customerTel, totalPrice, cancelYn FROM orders `
+    +`WHERE storeNo = ${req.session.user.storeNo} AND cancelYn="Y";`*/
 
     // DB에서 조회
     connection.query(query, function (err, result) {
@@ -18,6 +24,11 @@ router.get('/getAllOrders', function (req, res) {
             console.log("error ocurred: ", err);
             res.json({ "code": 400, "result": "error ocurred" })
         } else {
+            /*var orders = new Array()
+            for (i=0; i<result[0].length; i++)
+                orders.push(result[0][i]);
+            for (i=0; i<result[1].length; i++)
+                orders.push(result[1][i]);*/
             console.log("get order info success");
             res.json({"code": 200, "result": "get order info success", "orders": result})
         }

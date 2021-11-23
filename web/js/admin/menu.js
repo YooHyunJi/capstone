@@ -25,7 +25,7 @@ function getAllMenus() {
                 let menuNo=i+1;
                 $('#menuList').append(
                     `<tr class="menu">
-                    <td>${result.menus[i].menuNo}</td>
+                    <td>`+menuNo+`</td>
                     <td>${result.menus[i].categoryName}</td>
                     <td>${result.menus[i].menuName}</td>
                     <td>${result.menus[i].menuPrice}</td>
@@ -84,7 +84,7 @@ function getMenusByCategory(categoryName) {
                 let menuNo=i+1;
                 $('#menuList').append(
                     `<tr class="menu">
-                    <td>${result.menus[i].menuNo}</td>
+                    <td>`+menuNo+`</td>
                     <td>${result.menus[i].categoryName}</td>
                     <td>${result.menus[i].menuName}</td>
                     <td>${result.menus[i].menuPrice}</td>

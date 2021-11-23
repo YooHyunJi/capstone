@@ -11,7 +11,6 @@ function getAllOrders() {
         url: '/admin/getAllOrders',
         success: function (result) {
             for(let i=0; i<result.orders.length; i++) {
-                let orderNo=i+1;
                 let orderStatus='';
                 if (result.orders[i].orderStatus==0) {
                     orderStatus='준비중';
@@ -43,7 +42,7 @@ function getAllOrders() {
                 
                 $('#orders').append(
                     `<tr class="`+orderClass+`">
-                    <td>`+orderNo+`</td>
+                    <td>${result.orders[i].orderNo}</td>
                     <td>${result.orders[i].orderTime}</td>
                     <td class="orderStatus">`+orderStatus+`</td>
                     <td>${result.orders[i].customerTel}</td>
