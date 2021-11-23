@@ -8,6 +8,9 @@
   <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils@0.2/drawing_utils.js" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands@0.1/hands.js" crossorigin="anonymous"></script>
   <script src="https://use.fontawesome.com/releases/v5.2.0/js/all.js"></script>
+  <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+  <!-- 제이쿼리 버전 문제로 에러가 떠서 자동적으로 최신 버전 사용되게 수정함 -->
+  
   <style>
     html, body{
       width: 100%;
@@ -15,7 +18,7 @@
       margin: 0;
       -ms-overflow-style: none;
     }
-
+    
     body{
       cursor: none;
     }
@@ -121,6 +124,11 @@
       line-height: 95.6px;
       display: inline-block;
     }
+
+    #categoryArea #categoryList .selected{
+      background: linear-gradient( -45deg, rgba(40, 116, 105, 0.5), rgba(40, 116, 105, 0.55));
+    }
+
     #categoryArea #categoryList .category:hover{
       background: linear-gradient( -45deg, rgba(40, 116, 105, 0.5), rgba(40, 116, 105, 0.55));
     }
@@ -146,7 +154,7 @@
       text-align: center;
       border: none;
     }
-
+    
     .menu:hover{
       background: linear-gradient( -45deg, rgba(168, 168, 168, 0.5), rgba(185, 185, 185, 0.5));
     }
@@ -595,9 +603,9 @@
   </style>
 </head>
 <body>
-  <!-- 마우스 커서 커스텀 -->
-  <div class="cursor"></div>
-  <!-- 서버에서 세션값으로 받아온 storeNo (ejs)-->
+    <!-- 마우스 커서 커스텀 -->
+    <div class="cursor"></div>
+      <!-- 서버에서 세션값으로 받아온 storeNo (ejs)-->
   <a style="display: none;" id="storeNo"><%= storeNo %></a>
 
   <canvas class="output_canvas" width="1280px" height="720px"></canvas>
@@ -607,8 +615,8 @@
     <div id="categoryArea">
       <div id="categoryBtn">
         
-        <div id="categoryBtnLeft" onclick="categoryScroll(this.id);">◀︎</div>
-        <div id="categoryBtnRight" onclick="categoryScroll(this.id);">▶︎</div>
+        <div id="categoryBtnLeft">◀︎</div>
+        <div id="categoryBtnRight">▶︎</div>
       </div>
       <ul id="categoryList">
         <!--
@@ -664,7 +672,7 @@
         </div>
       </div>    
     </div>
-    
+
     <!-- 카메라 테스트 모달창 -->
     <div id="cameraTestModal" class="modal">
       <div id="testArea">
@@ -936,14 +944,14 @@
   // window.onload = function(){
   //  modal('cameraTestModal');
   // }
-
+  
   document.getElementById('orderButton').addEventListener('click', function() {
      // 모달창 띄우기
      
      // back - 장바구니 비었는지 확인
      if(checkCart()) { // true 장바구니 있음
         modal('paymentsModal');
-     } 
+     }
      // 메뉴를 아무것도 선택하지 않았을 때 아무 동작도 일어나지 않음
   });
 
@@ -961,7 +969,7 @@
         modal.style.display = 'none';
         modal_phone('phoneModal');
       }, 3000);
-    } 
+    }
   }
 
   document.getElementById('phoneBtn').addEventListener('click', function() {
@@ -983,19 +991,6 @@
   function gestureButtonClick(){
     // document.getElementById('btn1').click();
     console.log(document.getElementsByClassName('menuTitle').text());
-  }
-
-  function categoryScroll(clicked_id){
-    const categoryList = document.getElementById('categoryList');
-    const clickedButton = document.getElementById(clicked_id);
-
-    if(clicked_id == 'categoryBtnLeft'){
-      categoryList.scrollBy(-204, 0);
-    }
-
-    else{
-      categoryList.scrollBy(204, 0);
-    }
   }
 
   function orderScroll(clicked_id){
@@ -1023,7 +1018,7 @@
   var open = [false, false, false, false, false]
   const static_gesture = [true, false, false, false, false, 'Thumb']; // 정적 제스처 - 엄지 올린 경우
   const dynamic_gesture = [false, true, false, false, false, 'Index']; // 동적 제스처 - 검지 올린 경우
-  
+
   function dist(x1, y1, x2, y2) { // 두 점 사이의 거리를 반환
     return Math.sqrt(Math.pow(x1-x2, 2)) + Math.sqrt(Math.pow(y1-y2, 2));
   }
@@ -1059,7 +1054,7 @@
         // 미디어파이프를 통해 얻은 랜드마크 이용하여 손모양 표현
         // drawConnectors(canvasCtx, landmarks, HAND_CONNECTIONS, {color: '#f0c697', lineWidth: 20});
         // drawLandmarks(canvasCtx, landmarks, {color: '#f5c9a9', lineWidth: 10});
-
+      
         for (var i=0; i<5; i++) {
           // true 펼쳐짐, false 접힘
             open[i] = dist(landmarks[0]['x'], landmarks[0]['y'], landmarks[compareIndex[i][0]]['x'], landmarks[compareIndex[i][0]]['y']) 
@@ -1097,12 +1092,12 @@
           }
         }
 
-      
+
         // 손바닥 위 9번 랜드마크에 마우스 커서 연결
         var mouse_x = (1 - landmarks[9]['x']) * window.innerWidth;
         var mouse_y = landmarks[9]['y'] * window.innerHeight + 100;
         // 소켓 이용하여 서버에 검지손가락 좌표값 전달
-        socket.emit('location', [mouse_x, mouse_y]); 
+        socket.emit('location', [mouse_x, mouse_y]);  
       }
     }
     canvasCtx.restore();
