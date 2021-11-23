@@ -1002,7 +1002,7 @@ const canvasCtx = canvasElement.getContext('2d');
 // check handpose
 const compareIndex = [[18, 4], [6, 8], [10, 12], [14, 16], [18, 20]]
 var open = [false, false, false, false, false]
-const gesture = [[true, true, true, true, true, "HI"], [false, true, false, false, false, "검지만 펴짐"], [true, true, false, false, false, "검지만 펴짐_2"], [true, false, false, false, false, "엄지만 펴짐"]]
+const gesture = [[false, false, false, false, false, "선택됨"], [false, true, false, false, false, "검지만 펴짐"], [true, true, false, false, false, "검지만 펴짐_2"], [true, false, false, false, false, "엄지만 펴짐"]]
 
 function dist(x1, y1, x2, y2) { // 두 점 사이의 거리를 반환
   return Math.sqrt(Math.pow(x1-x2, 2)) + Math.sqrt(Math.pow(y1-y2, 2));
@@ -1038,8 +1038,8 @@ function onResults(results) {
       // 현재 사용자의 손 상태 판별
       for (var i=0; i<5; i++) {
         // true 펼쳐짐, false 접힘
-          open[i] = dist(landmarks[0]['x'], landmarks[0]['y'], landmarks[compareIndex[i][0]]['x'], landmarks[compareIndex[i][0]]['y']) 
-                  < dist(landmarks[0]['x'], landmarks[0]['y'], landmarks[compareIndex[i][1]]['x'], landmarks[compareIndex[i][1]]['y'])
+        open[i] = dist(landmarks[0]['x'], landmarks[0]['y'], landmarks[compareIndex[i][0]]['x'], landmarks[compareIndex[i][0]]['y']) 
+            < dist(landmarks[0]['x'], landmarks[0]['y'], landmarks[compareIndex[i][1]]['x'], landmarks[compareIndex[i][1]]['y'])
       }
 
       // 지정된 제스처와 비교
@@ -1079,7 +1079,10 @@ function onResults(results) {
             }
           }
           else{
-            console.log(gesture[i][5]);
+            var x = (1 - landmarks[9]['x']) * window.innerWidth;
+            var y = landmarks[9]['y'] * window.innerHeight;
+            console.log('선택되었습니다' + '\nx좌표 : ' + x + '\ny좌표 : ' + y);
+            // sleep(300);
           }
         }
       }
