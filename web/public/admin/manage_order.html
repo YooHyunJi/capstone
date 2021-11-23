@@ -372,18 +372,21 @@
 <script src="/socket.io/socket.io.js"></script>
 <script>
     // 주문 시스템과 소켓 통신
-    var socket = io(); 
+    var socket = io();
 
     // orderInfo 데이터 수신 시
     socket.on('orderInfo', (msg) => {
+        // 주문 번호
         $("#orderNo").html(msg["orderNo"]);
+        // 주문 접수 알림창에 애니메이션 적용
         $('#orderAlert').css('animation', 'alertEffect 5s ease');
-        // $("#orders").load("manage_order #orders");
+        // 주문 내역 부분만 reload
+        $('.preparingOrder').empty();
+        getAllOrders();
+
         setTimeout(function() {
             $('#orderAlert').css('animation', '');
-            location.reload();
-        }
-            ,3000);
+        },3000);
     });
 </script>
 </html>
