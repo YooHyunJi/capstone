@@ -47,7 +47,7 @@ $(document).ready(function() {
             shoppingCartList = JSON.parse(getCookie('shoppingCart'));
             paymentInfo = getCookie('payment');
             let customerTel = $('#inputPhone').val();
-            let totalPrice = parseInt($('#totalPriceSpan').text().slice(0, -1).replace(',', ''));
+            totalPrice = parseInt($('#totalPriceSpan').text().slice(0, -1).replace(',', ''));
             let orderNo;
 
             if (customerTel == '') {
@@ -89,11 +89,9 @@ $(document).ready(function() {
                                         deleteCookie('shoppingCart');
                                         // 주문 완료 안내 띄우고 3초 후 재시작
                                         setTimeout(function() {location.reload();}, 3000);
-
                                         // server
                                         socket.emit('orderInfo', {
                                             'orderNo': orderNo,
-                                            // TODO 필요한 정보 추가
                                         }); 
                                     }, error: function(err) {
                                         console.log('send message error ', err);

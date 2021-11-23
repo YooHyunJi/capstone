@@ -1071,11 +1071,12 @@
         if (dynamic_flag) {
           if(getAngle(landmarks[8]['x'], landmarks[8]['y'],landmarks[6]['x'], landmarks[6]['y'])>0){
             if(getAngle(landmarks[7]['x'], landmarks[7]['y'],landmarks[8]['x'], landmarks[8]['y'])>0){
+            // if(landmarks[6]['y'] < landmarks[8]['y']) { // 클릭 쉽게하려고 그냥 해봄..
               console.log('click!');
               socket.emit('click', true);
               sleep(300);
             }
-          }
+           }
         }
 
         var test_flag = true;

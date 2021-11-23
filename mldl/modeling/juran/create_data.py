@@ -4,7 +4,7 @@ import numpy as np
 import time, os
 
 actions = ['none', 'click']
-seq_length = 60
+seq_length = 30
 secs_for_action = 60 # 60초
 
 # MediaPipe hands model
@@ -53,7 +53,7 @@ while cap.isOpened():
                     v2 = joint[[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20], :3] # Child joint
                     v = v2 - v1 # [20, 3]
                     # Normalize v
-                    v = v / np.linalg.norm(v, axis=1)[:, np.newaxis]
+                    v = v / np.linalg.norm(v, axis=1)[:, np.newaxis] 
 
                     # Get angle using arcos of dot product
                     angle = np.arccos(np.einsum('nt, nt->n',
