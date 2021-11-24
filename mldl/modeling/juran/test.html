@@ -38,6 +38,8 @@
 <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.0.0/dist/tf.min.js"></script>
 <!--numpy-->
 <script src="https://cdn.jsdelivr.net/gh/nicolaspanel/numjs@0.15.1/dist/numjs.min.js"></script>
+<!--mathjs-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/7.5.1/math.min.js"></script>
 
 <script type="text/javascript">
 $('#btn').on({
@@ -95,22 +97,28 @@ function onResults(results) {
 
         var angles = [];
         for(const point of index_point) {
-          // console.log(point_info[point[0]][0] - point_info[point[1]][0]);
-          ba = [point_info[point[0]][0] - point_info[point[1]][0], point_info[point[0]][1] - point_info[point[1]][1]]
-          bc = [point_info[point[2]][0] - point_info[point[1]][0], point_info[point[1]][1] - point_info[point[1]][1]]
-          cosine_angle = nj.dot(ba, bc) / (nj.linalg.norm(ba) * nj.linalg.norm(bc));
-          // angle = nj.arccos(cosine_angle);
-          // pAngle = nj.degrees(angle);
-          // angles.append(pAngle);
+          ba = [point_info[point[0]][0] - point_info[point[1]][0], point_info[point[0]][1] - point_info[point[1]][1]];
+          bc = [point_info[point[2]][0] - point_info[point[1]][0], point_info[point[1]][1] - point_info[point[1]][1]];
+          cosine_angle = math.multiply(ba, bc) / (math.norm(ba) *  math.norm(bc));
+          angle = math.acos(cosine_angle);
+          pAngle = radians_to_degrees(angle);
+          angles.push(pAngle);
         }
-
-        // console.log(angles);
         
+        /*tf.loadLayersModel('models/model.json').then(function(model){
+          y_pred = model.predict(angles);
+          console.log(y_pred);
+        })*/
     }
     
   }
   canvasCtx.restore();
   
+}
+
+function radians_to_degrees(radians) {
+  var pi = Math.PI;
+  return radians * (180/pi);
 }
 
 const hands = new Hands({locateFile: (file) => {

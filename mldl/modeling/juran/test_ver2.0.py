@@ -48,8 +48,6 @@ while cap.isOpened():
                 pAngle = np.degrees(angle)
                 angles.append(pAngle)
             
-            # y_pred = model.predict([angles]).squeeze()    
-            
             this_action = '?'
             if model.predict([angles])[0, 0] != 1:
                 print('none')
