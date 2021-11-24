@@ -74,7 +74,7 @@ router.post('/login', function (req, res) {
             res.json({"code": 404, "result": "error occured"});
         } else {
             if (result.length == 0) { // ID가 다를 경우
-                res.json({"code": 204, "result": "ID or password is not correct"});
+                res.json({"code": 204, "result": "ID or PW is not correct"});
             } else { // ID가 있는 경우
                 salt = result[0].salt;
             }
@@ -88,21 +88,26 @@ router.post('/login', function (req, res) {
         } else {
             crypto.pbkdf2(storePw, salt, 100, 64, 'sha512', (err, key) => {
                 var hashPw = key.toString('base64');
-                if (hashPw != result[0].storePw) { // password가 다를 경우
-                    res.json({'code': 208, 'result': 'Password is not correct'});
-                } else {  // 로그인에 성공했을 경우
-                    // 세션에 추가
-                    if (req.session.user) { 
-                        console.log('세션 이미 존재'); 
-                    } else { 
-                        req.session.user = { 
-                            "storeNo": result[0].storeNo, 
-                            "storeId": result[0].storeId
-                        }
-                        console.log('세션 저장 완료')
-                    }
+                var user = {
+                    storePw: result[0].storePw,
+                    storeNo: result[0].storeNo,
+                    storeId: result[0].storeId
+                }
 
-                    res.json({'code': 200, 'storeId': req.session.user.storeId, 'result': 'Welcome ' + result[0].storeName});
+                // 로그인에 성공했을 경우
+                // 세션에 로그인 정보 추가
+                if (user.storePw == hashPw) {
+                    if (!req.session.displayName) {
+                        req.session.storeNo = user.storeNo;
+                        req.session.storeId = user.storeId;
+                        req.session.save(function(){
+                            console.log("세션 저장 완료");
+                        });
+                    }
+                    res.json({'code': 200, 'storeId': result[0].storeId, 'result': 'Welcome ' + result[0].storeId});
+                }
+                else {
+                    res.json({'code': 208, 'result': 'PW is not correct'});
                 }
             })
         }
@@ -110,12 +115,10 @@ router.post('/login', function (req, res) {
 });
 
 // 3. 로그아웃 라우터
-router.get('/logout', function (req, res) {
-    req.session.destroy(function(){
-        req.session.user;
-    });
-    // req.session.destroy();
-    console.log('로그아웃 성공');
+router.get('/logout', function (req) {
+    delete req.session.storeNo; // 세션 정보 삭제
+    delete req.session.storeId;
+    req.session.save(function(){});
 });
 
 // 4. Id찾기 라우터
@@ -220,7 +223,7 @@ router.post('/findpw', function (req, res) {
 // 6. 회원탈퇴 라우터
 router.post('/deleteUser', function (req, res) {
     var storePw = req.body.storePw; // 비밀번호
-    var query = `SELECT storePw, salt FROM store WHERE storeNo = "${req.session.user.storeNo}"`;
+    var query = `SELECT storePw, salt FROM store WHERE storeNo = "${req.session.storeNo}"`;
 
     connection.query(query, function (err, result) {
         var salt = result[0].salt;
@@ -235,7 +238,7 @@ router.post('/deleteUser', function (req, res) {
                 }
                 else { // password 옳게 입력한 경우 회원탈퇴 진행
                     // res.json({'code': 200, 'result': 'Password is correct'});
-                    query = `DELETE FROM store WHERE storeId = "${req.session.user.storeId}"` // 회원탈퇴 쿼리문
+                    query = `DELETE FROM store WHERE storeId = "${req.session.storeId}"` // 회원탈퇴 쿼리문
                     connection.query(query, function (err, result) {
                         if(err) { // 에러 발생시
                             console.log("error ocurred: ", err);
@@ -254,7 +257,7 @@ router.post('/deleteUser', function (req, res) {
 
 // 7. 회원정보조회 라우터
 router.get('/getUserInfo', function (req, res) {
-    var query = `SELECT storeName, storeTel, storeLoc, crn, managerName, managerTel FROM store WHERE storeNo=${req.session.user.storeNo}`; // 메뉴 수정 쿼리문
+    var query = `SELECT storeName, storeTel, storeLoc, crn, managerName, managerTel FROM store WHERE storeNo="${req.session.storeNo}"`; // 메뉴 수정 쿼리문
 
     // DB에서 메뉴 정보 수정
     connection.query(query, function (err, result) {
@@ -266,7 +269,6 @@ router.get('/getUserInfo', function (req, res) {
             res.json({"code": 200, "result": "get userinfo success", "userInfo": result})
         }
     })
-
 });
 
 // 8. 회원정보수정 라우터
@@ -279,7 +281,7 @@ router.post('/updateUserInfo', function (req, res) {
     var crn = req.body.crn; // 사업자등록번호
     var managerName = req.body.managerName; // 매니저명
     var managerTel = req.body.managerTel; // 매니저 연락처
-    var query = `UPDATE store SET storePw = ?, salt = ?, storeName = ?, storeTel = ?, storeLoc = ?, crn = ?, managerName = ?, managerTel = ? WHERE storeNo = ${req.session.user.storeNo}`; // 회원정보수정 쿼리문
+    var query = `UPDATE store SET storePw = ?, salt = ?, storeName = ?, storeTel = ?, storeLoc = ?, crn = ?, managerName = ?, managerTel = ? WHERE storeNo = "${req.session.storeNo}"`; // 회원정보수정 쿼리문
 
      // salt 값 랜덤 생성
      crypto.randomBytes(64, (err, buf) => { 

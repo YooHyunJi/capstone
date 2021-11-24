@@ -11,28 +11,24 @@ var moment = require('moment');
 // 1. 주문내역 조회 라우터
 router.get('/getAllOrders', function (req, res) {
     // 주문 조회 쿼리문
-    var query = `SELECT orderNo, DATE_FORMAT(orderTime, '%Y-%m-%d %H:%m:%s') AS orderTime, orderStatus, customerTel, totalPrice, cancelYn FROM orders `;
-    +`WHERE storeNo = ${req.session.user.storeNo}`;
-    /*`SELECT orderNo, DATE_FORMAT(orderTime, '%Y-%m-%d %H:%m:%s') AS orderTime, orderStatus, customerTel, totalPrice, cancelYn FROM orders `
-    +`WHERE storeNo = ${req.session.user.storeNo} AND cancelYn="N" ORDER BY orderStatus=0;` 
-    +`SELECT orderNo, DATE_FORMAT(orderTime, '%Y-%m-%d %H:%m:%s') AS orderTime, orderStatus, customerTel, totalPrice, cancelYn FROM orders `
-    +`WHERE storeNo = ${req.session.user.storeNo} AND cancelYn="Y";`*/
+    if (req.session.storeNo) {
+        var query = `SELECT orderNo, DATE_FORMAT(orderTime, '%Y-%m-%d %H:%m:%s') AS orderTime, orderStatus, customerTel, totalPrice, cancelYn FROM orders `;
+        +`WHERE storeNo = ${req.session.storeNo}`;
 
-    // DB에서 조회
-    connection.query(query, function (err, result) {
-        if(err) { // 에러 발생시
-            console.log("error ocurred: ", err);
-            res.json({ "code": 400, "result": "error ocurred" })
-        } else {
-            /*var orders = new Array()
-            for (i=0; i<result[0].length; i++)
-                orders.push(result[0][i]);
-            for (i=0; i<result[1].length; i++)
-                orders.push(result[1][i]);*/
-            console.log("get order info success");
-            res.json({"code": 200, "result": "get order info success", "orders": result})
-        }
-    })
+        // DB에서 조회
+        connection.query(query, function (err, result) {
+            if(err) { // 에러 발생시
+                console.log("error ocurred: ", err);
+                res.json({ "code": 400, "result": "error ocurred" })
+            } else {
+                console.log(`get order info success`);
+                res.json({"code": 200, "result": "get order info success", "orders": result})
+            }
+        })
+    }
+    else {
+        res.json({"code": 404, "result": "no session"})
+    }
 
 });
 
@@ -57,11 +53,11 @@ router.get('/getOrderDetails/:orderNo', function (req, res) {
 });
 
 // 3. 주문 상태 변경 라우터
-router.post('/changeOrderStatus', function (req, res) {
-    var orderNo = req.body.orderNo; // 주문 번호
+router.get('/changeOrderStatus/:orderNo', function (req, res) {
+    var orderNo = req.params.orderNo; // 주문 번호
 
     var query = "UPDATE orders SET orderStatus = 1 WHERE orderNo = ?";
-    connection.query(query, orderNo, function (err, result) {
+    connection.query(query, orderNo, function (err) {
         if(err) { // 에러 발생시
             console.log("error ocurred: ", err);
             res.json({ "code": 400, "result": "error ocurred" })
@@ -73,9 +69,9 @@ router.post('/changeOrderStatus', function (req, res) {
 });
 
 // 4. 주문 취소 라우터
-router.post('/cancelOrder', function (req, res) {
-    var storeNo = req.session.user.storeNo; // 매장 번호
-    var orderNo = req.body.orderNo; // 주문 번호
+router.get('/cancelOrder/:orderNo', function (req, res) {
+    var storeNo = req.session.storeNo; // 매장 번호
+    var orderNo = req.params.orderNo;
     var paymentType = "주문 취소"; // 결제 타입(주문결제/주문취소)
 
     var query = "SELECT paymentMethod, paymentPrice FROM payment WHERE orderNo = ?";

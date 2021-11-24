@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils@0.1/camera_utils.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils@0.1/control_utils.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils@0.2/drawing_utils.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands@0.1/hands.js" crossorigin="anonymous"></script>
+  <script src="https://use.fontawesome.com/releases/v5.2.0/js/all.js"></script>
+  <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+  <!-- 제이쿼리 버전 문제로 에러가 떠서 자동적으로 최신 버전 사용되게 수정함 -->
+</head>
+<body>
+</body>
+<script src="/socket.io/socket.io.js"></script>
+<script type="text/javascript"> // front + back
+  var socket = io(); // socket 통신 
+</script>
+<script type="module"> // mediapipe script
+  const videoElement = document.getElementsByClassName('input_video')[0];
+  const canvasElement = document.getElementsByClassName('output_canvas')[0];
+  const canvasCtx = canvasElement.getContext('2d');
+  const width = $(window).width();
+  const height = $(window).height();
+
+  function onResults(results) {
+    canvasCtx.save();
+    canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
+   
+    // 각도계산을 py파일 가져와서 하기
+        
+    // 손바닥 위 9번 랜드마크에 마우스 커서 연결
+    var mouse_x = (1 - landmarks[9]['x']) * window.innerWidth;
+    var mouse_y = landmarks[9]['y'] * window.innerHeight + 100;
+    // 소켓 이용하여 서버에 검지손가락 좌표값 전달
+    socket.emit('location', [mouse_x, mouse_y]);  
+  }
+  canvasCtx.restore();
+
+  camera.start();
+  </script>
+  </html>

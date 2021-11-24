@@ -2,7 +2,6 @@ const express = require('express')
 const morgan = require('morgan'); // dev log
 var robot = require("robotjs");
 var io = require('socket.io')(server);
-var session = require('express-session');
 
 const port = 3000;
 const app = express();
@@ -15,23 +14,32 @@ const menuRouter = require('./routes/admin/menu');
 const categoryRouter = require('./routes/admin/category');
 const userRouter = require('./routes/admin/user');
 const orderRouter = require('./routes/admin/order');
-//const testRouter = require('./routes/admin/testjs');
 
 const orderViewRouter = require('./routes/order/views.js'); // 주문 시스템 VIEWS 라우터
 const orderApiRouter = require('./routes/order'); // 주문 시스템 API 라우터 index.js
 const sensApiRouter = require('./routes/sens'); // NCP SENS API 라우터 index.js
 
+// 세션
+var session = require("express-session");
+var MySQLStore = require('express-mysql-session')(session);
+var options ={
+    host: 'localhost',
+    port: 3306,
+    user: 'root',
+    password: process.env.DB_SECRET,
+    database: 'capstone'
+};
+var sessionStore = new MySQLStore(options);
+app.use(session({
+  secret: "12312dajfj23rj2po4$#%@#",
+  resave: false,
+  saveUninitialized: true,
+  store: sessionStore
+}));
+
 app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-
-// 세션
-app.use(session({
-  key: "user",
-  secret: process.env.SESSION_SECRET,
-  resave: false,
-  saveUninitialized: false
-}));
 
 // 라우터 로드 및 경로 지정
 // 관리자 시스템
@@ -39,7 +47,6 @@ app.use('/admin', menuRouter);
 app.use('/admin', categoryRouter);
 app.use('/admin', userRouter);
 app.use('/admin', orderRouter);
-//app.use('/admin', testRouter);
 
 // juran
 // js & static 경로설정
@@ -53,8 +60,6 @@ app.use('/order', orderViewRouter);
 app.use('/api/order', orderApiRouter);
 // sens API 라우터
 app.use('/api/sens', sensApiRouter);
-
-
 
 // 메인페이지
 app.get('/', (req, res) => {
@@ -112,6 +117,9 @@ app.get('/manage_category', (req, res) => {
 })
 app.get('/manage_menu', (req, res) => {
   res.sendFile(__dirname + "/public/admin/manage_menu.html")
+})
+app.get('/testjs', (req, res) => { // 임시
+  res.sendFile(__dirname + "/public/admin/test.html")
 })
 
 // socket.io

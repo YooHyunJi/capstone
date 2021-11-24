@@ -117,30 +117,6 @@ function getMenuDetail(menuNo, categoryName, menuName, menuPrice, menuDetail) {
             )
         }
     });
-
-    /*$.ajax({
-        url:`/admin/getMenuImg/`+menuNo,
-        cache:false,
-        xhr:function(){
-            var xhr = new XMLHttpRequest();
-            xhr.responseType= 'blob'
-            return xhr;
-        },
-        success: function(data){
-            var url = window.URL || window.webkitURL;
-            var src = url.createObjectURL(data);
-            $('#menuFormArea').empty(); // 초기화
-            $('#menuFormArea').append(
-                `<div class="imgWrapper">
-                    <img src="`+src+`" class="menu_img">
-                </div>
-                <span class="detailList">카테고리</span><span class="category_no">`+categoryName+`</span><br><br><br><br>
-                <span class="detailList">이름</span><span class="menu_name">`+menuName+`</span><br><br><br><br>
-                <span class="detailList">가격</span><span class="menu_price">`+menuPrice+`</span><br><br><br><br>
-                <span class="detailList">상세 정보</span><span class="menu_detail">`+menuDetail+`</span>`
-            )
-        }
-    });*/
 }
 
 function menuImgPreview(id, file) {
@@ -175,10 +151,8 @@ function addMenu() {
 function deleteMenu(menuNo) {
     if (confirm("정말 삭제하시겠습니까?") == true) { // 메뉴 삭제 확인
         $.ajax({
-            type: 'POST',
-            url: 'admin/deleteMenu',
-            contentType: 'application/json', 
-            data: JSON.stringify({'menuNo': menuNo}),
+            type: 'GET',
+            url: 'admin/deleteMenu/'+menuNo,
             success: function (result) {
                 if (result.code == 200)
                     alert('삭제되었습니다.');

@@ -52,7 +52,7 @@ function getAllOrders() {
                     <td class="changeStatusBtn" onclick="changeOrderStatus('${result.orders[i].orderStatus}', '${result.orders[i].cancelYn}', '${result.orders[i].orderNo}', '${result.orders[i].customerTel}')">준비완료</td>
                     <td class="orderCancelBtn" onclick="cancelOrder('${result.orders[i].orderStatus}', '${result.orders[i].cancelYn}', '${result.orders[i].orderNo}')">취소</td>
                     </tr>`
-                )
+                )  
             }
         }
     })  
@@ -74,10 +74,8 @@ function cancelOrder(orderStatus, cancelYn, orderNo) {
         // 주문 취소 서버와 통신
         if (confirm("정말 취소하시겠습니까?") == true) { // 메뉴 삭제 확인
             $.ajax({
-                type: 'POST',
-                url: '/admin/cancelOrder',
-                contentType: 'application/json', 
-                data: JSON.stringify({'orderNo': orderNo}),
+                type: 'GET',
+                url: 'admin/cancelOrder/'+orderNo,
                 success: function (result) {
                     if (result.code == 200) {
                         alert('주문 취소되었습니다.');
@@ -109,10 +107,8 @@ function changeOrderStatus(orderStatus, cancelYn, orderNo, customerTel) {
     else if (orderStatus=='0' && cancelYn=='N') {
         // 주문상태 변경 서버와 통신
         $.ajax({
-            type: 'POST',
-            url: '/admin/changeOrderStatus',
-            contentType: 'application/json', 
-            data: JSON.stringify({'orderNo': orderNo}),
+            type: 'GET',
+            url: 'admin/changeOrderStatus/'+orderNo,
             success: function (result) {
                 if (result.code == 200)
                     alert('주문상태가 변경되었습니다.');
@@ -128,7 +124,7 @@ function changeOrderStatus(orderStatus, cancelYn, orderNo, customerTel) {
             url: '/api/sens/sendPickupMsg',
             contentType: 'application/json',
             data: JSON.stringify({'phone': customerTel, 'orderNo': orderNo}), 
-            success: function(res) {
+            success: function() {
                 console.log('send message success');
             }, 
             error: function(err) {

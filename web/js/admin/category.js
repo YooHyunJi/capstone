@@ -51,10 +51,8 @@ function addCategory() {
 function deleteCategory(categoryNo) {
     if (confirm("정말 삭제하시겠습니까? 해당 카테고리의 메뉴도 함께 삭제됩니다.") == true) { // 카테고리 삭제 확인
         $.ajax({
-            type: 'POST',
-            url: 'admin/deleteCategory',
-            contentType: 'application/json', 
-            data: JSON.stringify({'categoryNo': categoryNo}),
+            type: 'GET',
+            url: 'admin/deleteCategory/'+categoryNo,
             success: function (result) {
                 if (result.code == 200)
                     alert('삭제되었습니다.');

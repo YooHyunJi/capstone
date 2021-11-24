@@ -9,7 +9,7 @@ connection.connect();
 
 // 1. 전체 카테고리 조회 라우터
 router.get('/getAllCategories', function (req, res) {
-    var query = `SELECT categoryNo, categoryName FROM category WHERE storeNo = ${req.session.user.storeNo}`; // 카테고리 조회 쿼리문
+    var query = `SELECT categoryNo, categoryName FROM category WHERE storeNo = ${req.session.storeNo}`; // 카테고리 조회 쿼리문
 
     // DB에서 조회
     connection.query(query, function (err, result) {
@@ -27,10 +27,10 @@ router.get('/getAllCategories', function (req, res) {
 // 2. 카테고리 등록 라우터
 router.post('/addCategory', function (req, res) {
     var categoryName = req.body.categoryName; // 카테고리명
-    var query = `INSERT INTO category (categoryName, storeNo) VALUES(?,${req.session.user.storeNo})`; // 카테고리 등록 쿼리문
+    var query = `INSERT INTO category (categoryName, storeNo) VALUES(?,${req.session.storeNo})`; // 카테고리 등록 쿼리문
 
     // DB에 카테고리 등록
-    connection.query(query, categoryName, function (err, result) {
+    connection.query(query, categoryName, function (err) {
         if(err) { // 에러 발생시
             console.log("error ocurred: ", err);
             res.json({ "code": 400, "result": "error ocurred" })
@@ -43,12 +43,12 @@ router.post('/addCategory', function (req, res) {
 });
 
 // 3. 카테고리 삭제 라우터
-router.post('/deleteCategory', function (req, res) {
-    var categoryNo = req.body.categoryNo; // 카테고리 번호
+router.get('/deleteCategory/:categoryNo', function (req, res) {
+    var categoryNo = req.params.categoryNo; // 카테고리 번호
     var query = 'DELETE FROM category WHERE categoryNo = ?'; // 카테고리 삭제 쿼리문
 
     // DB에서 카테고리 삭제
-    connection.query(query, categoryNo, function (err, result) {
+    connection.query(query, categoryNo, function (err) {
         if(err) { // 에러 발생시
             console.log("error ocurred: ", err);
             res.json({ "code": 400, "result": "error ocurred" })

@@ -13,7 +13,7 @@ connection.connect();
 // 1. 전체 메뉴 조회 라우터
 router.get('/getAllMenus', function (req, res) {
     var query = `SELECT menuNo, menuName, menuDetail, menuPrice, categoryName FROM menu, category `+
-     `WHERE menu.storeNo = ${req.session.user.storeNo} AND menu.categoryNo = category.categoryNo;` // 메뉴 조회 쿼리문
+     `WHERE menu.storeNo = ${req.session.storeNo} AND menu.categoryNo = category.categoryNo;` // 메뉴 조회 쿼리문
 
     // DB에서 조회
     connection.query(query, function (err, result) {
@@ -83,7 +83,7 @@ router.post('/addMenu', upload.single('menuImg'), function (req, res) {
     var menuPrice = req.body.menuPrice; // 메뉴 가격
     var menuImg = fileName;//readImageFile(__dirname + '/../../uploads/' + fileName); // 메뉴 이미지
     var categoryName = req.body.selectCategory; // 카테고리명
-    var query = `SELECT categoryNo FROM category WHERE storeNo = ${req.session.user.storeNo} AND categoryName = ?`;
+    var query = `SELECT categoryNo FROM category WHERE storeNo = ${req.session.storeNo} AND categoryName = ?`;
 
     connection.query(query, categoryName, function (err, result) {
       if(err) { // 에러 발생시
@@ -91,7 +91,7 @@ router.post('/addMenu', upload.single('menuImg'), function (req, res) {
             res.json({ "code": 404, "result": "error ocurred" })
         } else {
             var categoryNo = result[0].categoryNo;
-            query = `INSERT INTO menu (menuName, menuDetail, menuPrice, menuImg, categoryNo, storeNo) VALUES(?,?,?,?,?,${req.session.user.storeNo})`;
+            query = `INSERT INTO menu (menuName, menuDetail, menuPrice, menuImg, categoryNo, storeNo) VALUES(?,?,?,?,?,${req.session.storeNo})`;
             
             // DB에 메뉴 등록
             connection.query(query, [menuName, menuDetail, menuPrice, menuImg, categoryNo], function (err, result) {
@@ -116,7 +116,7 @@ router.post('/updateMenu', upload.single('menu_img'), function (req, res) {
     var menuPrice = req.body.menu_price; // 메뉴 가격
     var menuImg = fileName;//readImageFile(__dirname + '/../../uploads/' + fileName); // 메뉴 이미지
     var categoryName = req.body.select_category; // 카테고리명
-    var query = `SELECT categoryNo FROM category WHERE storeNo = ${req.session.user.storeNo} AND categoryName = ?;`
+    var query = `SELECT categoryNo FROM category WHERE storeNo = ${req.session.storeNo} AND categoryName = ?;`
 
     connection.query(query, categoryName, function (err, result) {
         if(err) { // 에러 발생시
@@ -141,20 +141,13 @@ router.post('/updateMenu', upload.single('menu_img'), function (req, res) {
 
 });
 
-// 서버에서 이미지를 읽어오는 메서드
-function readImageFile(file){
-    const bitmap = fs.readFileSync(file);
-    const buf = new Buffer.from(bitmap);
-    return buf
-}
-
 // 6. 메뉴 삭제 라우터
-router.post('/deleteMenu', function (req, res) {
-    var menuNo = req.body.menuNo; // 메뉴 번호
+router.get('/deleteMenu/:menuNo', function (req, res) {
+    var menuNo = req.params.menuNo; // 메뉴 번호
     var query = 'DELETE FROM menu WHERE menuNo = ?'; // 메뉴 삭제 쿼리문
 
     // DB에서 메뉴 삭제
-    connection.query(query, menuNo, function (err, result) {
+    connection.query(query, menuNo, function (err) {
         if(err) { // 에러 발생시
             console.log("error ocurred: ", err);
             res.json({ "code": 400, "result": "error ocurred" })
