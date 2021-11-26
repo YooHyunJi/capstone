@@ -10,7 +10,11 @@ function getAllOrders() {
         type: 'GET',
         url: '/admin/getAllOrders',
         success: function (result) {
-            for(let i=0; i<result.orders.length; i++) {
+            if (result.code == 404) {
+                location.href="/login";
+                return;
+            }
+            for (let i=0; i<result.orders.length; i++) {
                 let orderStatus='';
                 if (result.orders[i].orderStatus==0) {
                     orderStatus='준비중';

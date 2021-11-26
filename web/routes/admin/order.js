@@ -7,28 +7,34 @@ var config = require('../../config/db_config');
 var connection = config.init();
 connection.connect();
 var moment = require('moment');
+var path = require('path');
 
 // 1. 주문내역 조회 라우터
 router.get('/getAllOrders', function (req, res) {
-    // 주문 조회 쿼리문
-    if (req.session.storeNo) {
-        var query = `SELECT orderNo, DATE_FORMAT(orderTime, '%Y-%m-%d %H:%m:%s') AS orderTime, orderStatus, customerTel, totalPrice, cancelYn FROM orders `;
-        +`WHERE storeNo = ${req.session.storeNo}`;
-
+    if (!req.session.storeNo) {
+        res.json({ "code": 404, "result": "no storeNo" })
+        // res.sendFile(path.resolve('public/admin/login.html'));
+    }
+    else {
         // DB에서 조회
+        let storeNo = req.session.storeNo; // 가게 세션정보
+        
+        var query = `SELECT orderNo, DATE_FORMAT(orderTime, '%Y-%m-%d %H:%m:%s') AS orderTime, orderStatus, customerTel, totalPrice, cancelYn FROM orders `;
+        +`WHERE storeNo = `+storeNo; // 주문 조회 쿼리문
+
         connection.query(query, function (err, result) {
             if(err) { // 에러 발생시
                 console.log("error ocurred: ", err);
                 res.json({ "code": 400, "result": "error ocurred" })
+                //res.sendFile(path.resolve('public/admin/manage_order.html'), {"code": 400, 'storeNo': storeNo});
             } else {
                 console.log(`get order info success`);
                 res.json({"code": 200, "result": "get order info success", "orders": result})
+                // res.sendFile(path.resolve('public/admin/manage_order.html'), {"code": 200, 'storeNo': storeNo, "orders": result});
             }
         })
     }
-    else {
-        res.json({"code": 404, "result": "no session"})
-    }
+    
 
 });
 

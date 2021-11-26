@@ -97,7 +97,7 @@ router.post('/login', function (req, res) {
                 // 로그인에 성공했을 경우
                 // 세션에 로그인 정보 추가
                 if (user.storePw == hashPw) {
-                    if (!req.session.displayName) {
+                    if (!req.session.storeNo) {
                         req.session.storeNo = user.storeNo;
                         req.session.storeId = user.storeId;
                         req.session.save(function(){
