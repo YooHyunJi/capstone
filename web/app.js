@@ -63,7 +63,7 @@ app.use('/api/sens', sensApiRouter);
 
 // 메인페이지
 app.get('/', (req, res) => {
-  res.sendFile(__dirname + "/public/admin/main_logout.html");
+  res.sendFile(__dirname + "/public/admin/main.html");
 });
 
 /**

@@ -55,7 +55,7 @@ function login() {
                 alert('아이디 또는 패스워드가 맞지 않습니다.');
             else if (result.code == 200) {
                 alert(result.storeId + '님 ' + '환영합니다!');
-                location.href="/mainLogin";
+                location.href="/";
             }
         }
     })

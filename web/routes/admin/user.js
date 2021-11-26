@@ -304,4 +304,16 @@ router.post('/updateUserInfo', function (req, res) {
     })
 });
 
+// 9. 세션 정보 확인
+router.get('/checkSession', function (req, res) {
+    if (!req.session.storeNo) {
+        console.log("세션 없음");
+        res.json({"code": 404, "result": "세션 없음"})
+    }
+    else {
+        console.log("세션 존재");
+        res.json({"code": 200, "result": "세션 있음"})
+    }
+});
+
 module.exports = router;

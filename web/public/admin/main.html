@@ -101,8 +101,9 @@
     <div id="header">
         <div id="logo">LOGO</div>
         <div id="session">
-            <!-- 로그인 사용 시 -->
+            <!-- 로그인 사용 시
             <a href="/mainLogout"><div class="session__button" onclick="logout()">LOG OUT</div></a>
+            -->
             <!-- 로그아웃 사용 시
             <a href="/login"><div class="session__button">LOG IN</div></a>
             <a href="/join"><div class="session__button">JOIN</div></a>
@@ -124,6 +125,26 @@
     </div>
 </body>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script type="text/javascript" src="/js/admin/user.js"></script>
-<script src="/js/admin/order.js"></script>
+<script type="text/javascript" src="/js/admin/user.js">
+$(document).ready(function () {
+    $('#session').empty();
+    $.ajax({
+        type: 'GET',
+        url: '/admin/checkSession',
+        success: function (result) {
+            if (result.code == 404) {
+                $('#session').append(
+                    `<a href="/login"><div class="session__button">LOG IN</div></a>
+                    <a href="/join"><div class="session__button">JOIN</div></a>`
+                )
+            }
+            else if (result.code == 200) {
+                $('#session').append(
+                    `<a href="/mainLogout"><div class="session__button" onclick="logout()">LOG OUT</div></a>`
+                )
+            }
+        }
+    });
+})
+</script>
 </html>
