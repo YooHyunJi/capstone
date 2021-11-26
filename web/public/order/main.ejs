@@ -1052,8 +1052,8 @@
       for (const landmarks of results.multiHandLandmarks) { 
         
         // 미디어파이프를 통해 얻은 랜드마크 이용하여 손모양 표현
-        // drawConnectors(canvasCtx, landmarks, HAND_CONNECTIONS, {color: '#f0c697', lineWidth: 20});
-        // drawLandmarks(canvasCtx, landmarks, {color: '#f5c9a9', lineWidth: 10});
+        drawConnectors(canvasCtx, landmarks, HAND_CONNECTIONS, {color: '#f0c697', lineWidth: 20});
+        drawLandmarks(canvasCtx, landmarks, {color: '#f5c9a9', lineWidth: 10});
       
         for (var i=0; i<5; i++) {
           // true 펼쳐짐, false 접힘
@@ -1071,13 +1071,17 @@
         if (dynamic_flag) {
           if(getAngle(landmarks[8]['x'], landmarks[8]['y'],landmarks[6]['x'], landmarks[6]['y'])>0){
             if(getAngle(landmarks[7]['x'], landmarks[7]['y'],landmarks[8]['x'], landmarks[8]['y'])>0){
-            // if(landmarks[6]['y'] < landmarks[8]['y']) { // 클릭 쉽게하려고 그냥 해봄..
               console.log('click!');
               socket.emit('click', true);
               sleep(300);
             }
-           }
-        }
+          }
+          /*if (landmarks[8]['y'] > landmarks[6]['y']) {
+            console.log('click!');
+            socket.emit('click', true);
+            sleep(300);
+          }*/
+      }
 
         var test_flag = true;
         for (var i=0; i<5; i++) { 
