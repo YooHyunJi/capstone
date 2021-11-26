@@ -60,6 +60,21 @@ router.post('/signup', function(req, res) {
     }); 
 });
 
+// 아이디 중복 검사
+router.post('/checkId', function(req, res) {
+    var storeId = req.body.storeId; // 아이디
+    // 아이디 중복 확인
+    connection.query('SELECT storeId FROM store WHERE storeId = ?', storeId, function (error, result) {
+        if(result.length == 0) {
+            res.json({"code" : 200, "result": "가능한 아이디"});
+        }
+        else {
+            res.json({"code" : 204, "result": "중복된 아이디"});
+        }
+    })
+});
+
+
 // 2. 로그인 라우터
 router.post('/login', function (req, res) {
     var storeId = req.body.storeId; // 아이디
@@ -306,14 +321,7 @@ router.post('/updateUserInfo', function (req, res) {
 
 // 9. 세션 정보 확인
 router.get('/checkSession', function (req, res) {
-    if (!req.session.storeNo) {
-        console.log("세션 없음");
-        res.json({"code": 404, "result": "세션 없음"})
-    }
-    else {
-        console.log("세션 존재");
-        res.json({"code": 200, "result": "세션 있음"})
-    }
+    res.json({"session": req.session.storeNo})
 });
 
 module.exports = router;

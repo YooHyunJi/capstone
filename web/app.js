@@ -100,12 +100,6 @@ app.get('/join', (req, res) => {
 app.get('/login', (req, res) => {
   res.sendFile(__dirname + "/public/admin/login.html")
 })
-app.get('/mainLogin', (req, res) => {
-  res.sendFile(__dirname + "/public/admin/main_login.html")
-})
-app.get('/mainLogout', (req, res) => {
-  res.sendFile(__dirname + "/public/admin/main_logout.html")
-})
 app.get('/manage_order', (req, res) => {
   res.sendFile(__dirname + "/public/admin/manage_order.html")
 })
@@ -117,9 +111,6 @@ app.get('/manage_category', (req, res) => {
 })
 app.get('/manage_menu', (req, res) => {
   res.sendFile(__dirname + "/public/admin/manage_menu.html")
-})
-app.get('/testjs', (req, res) => { // 임시
-  res.sendFile(__dirname + "/public/admin/test.html")
 })
 
 // socket.io

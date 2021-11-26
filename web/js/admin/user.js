@@ -37,6 +37,27 @@ function signup() {
     })    
 }
 
+function checkId() { // 아이디 중복 검사
+    let storeId = $('#storeId').val(); // 아이디
+    if (!storeId) {
+        alert('미입력');
+        return;
+    }
+    $.ajax({
+        type: 'POST',
+        url: '/admin/checkId',
+        contentType: 'application/json',
+        data: JSON.stringify({'storeId': storeId}),
+        success: function (result) {
+            if (result.code == 204)
+                alert('중복된 아이디입니다.');
+            else if (result.code == 200) {
+                alert('가능한 아이디입니다.');
+            }
+        }
+    })  
+}
+
 function login() {
     let storeId = $('#storeId').val();
     let storePw = $('#storePw').val();

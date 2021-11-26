@@ -18,14 +18,17 @@
         text-align: center;
     }
 
-    #logo{
-        width: 150px;
+    #logo {
+        height: 100px;
         font-size: 50px;
         text-align: center;
-        line-height: 150px;
+        line-height: 100px;
         display: inline-block;
-        color: rgb(94, 94, 94);
-        margin-left: 200px;
+        margin: 25px 0;
+        margin-right: -200px;
+    }
+    #logo img{
+        height: 100%;
     }
 
     #session{
@@ -34,6 +37,7 @@
         /* background-color: seashell; */
         float: right;
         margin-right: 50px;
+        display: inline-block;
     }
 
     #session a{
@@ -48,7 +52,7 @@
     #session a div{
         width: 150px;
         height: 30px;
-        margin-top: 60px;
+        margin-top: 20px;
         background-color: rgb(153, 153, 153);
         text-align: center;
     }
@@ -99,10 +103,10 @@
 
 <body>
     <div id="header">
-        <div id="logo">LOGO</div>
+        <a href="/" id="logoA"><div id="logo"><img src="img/logo_2.png" alt=""></div></a>
         <div id="session">
             <!-- 로그인 사용 시
-            <a href="/mainLogout"><div class="session__button" onclick="logout()">LOG OUT</div></a>
+            <a href="/"><div class="session__button" onclick="logout()">LOG OUT</div></a>
             -->
             <!-- 로그아웃 사용 시
             <a href="/login"><div class="session__button">LOG IN</div></a>
@@ -113,7 +117,7 @@
 
     <div id="section">
         <div id="mode">
-            <a href="/manage_order"><div class="mode__button">
+            <a href="" id="manager"><div class="mode__button">
                 <p class="mode__button__icon">🧑🏼‍🍳</p>
                 <p class="mode__button__text">관리 시스템</p>
             </div></a>
@@ -125,26 +129,29 @@
     </div>
 </body>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script type="text/javascript" src="/js/admin/user.js">
-$(document).ready(function () {
-    $('#session').empty();
-    $.ajax({
-        type: 'GET',
-        url: '/admin/checkSession',
-        success: function (result) {
-            if (result.code == 404) {
-                $('#session').append(
-                    `<a href="/login"><div class="session__button">LOG IN</div></a>
-                    <a href="/join"><div class="session__button">JOIN</div></a>`
-                )
+<script type="text/javascript" src="/js/admin/user.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#session').empty();
+        let addHtml=``;
+        $.ajax({
+            type: 'GET',
+            url: '/admin/checkSession',
+            success: function (result) {
+                if (result.session === undefined) {
+                    // 로그아웃 사용 시
+                    addHtml = `<a href="/login"><div class="session__button">LOG IN</div></a>
+                        <a href="/join"><div class="session__button">JOIN</div></a>`;
+                    $('#manager').attr('href', "/login"); // 관리자 시스템 접근 시, 로그인 화면으로 전환
+                }
+                else {
+                    // 로그인 사용 시
+                    addHtml = `<a href="/"><div class="session__button" onclick="logout()" style="margin-top:60px">LOG OUT</div></a>`;
+                    $('#manager').attr('href', "/manage_order"); // 관리자 시스템 접근 시, 주문 관리 화면으로 전환
+                } 
+                $('#session').append(addHtml);
             }
-            else if (result.code == 200) {
-                $('#session').append(
-                    `<a href="/mainLogout"><div class="session__button" onclick="logout()">LOG OUT</div></a>`
-                )
-            }
-        }
+        })
     });
-})
 </script>
 </html>
