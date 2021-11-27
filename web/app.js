@@ -94,6 +94,7 @@ app.get('/test/:id/:name', (req, res) => {
   }
 })
 
+// 관리자 시스템
 app.get('/join', (req, res) => {
   res.sendFile(__dirname + "/public/admin/join.html")
 })
