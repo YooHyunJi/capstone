@@ -1,6 +1,6 @@
 <!-- 
-    11.15
-    ver1. tfjs 모델 적용
+    11.26 By Juran
+    tfjs 모델 적용
 -->
 <!DOCTYPE html>
 <html>
@@ -41,10 +41,13 @@
 <!--mathjs-->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/7.5.1/math.min.js"></script>
 
+<script src="/js/modeling.js"></script>
+
 <script type="text/javascript">
 $('#btn').on({
   click: function () {
     console.log('button click!');
+    predDynamicGesture([120, 120, 120]); // test
   }
 })
 
@@ -65,7 +68,6 @@ function getAngle(x1, y1, x2, y2){ // 두 점 사이의 각도를 반환
   var rad = Math.atan2(y2-y1, x2-x1);
   return (rad*180 / Math.PI);
 }
-
 function handHover(x1, y1){
   hand_x = -(x1 * window.width);
   hand_y = y1 * window.height;
@@ -86,6 +88,12 @@ function onResults(results) {
       
   if (results.multiHandLandmarks) {
     for (const landmarks of results.multiHandLandmarks) { 
+
+        for (var i=0; i<5; i++) { // 손가락 접힘 여부
+            // true 펼쳐짐, false 접힘
+              open[i] = dist(landmarks[0]['x'], landmarks[0]['y'], landmarks[compareIndex[i][0]]['x'], landmarks[compareIndex[i][0]]['y']) 
+                      < dist(landmarks[0]['x'], landmarks[0]['y'], landmarks[compareIndex[i][1]]['x'], landmarks[compareIndex[i][1]]['y'])
+          }
         
         drawConnectors(canvasCtx, landmarks, HAND_CONNECTIONS, {color: '#4badb3', lineWidth: 5});
         drawLandmarks(canvasCtx, landmarks, {color: '#e04e04', lineWidth: 2});
@@ -105,14 +113,17 @@ function onResults(results) {
           angles.push(pAngle);
         }
 
-        /*
-        tf.loadLayersModel('models/model.json').then(function(model){
-          y_pred = model.predict(angles);
-          console.log(y_pred);
-        })
-        */
-    }
-    
+        let flg = true;
+        for(i=1; i<5; i++) {
+          if (gesture[i] != open[i]) {
+            flg = false;
+          }
+        }
+         
+        if (flg) {
+          let pred  = predDynamicGesture(angles);
+        }
+      }
   }
   canvasCtx.restore();
   

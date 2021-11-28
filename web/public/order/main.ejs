@@ -9,7 +9,6 @@
   <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands@0.1/hands.js" crossorigin="anonymous"></script>
   <script src="https://use.fontawesome.com/releases/v5.2.0/js/all.js"></script>
   <script src="http://code.jquery.com/jquery-latest.min.js"></script>
-  <!-- 제이쿼리 버전 문제로 에러가 떠서 자동적으로 최신 버전 사용되게 수정함 -->
   
   <style>
     html, body{
@@ -17,8 +16,13 @@
       height: 100%;
       margin: 0;
       -ms-overflow-style: none;
+      -ms-user-select: none;
+      -moz-user-select: -moz-none;
+      -webkit-user-select: none;
+      -khtml-user-select: none;
+      user-select:none;
     }
-    
+
     body{
       cursor: none;
     }
@@ -118,17 +122,11 @@
 
     #categoryArea #categoryList .category{
       background: linear-gradient( -45deg, rgba(54, 146, 134, 0.5), rgba(54, 146, 134, 0.55));
-      width: calc(100% / 6);
       height: 95.6px;
       text-align: center;
       line-height: 95.6px;
       display: inline-block;
     }
-
-    #categoryArea #categoryList .selected{
-      background: linear-gradient( -45deg, rgba(40, 116, 105, 0.5), rgba(40, 116, 105, 0.55));
-    }
-
     #categoryArea #categoryList .category:hover{
       background: linear-gradient( -45deg, rgba(40, 116, 105, 0.5), rgba(40, 116, 105, 0.55));
     }
@@ -154,7 +152,7 @@
       text-align: center;
       border: none;
     }
-    
+
     .menu:hover{
       background: linear-gradient( -45deg, rgba(168, 168, 168, 0.5), rgba(185, 185, 185, 0.5));
     }
@@ -207,14 +205,14 @@
     .orderMenu{
       float: left;
       width: 100%;
-      height: 20%;
+      height: 102.4px;
       background: linear-gradient(to bottom,  rgba(214, 224, 223, 0.3), rgba(214, 224, 223, 0.5));
     }
 
     .orderMenu div{
       float: left;
       text-align: center;
-      line-height: 99.2px;
+      line-height: 102.4px;
       font-size: 11px;
     }
 
@@ -366,13 +364,12 @@
       background: linear-gradient( -45deg, rgb(72, 182, 165), rgb(16, 148, 165));
     }
 
-    /* #testArea{
-      width: calc(100% - 50px);
-      height: calc(100% - 100px);
-      background-color: skyblue;
-      margin: 0 auto;
-      margin-top: 75px;
-    } */
+    #testArea{
+      width: 100%;
+      height: 264px;
+      /* background-color: skyblue; */
+      margin-top: 175px;
+    }
 
     .announcement{
       -ms-user-select: none; 
@@ -381,15 +378,20 @@
       -webkit-user-select: none;
       user-select: none;
       color: rgba(255, 255, 255, 0.9);
+      margin: 0;
     }
 
     #announcement_1{
       font-size: 20px;
-      margin-top: 80px;
+      margin-bottom: 100px;
     }
+
     #announcement_2{
       font-size: 18px;
-      margin-top: 20px;
+    }
+
+    #thumbsUp{
+      font-size: 30px;
     }
 
     /*마우스 클릭 효과*/
@@ -600,16 +602,71 @@
       line-height: 50px;
       margin: 0;
     }
+
+    .lotus {
+      background: rgb(17, 107, 65);
+      display: inline-block;
+      border-radius: 280px 300px 0 0;
+      position: fixed;
+    }
+    .lotus:after {
+      background: rgb(17, 107, 65);
+      content: "";
+      border-radius: 0 0 300px 290px;
+      position: absolute;
+      transform: rotate(15deg);
+      transform-origin: left top;
+    }
+
+    #lotus_1{
+      left: 150px;
+      top: 70px;
+      transform: rotate(345deg);
+      height: 90px;
+      width: 180px;
+    }
+    #lotus_1:after{
+      height: 90px;
+      width: 180px;
+      left: 3px;
+      top: 65px;
+    }
+
+    #lotus_2{
+      left: 100px;
+      top: 300px;
+      transform: rotate(310deg);
+      height: 50px;
+      width: 100px;
+    }
+    #lotus_2:after{
+      height: 50px;
+      width: 100px;
+      left: 1px;
+      top: 35px;
+    }
+
+    #lotus_3{
+      height: 100px;
+      width: 200px;
+      transform: rotate(200deg);
+      right: 100px;
+      bottom: 100px;
+    }
+    #lotus_3:after{
+      height: 100px;
+      width: 200px;
+      left: 3px;
+      top: 70px;
+    }
   </style>
 </head>
 <body>
     <!-- 마우스 커서 커스텀 -->
     <div class="cursor"></div>
-      <!-- 서버에서 세션값으로 받아온 storeNo (ejs)-->
-  <a style="display: none;" id="storeNo"><%= storeNo %></a>
-
+    <!-- 서버에서 세션값으로 받아온 storeNo (ejs)-->
+    <a style="display: none;" id="storeNo"><%= storeNo %></a>
   <canvas class="output_canvas" width="1280px" height="720px"></canvas>
-
   <div id="container">
     <video class="input_video"></video>
     <div id="categoryArea">
@@ -675,12 +732,18 @@
 
     <!-- 카메라 테스트 모달창 -->
     <div id="cameraTestModal" class="modal">
-      <div id="testArea">
-        <p id="announcement_1" class="announcement"> 검지를 굽혀 클릭해 호수에 물결을 일으켜보세요 ! </p>
-        <p id="announcement_2" class="announcement"> 충분히 적응하셨다면 👍🏻를 만들어 주문을 진행해주세요 </p>
+      <div id="lotus_1" class="lotus"></div>
+      <div id="lotus_2" class="lotus"></div>
+      <div id="lotus_3" class="lotus"></div>
+        <div id="testArea">
+          <p id="announcement_1" class="announcement"> 검지를 굽혀 클릭해 호수에 물결을 일으켜보세요 ! </p>
+          <p id="announcement_2" class="announcement"> 충분히 적응하셨다면</p>
+          <p id="thumbsUp">👍🏻</p>
+          <p id="announcement_2" class="announcement">를 만들어 주문을 진행해주세요 </p>
+        </div>
+        <a><div class="modalClose" style="display: none;"></div></a>
+        
       </div>
-      <a><div class="modalClose" style="display: none;"></div></a>
-    </div>
 
     <!-- 결제수단 선택 모달창 -->
     <div id="paymentsModal" class="modal">
@@ -694,6 +757,7 @@
       <a><div class="modalClose">이전 단계</div></a>
     </div>
   
+    <!-- 결제 진행 중(spinner) 모달창 -->
     <div id="processModal" class="modal">
       <div class="processArea">
         <div class="spinner">
@@ -705,6 +769,7 @@
       <a><div class="modalClose">이전 단계</div></a>
     </div>
 
+    <!-- 전화번호 입력 모달창 -->
     <div id="phoneModal" class="modal">
       <div class="phoneArea">
         <div class="phoneOutput">
@@ -743,6 +808,7 @@
       </div>
     </div>
   
+    <!-- 주문 완료 모달창 -->
     <div id="finishModal" class="modal">
       <div class="finishArea">
         <p>주문이 완료되었습니다</p>
@@ -753,22 +819,19 @@
   </div>
 </body>
 <script src="/socket.io/socket.io.js"></script>
-<!-- <script type="text/javascript" src="/cookie"></script> -->
 <script src="/js/order/cookie.js"></script>
-<!-- <script type="text/javascript" src="/orderjs"></script> -->
 <script src="/js/order/order.js"></script>
-<!-- <script type="text/javascript" src="/common"></script> -->
 <script src="/js/common.js"></script>
 <script>
   // 커스텀 커서로 사용할 div를 시스탬 마우스 커서 위치에 붙이기  
   let mouseCursor = document.querySelector('.cursor');
-  let cameraTestModal = document.querySelector('#cameraTestModal');
+  const cameraTestModal = document.querySelector('#cameraTestModal');
 
   //커스텀 커서의 left값과 top값을 커서의 XY좌표값과 일치시킴
   function cursor(e) {
     mouseCursor.style.left = e.pageX + "px";
     mouseCursor.style.top = e.pageY - scrollY + "px";
-    }
+  }
 
     function clickEffect(e){
     var d = document.createElement("div");
@@ -777,7 +840,8 @@
     d.style.left = e.pageX - 40 + "px";
     d.style.top = e.pageY - scrollY - 40 + "px";
     cameraTestModal.appendChild(d);
-    d.addEventListener('animationend',function(){d.parentElement.removeChild(d);}.bind(this));
+    d.addEventListener('animationend',function(){
+      d.parentElement.removeChild(d);}.bind(this));
   }
   
   //window 객체에 scroll & mouse 이벤트를 추가하고 cursor함수 실행되도록 함
@@ -788,18 +852,18 @@
 
 <!--마우스 클릭 효과-->
 <script>
-  // function clickEffect(e){
-  //   let cameraTestModal = document.querySelector('#cameraTestModal');
-  //   var d = document.createElement("div");
+  function clickEffect(e){
+    var d = document.createElement("div");
   
-  //   d.className = "clickEffect";
-  //   d.style.left = e.pageX + "px";
-  //   d.style.top = e.pageY + "px";
-  //   cameraTestModal.appendChild(d);
-  //   // d.addEventListener('animationend',function(){d.parentElement.removeChild(d);}.bind(this));
-  // }
-  // cameraTestModal.addEventListener('click', clickEffect);
+    d.className = "clickEffect";
+    d.style.left = e.pageX - 40 + "px";
+    d.style.top = e.pageY - scrollY - 40 + "px";
+    cameraTestModal.appendChild(d);
+    d.addEventListener('animationend',function(){d.parentElement.removeChild(d);}.bind(this));
+  }
+  cameraTestModal.addEventListener('click', clickEffect);
 </script>
+
 <script type="text/javascript"> // front + back
   var socket = io(); // socket 통신 
 
@@ -940,10 +1004,9 @@
     return this;
   };
 
-  // 카메라테스트 모달
-  // window.onload = function(){
-  //  modal('cameraTestModal');
-  // }
+  window.onload = function(){
+    modal('cameraTestModal');
+  }
   
   document.getElementById('orderButton').addEventListener('click', function() {
      // 모달창 띄우기
@@ -973,20 +1036,10 @@
   }
 
   document.getElementById('phoneBtn').addEventListener('click', function() {
-     // 모달창 띄우기
-     modal_finish('finishModal');
+    // 모달창 띄우기
+    modal_finish('finishModal');
+ });
 
-    var modals = document.getElementsByClassName('modal');
-    var bg = document.getElementById('bg');
-
-    setTimeout(function() {
-      for(var i=0; i<modals.length; i++){
-        modals[i].style.display = 'none';
-      }
-      bg.style.display = 'none';
-      container.style.display = '';
-    }, 3000);
-  });
 
   function gestureButtonClick(){
     // document.getElementById('btn1').click();
@@ -1068,6 +1121,7 @@
             dynamic_flag = false;
           }
         }
+        
         if (dynamic_flag) {
           if(getAngle(landmarks[8]['x'], landmarks[8]['y'],landmarks[6]['x'], landmarks[6]['y'])>0){
             if(getAngle(landmarks[7]['x'], landmarks[7]['y'],landmarks[8]['x'], landmarks[8]['y'])>0){
@@ -1091,9 +1145,16 @@
         }
         if (test_flag) {
           if(landmarks[0]['y'] > landmarks[4]['y']) {
-            // console.log('up!');
-            // $('#cameraTestModal').attr('style', "display:none;");
-            // TODO 카메라테스트 모달 종료
+            var modal = document.getElementById("cameraTestModal");
+            var bg = document.getElementById("bg");
+            
+            // 카메라 테스트 모달창이 켜져 있을 때에만 동작하도록
+            if(modal.style.display != 'none'){
+              sleep(500); 
+              modal.style.display = 'none';
+              bg.style.display = 'none';
+              container.style.display = '';
+            }
           }
         }
 

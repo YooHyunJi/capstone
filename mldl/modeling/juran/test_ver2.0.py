@@ -1,3 +1,8 @@
+# Test ver2.0
+
+# create_data_ver2.0 -> train_ver2.0 으로 생성된 모델 테스트 코드(python ver)
+# @Juran
+
 import cv2
 import mediapipe as mp
 import numpy as np
