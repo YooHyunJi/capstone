@@ -105,12 +105,12 @@ function onResults(results) {
           angles.push(pAngle);
         }
 
-        /*
-        tf.loadLayersModel('models/model.json').then(function(model){
+        
+        tf.loadLayersModel(browser.extension.getURL("models/model.json")).then(function(model){
           y_pred = model.predict(angles);
           console.log(y_pred);
         })
-        */
+        
     }
     
   }
