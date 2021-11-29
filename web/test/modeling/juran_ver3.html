@@ -1,0 +1,160 @@
+<!-- 
+    11.29 By Juran
+    ver3.0 검지손가락 랜드마크 사이 길이 이용
+-->
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+</head>
+<!-- 웹캠 화면의 좌우 반전 -->
+  <style>
+    video{
+      transform: rotateY(180deg);
+      -webkit-transform:rotateY(180deg); /* Safari and Chrome */
+      -moz-transform:rotateY(180deg); /* Firefox */
+    }
+    canvas{
+      transform: rotateY(180deg);
+      -webkit-transform:rotateY(180deg); /* Safari and Chrome */
+      -moz-transform:rotateY(180deg); /* Firefox */
+    }
+  </style>
+<body>
+  <div class="container" >
+    <video class="input_video" style="display:none;"></video>
+    <canvas class="output_canvas" width="700px" height="400px"></canvas>
+    <button style="padding: 50px 50px 50px 50px;" id="btn">button</button>
+  </div>
+  
+</body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<!--mediapipe-->
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils@0.1/camera_utils.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils@0.1/control_utils.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils@0.2/drawing_utils.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands@0.1/hands.js" crossorigin="anonymous"></script>
+<!--tjfs-->
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.0.0/dist/tf.min.js"></script>
+<!--numjs-->
+<script src="https://cdn.jsdelivr.net/gh/nicolaspanel/numjs@0.15.1/dist/numjs.min.js"></script>
+<!--mathjs-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/7.5.1/math.min.js"></script>
+
+<script src="/js/modeling.js"></script>
+
+<script type="text/javascript">
+$('#btn').on({
+  click: function () {
+    console.log('button click!');
+    predDynamicGesture([120, 120, 120]); // test
+  }
+})
+
+const videoElement = document.getElementsByClassName('input_video')[0];
+const canvasElement = document.getElementsByClassName('output_canvas')[0];
+const canvasCtx = canvasElement.getContext('2d');
+ 
+// check handpose
+const compareIndex = [[18, 4], [6, 8], [10, 12], [14, 16], [18, 20]]
+var open = [false, false, false, false, false]
+const gesture = [true, true, false, false, false, "index"] // 엄지의 경우 접거나 펼치거나 모두 가능
+
+function dist(x1, y1, x2, y2) { // 두 점 사이의 거리를 반환
+  return Math.sqrt(Math.pow(x1-x2, 2)) + Math.sqrt(Math.pow(y1-y2, 2));
+}
+
+function getAngle(x1, y1, x2, y2){ // 두 점 사이의 각도를 반환
+  var rad = Math.atan2(y2-y1, x2-x1);
+  return (rad*180 / Math.PI);
+}
+function handHover(x1, y1){
+  hand_x = -(x1 * window.width);
+  hand_y = y1 * window.height;
+}
+
+function sleep(ms) {
+  const wakeUpTime = Date.now() + ms;
+  while (Date.now() < wakeUpTime) {}
+}
+
+const seq = [];
+const actions = ['none', 'click'];
+const index_point = [[8, 7, 6], [7, 6, 5], [6, 5, 0]];
+function onResults(results) {
+  canvasCtx.save();
+  canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
+  canvasCtx.drawImage(results.image, 0, 0, canvasElement.width, canvasElement.height);
+      
+  if (results.multiHandLandmarks) {
+    for (const landmarks of results.multiHandLandmarks) { 
+
+        for (var i=0; i<5; i++) { // 손가락 접힘 여부
+            // true 펼쳐짐, false 접힘
+              open[i] = dist(landmarks[0]['x'], landmarks[0]['y'], landmarks[compareIndex[i][0]]['x'], landmarks[compareIndex[i][0]]['y']) 
+                      < dist(landmarks[0]['x'], landmarks[0]['y'], landmarks[compareIndex[i][1]]['x'], landmarks[compareIndex[i][1]]['y'])
+          }
+        
+        drawConnectors(canvasCtx, landmarks, HAND_CONNECTIONS, {color: '#4badb3', lineWidth: 5});
+        drawLandmarks(canvasCtx, landmarks, {color: '#e04e04', lineWidth: 2});
+
+        point_info = nj.zeros((21, 2));
+        for(var i=0; i<21; i++) {
+          point_info[i] = [landmarks[i]['x'], landmarks[i]['y']];
+        }
+
+        var lengths = [];
+        for(const point of index_point) {
+          var x1 = point_info[point[0]][0];
+          var y1 = point_info[point[0]][1];
+          var x2 = point_info[point[1]][0];
+          var y2 = point_info[point[1]][1];
+
+          var length = Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2));
+          lengths.push(length);
+        }
+
+        //console.log(lengths);
+        predDynamicGestureV3(lengths);
+
+      }
+  }
+  canvasCtx.restore();
+  
+}
+
+function radians_to_degrees(radians) {
+  var pi = Math.PI;
+  return radians * (180/pi);
+}
+
+const hands = new Hands({locateFile: (file) => {
+  return `https://cdn.jsdelivr.net/npm/@mediapipe/hands@0.1/${file}`;
+}});
+
+hands.setOptions({
+  maxNumHands: 1,
+  minDetectionConfidence: 0.5,
+  minTrackingConfidence: 0.5
+});
+
+hands.onResults(onResults);
+
+const camera = new Camera(videoElement, {
+  onFrame: async () => {
+    await hands.send({image: videoElement});
+  },
+  width: 1280,
+  height: 720
+});
+
+const simulateClick = (x, y) => {
+  var evt = document.createEvent("MouseEvents");
+  evt.initMouseEvent("click", true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+  var cb = document.elementFromPoint(x, y);
+  cb.dispatchEvent(evt);
+}
+
+camera.start();
+</script>
+</html>

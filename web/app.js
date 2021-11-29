@@ -1,7 +1,6 @@
 const express = require('express')
 const morgan = require('morgan'); // dev log
 var robot = require("robotjs");
-var io = require('socket.io')(server);
 
 const port = 3000;
 const app = express();
@@ -80,7 +79,7 @@ app.get('/test/:id/:name', async (req, res) => {
       res.sendFile(__dirname + "/test/mouse_cursor.html")
       break;
     case 'modeling':
-      res.sendFile(__dirname + "/test/modeling/" + req.params.name + ".html");
+      res.sendFile(__dirname + "/test/modeling/juran_ver" + req.params.name + ".html");
       break;
     case 'click':
       res.sendFile(__dirname + "/test/mouse-click/" + req.params.name + ".html");
