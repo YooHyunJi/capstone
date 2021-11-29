@@ -240,6 +240,22 @@ $(document).ready(function() {
                 img[i].style.cssText = 'width: 100%; height: auto; margin-left: 0; margin-top:' + marginLeft + 'px;';
             }
         }*/
+
+        // 디스픙레이 모드(일반 / 크게 보기)토글 버튼
+        $("#displayModeBtn").on({
+            click: function() {
+                // 일반 → 크게보기
+                if($("#menuList").attr('class') == "zoomOut"){
+                    $("#menuList").removeClass('zoomOut');
+                    $("#menuList").addClass('zoomIn');
+                }
+                // 크게보기 → 일반
+                else{
+                    $("#menuList").removeClass('zoomIn');
+                    $("#menuList").addClass('zoomOut');
+                }
+            }
+        })
     }
     
 
