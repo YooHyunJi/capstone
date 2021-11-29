@@ -8,7 +8,7 @@ async function predDynamicGestureV2(angles) {
 
     if (result == 0) {
         console.log('click!');
-        sleep(1000)
+        sleep(100);
     } else {
         // console.log('none!');
     }
@@ -21,7 +21,7 @@ async function predDynamicGestureV3(angles) {
 
     if (result == 0) {
         console.log('click!');
-        sleep(1000)
+        sleep(100);
     } else {
     }
 }
