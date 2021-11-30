@@ -1,6 +1,6 @@
 <!--
-  11.29 
-  미디어파이프 랜드마크 이용
+  11.30
+  tfjs 클릭 모션 모델 적용
 -->
 <!DOCTYPE html>
 <html>
@@ -1085,6 +1085,12 @@
   }
 
 </script>
+<!--tjfs-->
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.0.0/dist/tf.min.js"></script>
+<!--numjs-->
+<script src="https://cdn.jsdelivr.net/gh/nicolaspanel/numjs@0.15.1/dist/numjs.min.js"></script>
+<!--mathjs-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/7.5.1/math.min.js"></script>
 <script type="module"> // mediapipe script
   const videoElement = document.getElementsByClassName('input_video')[0];
   const canvasElement = document.getElementsByClassName('output_canvas')[0];
@@ -1096,6 +1102,8 @@
   var open = [false, false, false, false, false]
   const static_gesture = [true, false, false, false, false, 'Thumb']; // 정적 제스처 - 엄지 올린 경우
   const dynamic_gesture = [null, true, false, false, false, 'Index']; // 동적 제스처 - 검지 올린 경우
+
+  const index_point = [[8, 7, 6], [7, 6, 5], [6, 5, 0]];
 
   function dist(x1, y1, x2, y2) { // 두 점 사이의 거리를 반환
     return Math.sqrt(Math.pow(x1-x2, 2)) + Math.sqrt(Math.pow(y1-y2, 2));
@@ -1139,32 +1147,7 @@
         open[i] = dist(landmarks[0]['x'], landmarks[0]['y'], landmarks[compareIndex[i][0]]['x'], landmarks[compareIndex[i][0]]['y']) 
                   < dist(landmarks[0]['x'], landmarks[0]['y'], landmarks[compareIndex[i][1]]['x'], landmarks[compareIndex[i][1]]['y'])
         }
-
-       // 클릭 모션
-       var dynamic_flag = true;
-        for (var i=1; i<5; i++) { 
-          if (dynamic_gesture[i] != open[i]) {
-            dynamic_flag = false;
-          }
-        }
         
-        if (dynamic_flag) {
-          if(getAngle(landmarks[8]['x'], landmarks[8]['y'],landmarks[6]['x'], landmarks[6]['y'])>0){
-            if(getAngle(landmarks[7]['x'], landmarks[7]['y'],landmarks[8]['x'], landmarks[8]['y'])>0){
-              console.log('click!');
-              socket.emit('click', true);
-              if(modal.style.display == 'none'){
-                  sleep(300);
-              }
-            }
-          }
-          /*if (landmarks[8]['y'] > landmarks[6]['y']) {
-            console.log('click!');
-            socket.emit('click', true);
-            sleep(300);
-          }*/
-      }
-
       // 정적 제스처 (카메라 테스트 모달 종료 thumbs up gesture)
         var test_flag = true;
         for (var i=0; i<5; i++) { 
@@ -1187,6 +1170,34 @@
           }
         }
 
+        // 동적 제스처 모델 적용
+        let point_info = nj.zeros((21, 2));
+        for(var i=0; i<21; i++) {
+          point_info[i] = [landmarks[i]['x'], landmarks[i]['y']];
+        }
+
+        var angles = [];
+        for(const point of index_point) {
+          var ba = [point_info[point[0]][0] - point_info[point[1]][0], point_info[point[0]][1] - point_info[point[1]][1]];
+          var bc = [point_info[point[2]][0] - point_info[point[1]][0], point_info[point[1]][1] - point_info[point[1]][1]];
+          var cosine_angle = math.multiply(ba, bc) / (math.norm(ba) *  math.norm(bc));
+          var angle = math.acos(cosine_angle);
+          var pAngle = radians_to_degrees(angle);
+          angles.push(pAngle);
+        }
+
+        tf.loadLayersModel('/js/models/ver2/model.json').then(function(model) {
+          // model.predict(tf.tensor([angles])).print();
+          var pred = model.predict(tf.tensor([angles]));
+          var result = pred.arraySync()[0][0];      
+
+          if (result == 0) {
+              console.log('click!');
+              socket.emit('click', true);
+              sleep(300);
+          }
+        })
+
         // 손바닥 위 9번 랜드마크에 마우스 커서 연결
         var mouse_x = (1 - landmarks[9]['x']) * window.innerWidth;
         var mouse_y = landmarks[9]['y'] * window.innerHeight + 100;
@@ -1195,6 +1206,11 @@
       }
     }
     canvasCtx.restore();
+  }
+
+  function radians_to_degrees(radians) {
+    var pi = Math.PI;
+    return radians * (180/pi);
   }
 
   const hands = new Hands({locateFile: (file) => {
