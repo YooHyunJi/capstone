@@ -144,6 +144,21 @@
       float: left;
     }
 
+    #displayModeBtn{
+      width: 110px;
+      height: 110px;
+      border-radius: 50%;
+      background-color: rgb(238, 118, 6);
+      color: white;
+      position: fixed;
+      text-align: center;
+      line-height: 110px;
+      bottom: 10px;
+      left: 670px;
+      font-weight: bold;
+      font-size: 20px;
+    }
+
     #menuList{
       width: 55%;
       float: left;
@@ -151,7 +166,9 @@
       overflow: scroll;
     }
 
-    .menu{
+    /* 작게 보기 모드 */
+ 
+    .zoomOut .menu{
       background: linear-gradient( -45deg, rgba(220, 220, 220, 0.5), rgba(241, 241, 241, 0.5));
       float: left;
       width: 25%;
@@ -160,33 +177,67 @@
       border: none;
     }
 
-    .menu:hover{
-      background: linear-gradient( -45deg, rgba(168, 168, 168, 0.5), rgba(185, 185, 185, 0.5));
-    }
-
-    .imgWrapper{
+    .zoomOut .imgWrapper{
       width: 150px;
       height: 150px;
       margin: 20px 0 0 24px;
       overflow: hidden;
     }
 
-    .menuImg{
-      width: 100%;
-    }
-
-    .menuTitle{
+    .zoomOut .menuTitle{
       width: 100%;
       line-height: 30px;
       margin: 0 auto;
       margin-top: 10px;
     }
 
-    .menuPrice{
+    .zoomOut .menuPrice{
       width: 80%;
       line-height: 30px;
       line-height: 30px;
       margin: 0 auto;
+    }
+    
+
+    /* 크게 보기 모드 */
+    .zoomIn .menu{
+      background: linear-gradient( -45deg, rgba(220, 220, 220, 0.5), rgba(241, 241, 241, 0.5));
+      float: left;
+      width: calc(100%/3);
+      height: 50%;
+      text-align: center;
+      border: none;
+    }
+
+    .zoomIn .imgWrapper{
+      width: 216px;
+      height: 216px;
+      margin: 20px 0 0 24px;
+      overflow: hidden;
+    }
+
+    .zoomIn .menuTitle{
+      width: 100%;
+      line-height: 30px;
+      margin: 0 auto;
+      margin-top: 10px;
+      font-size: 20px;
+    }
+
+    .zoomIn .menuPrice{
+      width: 80%;
+      line-height: 30px;
+      line-height: 30px;
+      margin: 0 auto;
+      font-size: 20px;
+    }
+
+    .menu:hover{
+      background: linear-gradient( -45deg, rgba(168, 168, 168, 0.5), rgba(185, 185, 185, 0.5));
+    }
+
+    .menuImg{
+      width: 100%;
     }
 
     #bag{
@@ -673,6 +724,7 @@
 
   <!-- 로그인 필요 없이 가게 번호는 1로 지정해둘게용 -->
   <a style="display: none;" id="storeNo">1</a>
+  <a style="display: none;" id="displayMode" class="normal"></a>
 
   <canvas class="output_canvas" width="1280px" height="720px"></canvas>
 
@@ -680,7 +732,6 @@
     <video class="input_video"></video>
     <div id="categoryArea">
       <div id="categoryBtn">
-        
         <div id="categoryBtnLeft">◀︎</div>
         <div id="categoryBtnRight">▶︎</div>
       </div>
@@ -689,7 +740,9 @@
     </div>
     
     <div id="section">
-      <div id="menuList">
+      <div id="displayModeBtn">ZOOM</div>
+
+      <div id="menuList" class="zoomOut">
       </div>
 
       <div id="bag">

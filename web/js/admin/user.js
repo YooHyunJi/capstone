@@ -18,12 +18,12 @@ function signup() {
         alert('미입력');
         return;
     }
-    if (storePw != storePwValid) {
-        alert('비밀번호, 비밀번호 확인 불일치');
-        return;
-    }
     if (isChecked != 1) {
         alert('아이디 중복 검사를 해주세요.')
+        return;
+    }
+    if (storePw != storePwValid) {
+        alert('비밀번호, 비밀번호 확인 불일치');
         return;
     }
     // 회원가입 서버와 통신

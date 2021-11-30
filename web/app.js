@@ -72,25 +72,18 @@ app.get('/', (req, res) => {
 app.get('/test', (req, res) => {
   res.sendFile(__dirname + "/public/test.html")
 });
-app.get('/test/:id/:name', (req, res) => {
+app.get('/test/:id/:name', async (req, res) => {
   // node 실행하여 테스트가 필요한 경우 추가
   console.log(req.params.id);
   switch (req.params.id) {
     case 'mouse_cursor':
       res.sendFile(__dirname + "/test/mouse_cursor.html")
       break;
+    case 'modeling':
+      res.sendFile(__dirname + "/test/modeling/" + req.params.name + ".html");
+      break;
     case 'click':
-      switch(req.params.name) {
-        case 'juran':
-          res.sendFile(__dirname + "/test/mouse-click/juran.html")
-          break;
-        case 'hyunji':
-          res.sendFile(__dirname + "/test/mouse-click/hyunji.html")
-          break;
-        case 'sumin':
-          res.sendFile(__dirname + "/test/mouse-click/sumin.html")
-          break;
-      }
+      res.sendFile(__dirname + "/test/mouse-click/" + req.params.name + ".html");
   }
 })
 

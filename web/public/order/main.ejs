@@ -8,8 +8,6 @@
   <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils@0.2/drawing_utils.js" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands@0.1/hands.js" crossorigin="anonymous"></script>
   <script src="https://use.fontawesome.com/releases/v5.2.0/js/all.js"></script>
-  <script src="http://code.jquery.com/jquery-latest.min.js"></script>
-  <!-- 제이쿼리 버전 문제로 에러가 떠서 자동적으로 최신 버전 사용되게 수정함 -->
   
   <style>
     html, body{
@@ -17,8 +15,13 @@
       height: 100%;
       margin: 0;
       -ms-overflow-style: none;
+      -ms-user-select: none;
+      -moz-user-select: -moz-none;
+      -webkit-user-select: none;
+      -khtml-user-select: none;
+      user-select:none;
     }
-    
+
     body{
       cursor: none;
     }
@@ -118,17 +121,11 @@
 
     #categoryArea #categoryList .category{
       background: linear-gradient( -45deg, rgba(54, 146, 134, 0.5), rgba(54, 146, 134, 0.55));
-      width: calc(100% / 6);
       height: 95.6px;
       text-align: center;
       line-height: 95.6px;
       display: inline-block;
     }
-
-    #categoryArea #categoryList .selected{
-      background: linear-gradient( -45deg, rgba(40, 116, 105, 0.5), rgba(40, 116, 105, 0.55));
-    }
-
     #categoryArea #categoryList .category:hover{
       background: linear-gradient( -45deg, rgba(40, 116, 105, 0.5), rgba(40, 116, 105, 0.55));
     }
@@ -139,6 +136,21 @@
       float: left;
     }
 
+    #displayModeBtn{
+      width: 110px;
+      height: 110px;
+      border-radius: 50%;
+      background-color: rgb(238, 118, 6);
+      color: white;
+      position: fixed;
+      text-align: center;
+      line-height: 110px;
+      bottom: 10px;
+      left: 670px;
+      font-weight: bold;
+      font-size: 20px;
+    }
+
     #menuList{
       width: 55%;
       float: left;
@@ -146,7 +158,9 @@
       overflow: scroll;
     }
 
-    .menu{
+    /* 작게 보기 모드 */
+ 
+    .zoomOut .menu{
       background: linear-gradient( -45deg, rgba(220, 220, 220, 0.5), rgba(241, 241, 241, 0.5));
       float: left;
       width: 25%;
@@ -154,34 +168,68 @@
       text-align: center;
       border: none;
     }
-    
-    .menu:hover{
-      background: linear-gradient( -45deg, rgba(168, 168, 168, 0.5), rgba(185, 185, 185, 0.5));
-    }
 
-    .imgWrapper{
+    .zoomOut .imgWrapper{
       width: 150px;
       height: 150px;
       margin: 20px 0 0 24px;
       overflow: hidden;
     }
 
-    .menuImg{
-      width: 100%;
-    }
-
-    .menuTitle{
+    .zoomOut .menuTitle{
       width: 100%;
       line-height: 30px;
       margin: 0 auto;
       margin-top: 10px;
     }
 
-    .menuPrice{
+    .zoomOut .menuPrice{
       width: 80%;
       line-height: 30px;
       line-height: 30px;
       margin: 0 auto;
+    }
+    
+
+    /* 크게 보기 모드 */
+    .zoomIn .menu{
+      background: linear-gradient( -45deg, rgba(220, 220, 220, 0.5), rgba(241, 241, 241, 0.5));
+      float: left;
+      width: calc(100%/3);
+      height: 50%;
+      text-align: center;
+      border: none;
+    }
+
+    .zoomIn .imgWrapper{
+      width: 216px;
+      height: 216px;
+      margin: 20px 0 0 24px;
+      overflow: hidden;
+    }
+
+    .zoomIn .menuTitle{
+      width: 100%;
+      line-height: 30px;
+      margin: 0 auto;
+      margin-top: 10px;
+      font-size: 20px;
+    }
+
+    .zoomIn .menuPrice{
+      width: 80%;
+      line-height: 30px;
+      line-height: 30px;
+      margin: 0 auto;
+      font-size: 20px;
+    }
+
+    .menu:hover{
+      background: linear-gradient( -45deg, rgba(168, 168, 168, 0.5), rgba(185, 185, 185, 0.5));
+    }
+
+    .menuImg{
+      width: 100%;
     }
 
     #bag{
@@ -207,14 +255,14 @@
     .orderMenu{
       float: left;
       width: 100%;
-      height: 20%;
+      height: 102.4px;
       background: linear-gradient(to bottom,  rgba(214, 224, 223, 0.3), rgba(214, 224, 223, 0.5));
     }
 
     .orderMenu div{
       float: left;
       text-align: center;
-      line-height: 99.2px;
+      line-height: 102.4px;
       font-size: 11px;
     }
 
@@ -366,13 +414,12 @@
       background: linear-gradient( -45deg, rgb(72, 182, 165), rgb(16, 148, 165));
     }
 
-    /* #testArea{
-      width: calc(100% - 50px);
-      height: calc(100% - 100px);
-      background-color: skyblue;
-      margin: 0 auto;
-      margin-top: 75px;
-    } */
+    #testArea{
+      width: 100%;
+      height: 264px;
+      /* background-color: skyblue; */
+      margin-top: 175px;
+    }
 
     .announcement{
       -ms-user-select: none; 
@@ -381,15 +428,20 @@
       -webkit-user-select: none;
       user-select: none;
       color: rgba(255, 255, 255, 0.9);
+      margin: 0;
     }
 
     #announcement_1{
       font-size: 20px;
-      margin-top: 80px;
+      margin-bottom: 100px;
     }
+
     #announcement_2{
       font-size: 18px;
-      margin-top: 20px;
+    }
+
+    #thumbsUp{
+      font-size: 30px;
     }
 
     /*마우스 클릭 효과*/
@@ -398,7 +450,7 @@
       width: 30px;
       height: 30px;
       border-style: solid;
-      color:#ffffff77;
+      color:#ffffff3a;
       /* background-color:#ff253b77; */
       border-radius: 50%;
       animation:clickEffect 1s ease-out;
@@ -600,13 +652,71 @@
       line-height: 50px;
       margin: 0;
     }
+
+    .lotus {
+      background: rgb(17, 107, 65);
+      display: inline-block;
+      border-radius: 280px 300px 0 0;
+      position: fixed;
+    }
+    .lotus:after {
+      background: rgb(17, 107, 65);
+      content: "";
+      border-radius: 0 0 300px 290px;
+      position: absolute;
+      transform: rotate(15deg);
+      transform-origin: left top;
+    }
+
+    #lotus_1{
+      left: 150px;
+      top: 70px;
+      transform: rotate(345deg);
+      height: 90px;
+      width: 180px;
+    }
+    #lotus_1:after{
+      height: 90px;
+      width: 180px;
+      left: 3px;
+      top: 65px;
+    }
+
+    #lotus_2{
+      left: 100px;
+      top: 300px;
+      transform: rotate(310deg);
+      height: 50px;
+      width: 100px;
+    }
+    #lotus_2:after{
+      height: 50px;
+      width: 100px;
+      left: 1px;
+      top: 35px;
+    }
+
+    #lotus_3{
+      height: 100px;
+      width: 200px;
+      transform: rotate(200deg);
+      right: 100px;
+      bottom: 100px;
+    }
+    #lotus_3:after{
+      height: 100px;
+      width: 200px;
+      left: 3px;
+      top: 70px;
+    }
   </style>
 </head>
 <body>
-    <!-- 마우스 커서 커스텀 -->
-    <div class="cursor"></div>
-      <!-- 서버에서 세션값으로 받아온 storeNo (ejs)-->
-  <a style="display: none;" id="storeNo"><%= storeNo %></a>
+  <div class="cursor"></div>
+
+  <!-- 로그인 필요 없이 가게 번호는 1로 지정해둘게용 -->
+  <a style="display: none;" id="storeNo">1</a>
+  <a style="display: none;" id="displayMode" class="normal"></a>
 
   <canvas class="output_canvas" width="1280px" height="720px"></canvas>
 
@@ -614,60 +724,31 @@
     <video class="input_video"></video>
     <div id="categoryArea">
       <div id="categoryBtn">
-        
         <div id="categoryBtnLeft">◀︎</div>
         <div id="categoryBtnRight">▶︎</div>
       </div>
       <ul id="categoryList">
-        <!--
-        <li class="category"> COFFEE
-        <li class="category"> TEA
-        <li class="category"> ADE
-        <li class="category"> JUICE
-        <li class="category"> BAKERY
-        <li class="category"> SMOOTHIE
-        <li class="category"> BEER
-        <li class="category"> CAKE
-          -->
       </ul>
     </div>
     
-
     <div id="section">
-      <div id="menuList">
-        <!-- 
-        <div class="menu" onclick="gestureButtonClick();">
-          <img class="menuImg" src="../img/img1.png" alt=" hippo">
-          <h4 class="menuTitle">  HIPPO1 </h4>
-          <h4 class="menuPrice"> ₩5,000 </h4>
-        </div> 
-        -->
+      <div id="displayModeBtn">ZOOM</div>
+
+      <div id="menuList" class="zoomOut">
       </div>
 
       <div id="bag">
         <div id="orderBucket">
           <div id="orderList">
-            <!--
-            <div class="orderMenu">
-                <div class="orderMenuName">  AMERICANO(ICE) </div>
-                <div class="orderMenuPrice"> 3,000 </div>
-                <div class="orderQuantity">
-                  <div class="orderMenuQuantityDec"> ▼ </div>
-                  <div class="orderMenuQuantity"> 3 </div>
-                  <div class="orderMenuQuantityInc"> ▲ </div>
-                </div>
-                <div class="orderMenuCancel"> CANCEL </div>
-            </div>
-            -->
           </div>
           <div id="totalPriceArea">
             <span>총 결제 금액</span><span class="bagTotalPrice" id="totalPriceSpan">0원</span>
           </div>
       </div>
         <div id="orderControl">
-          <button id="orderListUp" onclick="orderScroll(this.id);"> ▲ </button>
-          <button id="orderListDown" onclick="orderScroll(this.id);"> ▼ </button>
-          <button id="orderButton"> ORDER </button>
+          <div id="orderListUp" onclick="orderScroll(this.id);"> ▲ </div>
+          <div id="orderListDown" onclick="orderScroll(this.id);"> ▼ </div>
+          <div id="orderButton"> ORDER </div>
         </div>
         </div>
       </div>    
@@ -675,11 +756,17 @@
 
     <!-- 카메라 테스트 모달창 -->
     <div id="cameraTestModal" class="modal">
+    <div id="lotus_1" class="lotus"></div>
+    <div id="lotus_2" class="lotus"></div>
+    <div id="lotus_3" class="lotus"></div>
       <div id="testArea">
         <p id="announcement_1" class="announcement"> 검지를 굽혀 클릭해 호수에 물결을 일으켜보세요 ! </p>
-        <p id="announcement_2" class="announcement"> 충분히 적응하셨다면 👍🏻를 만들어 주문을 진행해주세요 </p>
+        <p id="announcement_2" class="announcement"> 충분히 적응하셨다면</p>
+        <p id="thumbsUp">👍🏻</p>
+        <p id="announcement_2" class="announcement">를 만들어 주문을 진행해주세요 </p>
       </div>
       <a><div class="modalClose" style="display: none;"></div></a>
+      
     </div>
 
     <!-- 결제수단 선택 모달창 -->
@@ -693,7 +780,8 @@
       <div id="totalPriceDiv">총 결제 금액 0원</div>
       <a><div class="modalClose">이전 단계</div></a>
     </div>
-  
+
+    <!-- 결제 진행 중(spinner) 모달창 -->
     <div id="processModal" class="modal">
       <div class="processArea">
         <div class="spinner">
@@ -705,6 +793,7 @@
       <a><div class="modalClose">이전 단계</div></a>
     </div>
 
+    <!-- 전화번호 입력 모달창 -->
     <div id="phoneModal" class="modal">
       <div class="phoneArea">
         <div class="phoneOutput">
@@ -741,8 +830,9 @@
   
       </table>
       </div>
-    </div>
-  
+      </div>
+
+    <!-- 주문 완료 모달창 -->
     <div id="finishModal" class="modal">
       <div class="finishArea">
         <p>주문이 완료되었습니다</p>
@@ -753,22 +843,19 @@
   </div>
 </body>
 <script src="/socket.io/socket.io.js"></script>
-<!-- <script type="text/javascript" src="/cookie"></script> -->
 <script src="/js/order/cookie.js"></script>
-<!-- <script type="text/javascript" src="/orderjs"></script> -->
 <script src="/js/order/order.js"></script>
-<!-- <script type="text/javascript" src="/common"></script> -->
 <script src="/js/common.js"></script>
 <script>
-  // 커스텀 커서로 사용할 div를 시스탬 마우스 커서 위치에 붙이기  
+  // 커스텀 커서로 사용할 div를 시스탬 마우스 커서 위치에 붙이기
   let mouseCursor = document.querySelector('.cursor');
-  let cameraTestModal = document.querySelector('#cameraTestModal');
+  const cameraTestModal = document.querySelector('#cameraTestModal');
 
   //커스텀 커서의 left값과 top값을 커서의 XY좌표값과 일치시킴
   function cursor(e) {
     mouseCursor.style.left = e.pageX + "px";
     mouseCursor.style.top = e.pageY - scrollY + "px";
-    }
+  }
 
     function clickEffect(e){
     var d = document.createElement("div");
@@ -777,7 +864,8 @@
     d.style.left = e.pageX - 40 + "px";
     d.style.top = e.pageY - scrollY - 40 + "px";
     cameraTestModal.appendChild(d);
-    d.addEventListener('animationend',function(){d.parentElement.removeChild(d);}.bind(this));
+    d.addEventListener('animationend',function(){
+      d.parentElement.removeChild(d);}.bind(this));
   }
   
   //window 객체에 scroll & mouse 이벤트를 추가하고 cursor함수 실행되도록 함
@@ -788,28 +876,26 @@
 
 <!--마우스 클릭 효과-->
 <script>
-  // function clickEffect(e){
-  //   let cameraTestModal = document.querySelector('#cameraTestModal');
-  //   var d = document.createElement("div");
+  function clickEffect(e){
+    var d = document.createElement("div");
   
-  //   d.className = "clickEffect";
-  //   d.style.left = e.pageX + "px";
-  //   d.style.top = e.pageY + "px";
-  //   cameraTestModal.appendChild(d);
-  //   // d.addEventListener('animationend',function(){d.parentElement.removeChild(d);}.bind(this));
-  // }
-  // cameraTestModal.addEventListener('click', clickEffect);
+    d.className = "clickEffect";
+    d.style.left = e.pageX - 40 + "px";
+    d.style.top = e.pageY - scrollY - 40 + "px";
+    cameraTestModal.appendChild(d);
+    d.addEventListener('animationend',function(){d.parentElement.removeChild(d);}.bind(this));
+  }
+  cameraTestModal.addEventListener('click', clickEffect);
 </script>
+
 <script type="text/javascript"> // front + back
   var socket = io(); // socket 통신 
 
   function modal(id) {
-    var zIndex = 9999;
+    var zIndex = 100;
     var modal = document.getElementById(id);
     var canvas = document.getElementsByClassName('output_canvas')[0];
     var container = document.getElementById('container');
-    const width = $(window).width(); // 윈도우 크기
-    const height = $(window).height(); 
 
     // 모달 div 뒤에 희끄무레한 레이어
     var bg = document.createElement('div');
@@ -856,7 +942,7 @@
 
   // 결제 진행 중 모달
   function modal_process(id){
-    var zIndex = 9999;
+    var zIndex = 100;
     var modal = document.getElementById(id);
     var prevModal = document.getElementById('paymentsModal');
 
@@ -886,7 +972,7 @@
 
   // 전화번호 입력 모달
   function modal_phone(id){
-    var zIndex = 9999;
+    var zIndex = 100;
     var modal = document.getElementById(id);
 
     // 닫기 버튼 처리, 시꺼먼 레이어와 모달 div 지우기
@@ -913,7 +999,7 @@
 
   // 결제 완료 모달
   function modal_finish(id){
-    var zIndex = 9999;
+    var zIndex = 100;
     var modal = document.getElementById(id);
     var container = document.getElementById('container');
 
@@ -940,11 +1026,10 @@
     return this;
   };
 
-  // 카메라테스트 모달
-  // window.onload = function(){
-  //  modal('cameraTestModal');
-  // }
-  
+  window.onload = function(){
+    modal('cameraTestModal');
+  }
+
   document.getElementById('orderButton').addEventListener('click', function() {
      // 모달창 띄우기
      
@@ -975,17 +1060,6 @@
   document.getElementById('phoneBtn').addEventListener('click', function() {
      // 모달창 띄우기
      modal_finish('finishModal');
-
-    var modals = document.getElementsByClassName('modal');
-    var bg = document.getElementById('bg');
-
-    setTimeout(function() {
-      for(var i=0; i<modals.length; i++){
-        modals[i].style.display = 'none';
-      }
-      bg.style.display = 'none';
-      container.style.display = '';
-    }, 3000);
   });
 
   function gestureButtonClick(){
@@ -998,11 +1072,11 @@
     const clickedButton = document.getElementById(clicked_id);
 
     if(clicked_id == 'orderListUp'){
-      orderList.scrollBy(0, -99.2);
+      orderList.scrollBy(0, -102.4);
     }
 
     else{
-      orderList.scrollBy(0, 99.2);
+      orderList.scrollBy(0, 102.4);
     }
   }
 
@@ -1012,12 +1086,12 @@
   const canvasElement = document.getElementsByClassName('output_canvas')[0];
   const canvasCtx = canvasElement.getContext('2d');
   const width = $(window).width();
-  const height = $(window).height();
+  const height = $(window).height(); 
 
   const compareIndex = [[18, 4], [6, 8], [10, 12], [14, 16], [18, 20]]
   var open = [false, false, false, false, false]
   const static_gesture = [true, false, false, false, false, 'Thumb']; // 정적 제스처 - 엄지 올린 경우
-  const dynamic_gesture = [false, true, false, false, false, 'Index']; // 동적 제스처 - 검지 올린 경우
+  const dynamic_gesture = [null, true, false, false, false, 'Index']; // 동적 제스처 - 검지 올린 경우
 
   function dist(x1, y1, x2, y2) { // 두 점 사이의 거리를 반환
     return Math.sqrt(Math.pow(x1-x2, 2)) + Math.sqrt(Math.pow(y1-y2, 2));
@@ -1047,33 +1121,37 @@
 
     var print_x, print_y;
     var middle;
+    var modal = document.getElementById("cameraTestModal");
         
     if (results.multiHandLandmarks) {
-      for (const landmarks of results.multiHandLandmarks) { 
-        
-        // 미디어파이프를 통해 얻은 랜드마크 이용하여 손모양 표현
-        drawConnectors(canvasCtx, landmarks, HAND_CONNECTIONS, {color: '#f0c697', lineWidth: 20});
-        drawLandmarks(canvasCtx, landmarks, {color: '#f5c9a9', lineWidth: 10});
+      for (const landmarks of results.multiHandLandmarks) {
+
+        // // 미디어파이프를 통해 얻은 랜드마크 이용하여 손모양 표현
+        // drawConnectors(canvasCtx, landmarks, HAND_CONNECTIONS, {color: '#f0c697', lineWidth: 20});
+        // drawLandmarks(canvasCtx, landmarks, {color: '#f5c9a9', lineWidth: 10});
       
         for (var i=0; i<5; i++) {
-          // true 펼쳐짐, false 접힘
-            open[i] = dist(landmarks[0]['x'], landmarks[0]['y'], landmarks[compareIndex[i][0]]['x'], landmarks[compareIndex[i][0]]['y']) 
-                    < dist(landmarks[0]['x'], landmarks[0]['y'], landmarks[compareIndex[i][1]]['x'], landmarks[compareIndex[i][1]]['y'])
+        // true 펼쳐짐, false 접힘
+        open[i] = dist(landmarks[0]['x'], landmarks[0]['y'], landmarks[compareIndex[i][0]]['x'], landmarks[compareIndex[i][0]]['y']) 
+                  < dist(landmarks[0]['x'], landmarks[0]['y'], landmarks[compareIndex[i][1]]['x'], landmarks[compareIndex[i][1]]['y'])
         }
-        
-        // 클릭 모션
-        var dynamic_flag = true;
+
+       // 클릭 모션
+       var dynamic_flag = true;
         for (var i=1; i<5; i++) { 
           if (dynamic_gesture[i] != open[i]) {
             dynamic_flag = false;
           }
         }
+        
         if (dynamic_flag) {
           if(getAngle(landmarks[8]['x'], landmarks[8]['y'],landmarks[6]['x'], landmarks[6]['y'])>0){
             if(getAngle(landmarks[7]['x'], landmarks[7]['y'],landmarks[8]['x'], landmarks[8]['y'])>0){
               console.log('click!');
               socket.emit('click', true);
-              sleep(300);
+              if(modal.style.display == 'none'){
+                  sleep(300);
+              }
             }
           }
           /*if (landmarks[8]['y'] > landmarks[6]['y']) {
@@ -1083,6 +1161,7 @@
           }*/
       }
 
+      // 정적 제스처 (카메라 테스트 모달 종료 thumbs up gesture)
         var test_flag = true;
         for (var i=0; i<5; i++) { 
           if (static_gesture[i] != open[i]) {
@@ -1090,13 +1169,19 @@
           }
         }
         if (test_flag) {
-          if(landmarks[0]['y'] > landmarks[4]['y']) {
-            // console.log('up!');
-            // $('#cameraTestModal').attr('style', "display:none;");
-            // TODO 카메라테스트 모달 종료
+          if(landmarks[6]['y'] > landmarks[4]['y']) {
+            var modal = document.getElementById("cameraTestModal");
+            var bg = document.getElementById("bg");
+            
+            // 카메라 테스트 모달창이 켜져 있을 때에만 동작하도록
+            if(modal.style.display != 'none'){
+              sleep(500); 
+              modal.style.display = 'none';
+              bg.style.display = 'none';
+              container.style.display = '';
+            }
           }
         }
-
 
         // 손바닥 위 9번 랜드마크에 마우스 커서 연결
         var mouse_x = (1 - landmarks[9]['x']) * window.innerWidth;

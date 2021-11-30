@@ -1,9 +1,11 @@
+# [출처] https://github.com/kairess/gesture-recognition 
+
 import cv2
 import mediapipe as mp
 import numpy as np
 import time, os
 
-actions = ['none', 'click']
+actions = ['none', 'click'] # 클릭과 클릭이 아닌 모션으로 분류
 seq_length = 30
 secs_for_action = 60 # 60초
 
