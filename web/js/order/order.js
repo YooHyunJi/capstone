@@ -76,6 +76,9 @@ $(document).ready(function() {
                                 'shoppingCart': getCookie('shoppingCart')
                             }),
                             success: function(res) {
+                                socket.emit('orderInfo', {
+                                    'orderNo': orderNo,
+                                });
                                 // 문자 메시지 전송
                                 $.ajax({
                                     url: '/api/sens/order',
@@ -90,9 +93,9 @@ $(document).ready(function() {
                                         // 주문 완료 안내 띄우고 3초 후 재시작
                                         setTimeout(function() {location.reload();}, 3000);
                                         // server
-                                        socket.emit('orderInfo', {
-                                            'orderNo': orderNo,
-                                        }); 
+                                        // socket.emit('orderInfo', {
+                                        //     'orderNo': orderNo,
+                                        // }); 
                                     }, error: function(err) {
                                         console.log('send message error ', err);
                                     }

@@ -14,10 +14,10 @@ function sendOrderMsg(req, res) {
     const date = Date.now().toString();
     
     // 환경변수에 저장된 키값
-    // const serviceId = process.env.SENS_SERVICE_ID;
-    // const secretKey = process.env.SENS_SECRET_KEY;
-    // const accessKey = process.env.SENS_ACCESS_KEY;
-    // const my_number = process.env.SENS_MYNUM;
+    const serviceId = process.env.SENS_SERVICE_ID;
+    const secretKey = process.env.SENS_SECRET_KEY;
+    const accessKey = process.env.SENS_ACCESS_KEY;
+    const my_number = process.env.SENS_MYNUM;
 
     // crypto-js 모듈 이용하여 정보 암호화
     const method = "POST";
@@ -72,10 +72,10 @@ function sendPickupMsg(req, res) {
     
     const date = Date.now().toString();
 
-    // const serviceId = process.env.SENS_SERVICE_ID; 
-    // const secretKey = process.env.SENS_SECRET_ID; 
-    // const accessKey = process.env.SENS_ACCESS_ID; 
-    // const my_number = process.env.SENS_MYNUM;
+    const serviceId = process.env.SENS_SERVICE_ID; 
+    const secretKey = process.env.SENS_SECRET_ID; 
+    const accessKey = process.env.SENS_ACCESS_ID; 
+    const my_number = process.env.SENS_MYNUM;
     
     const method = "POST";
     const space = " ";
