@@ -36,6 +36,17 @@ app.use(session({
   store: sessionStore
 }));
 
+// sequelize
+const db = require('./models/index.js');
+const sequelize = db.sequelize;
+(async () => {
+  try {
+    await sequelize.sync({ force: false }); // 테이블 존재 시, 실행하지 않음
+  } catch {
+
+  }
+})();
+
 app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
