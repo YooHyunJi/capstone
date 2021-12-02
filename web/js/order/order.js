@@ -28,6 +28,22 @@ $(document).ready(function() {
         addShoppingCartForDiv(shoppingCartList, totalPrice);
     }
 
+    // 디스플레이 모드(일반 / 크게 보기)토글 버튼
+    $("#displayModeBtn").on({
+        click: function() {
+            // 일반 → 크게보기
+            if($("#menuList").attr('class') == "zoomOut"){
+                $("#menuList").addClass("zoomIn");
+                $("#menuList").removeClass("zoomOut");
+            }
+            // 크게보기 → 일반
+            else{
+                $("#menuList").addClass("zoomOut");
+                $("#menuList").removeClass("zoomIn");
+            }
+        }
+    });
+
     $('.phoneNumBtn tr td').on({
         click: function() {
             let btnId = $(this).attr('id').substring(3, 10);
@@ -223,42 +239,6 @@ $(document).ready(function() {
             });*/
 
         });
-
-        /*var div = $('.imgWrapper'); // 이미지를 감싸는 div
-        var img = $('.menuImg'); // 이미지
-
-        for(var i=0; i<div.length; i++){
-            var divAspect = 1; // div의 가로세로비는 알고 있는 값이다
-            var imgAspect = img[i].height / img[i].width;
-
-            if (imgAspect < divAspect) {
-                // 이미지가 div보다 납작한 경우 세로를 div에 맞추고 가로는 잘라낸다
-                var imgWidthActual = div[i].offsetHeight / imgAspect;
-                var imgWidthToBe = div[i].offsetHeight / divAspect;
-                var marginLeft = -(Math.round((imgWidthActual - imgWidthToBe) / 2));
-                img[i].style.cssText = 'width: auto; height: 100%; margin-left: ' + marginLeft + 'px;';
-            }
-            else {
-                // 이미지가 div보다 길쭉한 경우 가로를 div에 맞추고 세로를 잘라낸다
-                img[i].style.cssText = 'width: 100%; height: auto; margin-left: 0; margin-top:' + marginLeft + 'px;';
-            }
-        }*/
-
-        // 디스픙레이 모드(일반 / 크게 보기)토글 버튼
-        $("#displayModeBtn").on({
-            click: function() {
-                // 일반 → 크게보기
-                if($("#menuList").attr('class') == "zoomOut"){
-                    $("#menuList").removeClass('zoomOut');
-                    $("#menuList").addClass('zoomIn');
-                }
-                // 크게보기 → 일반
-                else{
-                    $("#menuList").removeClass('zoomIn');
-                    $("#menuList").addClass('zoomOut');
-                }
-            }
-        })
     }
     
 
