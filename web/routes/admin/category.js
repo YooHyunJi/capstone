@@ -45,29 +45,14 @@ router.post('/addCategory', function (req, res) {
 // 3. 카테고리 삭제 라우터
 router.get('/deleteCategory/:categoryNo', function (req, res) {
     var categoryNo = req.params.categoryNo; // 카테고리 번호
-    var query = `SELECT * FROM menu WHERE categoryNo = ?`; // 해당 카테고리에 속한 메뉴가 있는지 확인
-    connection.query(query, categoryNo, function (err, result) {
+    var query = `DELETE FROM menu WHERE categoryNo = ?;`
+                + `DELETE FROM category WHERE categoryNo = ?;`
+    connection.query(query, [categoryNo, categoryNo], function (err, result) {
         if(err) { // 에러 발생시
             console.log("error ocurred: ", err);
             res.json({ "code": 400, "result": "error ocurred" })
         } else {
-            if (result.length == 0) { // 빈 카테고리의 경우
-                query = 'DELETE FROM category WHERE categoryNo = ?'; // 카테고리 삭제 쿼리문
-                // DB에서 카테고리 삭제
-                connection.query(query, categoryNo, function (err) {
-                    if(err) { // 에러 발생시
-                        console.log("error ocurred: ", err);
-                        res.json({ "code": 400, "result": "error ocurred" })
-                    } else {
-                        console.log("delete category success");
-                        res.json({"code": 200, "result": "delete category success"})
-                    }
-                })
-            }
-            else { // 속한 메뉴가 있는 경우
-                res.json({"code": 204, "result": "delete menu first"})
-            }
-            
+            res.json({"code": 200, "result": "delete category success"})
         }
     })
 

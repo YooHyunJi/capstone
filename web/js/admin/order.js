@@ -39,7 +39,6 @@ function getAllOrders() {
                 else if (orderStatus == '준비완료') {
                     orderClass='finishedOrder';
                 }
-                
                 $('#orders').append(
                     `<tr class="`+orderClass+`">
                     <td>${result.orders[i].orderNo}</td>
