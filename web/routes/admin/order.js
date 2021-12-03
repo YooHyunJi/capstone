@@ -16,7 +16,7 @@ router.get('/getAllOrders', function (req, res) {
         
     var query = `SELECT orderNo, DATE_FORMAT(orderTime, '%Y-%m-%d %H:%m:%s') AS orderTime, `
     +`orderStatus, customerTel, totalPrice, cancelYn FROM orders `
-    +`ORDER BY orderNo DESC WHERE storeNo = `+storeNo; // 주문 최신순 조회 쿼리문
+    +`WHERE storeNo = `+storeNo +` ORDER BY orderNo DESC`; // 주문 최신순 조회 쿼리문
 
     connection.query(query, function (err, result) {
         if(err) { // 에러 발생시
