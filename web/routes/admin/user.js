@@ -118,38 +118,6 @@ router.post('/login', function (req, res) {
             }
         }
     })
-
-    /*connection.query(query, storeId, function (err, result) {
-        if (err) { // 에러 발생시
-            console.log(err);
-            res.json({'code': 404});
-        } else {
-            crypto.pbkdf2(storePw, salt, 100, 64, 'sha512', (err, key) => {
-                var hashPw = key.toString('base64');
-                var user = {
-                    storePw: result[0].storePw,
-                    storeNo: result[0].storeNo,
-                    storeId: result[0].storeId
-                }
-
-                // 로그인에 성공했을 경우
-                // 세션에 로그인 정보 추가
-                if (user.storePw == hashPw) {
-                    if (!req.session.storeNo) {
-                        req.session.storeNo = user.storeNo;
-                        req.session.storeId = user.storeId;
-                        req.session.save(function(){
-                            console.log("세션 저장 완료");
-                        });
-                    }
-                    res.json({'code': 200, 'storeId': result[0].storeId, 'result': 'Welcome ' + result[0].storeId});
-                }
-                else {
-                    res.json({'code': 208, 'result': 'PW is not correct'});
-                }
-            })
-        }
-    })*/
 });
 
 // 3. 로그아웃 라우터
@@ -275,7 +243,6 @@ router.post('/deleteUser', function (req, res) {
                     res.json({'code': 208, 'result': 'Password is not correct'});
                 }
                 else { // password 옳게 입력한 경우 회원탈퇴 진행
-                    // res.json({'code': 200, 'result': 'Password is correct'});
                     query =`DELETE FROM payment WHERE storeNo = "${req.session.storeNo}";`
                     + `DELETE FROM orderDetail WHERE storeNo = "${req.session.storeNo}";`
                     + `DELETE FROM orders WHERE storeNo = "${req.session.storeNo}";`

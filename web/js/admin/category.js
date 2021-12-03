@@ -49,13 +49,16 @@ function addCategory() {
 }
 
 function deleteCategory(categoryNo) {
-    if (confirm("정말 삭제하시겠습니까? 해당 카테고리의 메뉴도 함께 삭제됩니다.") == true) { // 카테고리 삭제 확인
+    if (confirm("정말 삭제하시겠습니까?") == true) { // 카테고리 삭제 확인
         $.ajax({
             type: 'GET',
             url: 'admin/deleteCategory/'+categoryNo,
             success: function (result) {
                 if (result.code == 200)
                     alert('삭제되었습니다.');
+                else if (result.code == 204) {
+                    alert('빈 카테고리만 삭제할 수 있습니다.')
+                }
                 location.href="/manage_category";
             }
         });

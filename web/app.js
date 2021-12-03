@@ -9,10 +9,10 @@ var io = require('socket.io')(server);
 
 // 라우터 가져오기
 // 관리자 시스템
-const menuRouter = require('./routes/admin/menu');
-const categoryRouter = require('./routes/admin/category');
-const userRouter = require('./routes/admin/user');
-const orderRouter = require('./routes/admin/order');
+const menuRouter = require('./routes/admin/menu'); // 메뉴 관리 관련 라우터
+const categoryRouter = require('./routes/admin/category'); // 카테고리 관리 관련 라우터
+const userRouter = require('./routes/admin/user'); // 회원 관리 관련 라우터
+const orderRouter = require('./routes/admin/order'); // 주문 관리 관련 라우터
 
 const orderViewRouter = require('./routes/order/views.js'); // 주문 시스템 VIEWS 라우터
 const orderApiRouter = require('./routes/order'); // 주문 시스템 API 라우터 index.js

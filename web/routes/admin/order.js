@@ -14,8 +14,9 @@ router.get('/getAllOrders', function (req, res) {
     // DB에서 조회
     let storeNo = req.session.storeNo; // 가게 세션정보
         
-    var query = `SELECT orderNo, DATE_FORMAT(orderTime, '%Y-%m-%d %H:%m:%s') AS orderTime, orderStatus, customerTel, totalPrice, cancelYn FROM orders `;
-    +`WHERE storeNo = `+storeNo; // 주문 조회 쿼리문
+    var query = `SELECT orderNo, DATE_FORMAT(orderTime, '%Y-%m-%d %H:%m:%s') AS orderTime, `
+    +`orderStatus, customerTel, totalPrice, cancelYn FROM orders `
+    +`ORDER BY orderNo DESC WHERE storeNo = `+storeNo; // 주문 최신순 조회 쿼리문
 
     connection.query(query, function (err, result) {
         if(err) { // 에러 발생시
