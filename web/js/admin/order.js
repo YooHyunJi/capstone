@@ -39,6 +39,10 @@ function getAllOrders() {
                 else if (orderStatus == '준비완료') {
                     orderClass='finishedOrder';
                 }
+<<<<<<< HEAD
+=======
+
+>>>>>>> 601b4e8d04689ec14c43beab3319f1c023852dab
                 $('#orders').append(
                     `<tr class="`+orderClass+`">
                     <td>${result.orders[i].orderNo}</td>
@@ -109,9 +113,12 @@ function changeOrderStatus(orderStatus, cancelYn, orderNo, customerTel) {
             type: 'GET',
             url: 'admin/changeOrderStatus/'+orderNo,
             success: function (result) {
-                if (result.code == 200)
-                    alert('주문상태가 변경되었습니다.');
-                else
+                // if (result.code == 200)
+                //     alert('주문상태가 변경되었습니다.');
+                // else
+                //     alert('주문상태 변경 실패');
+                // location.href="/manage_order";
+                if (result.code != 200)
                     alert('주문상태 변경 실패');
                 location.href="/manage_order";
             }
