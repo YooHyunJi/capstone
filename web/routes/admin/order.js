@@ -22,11 +22,9 @@ router.get('/getAllOrders', function (req, res) {
         if(err) { // 에러 발생시
             console.log("error ocurred: ", err);
             res.json({ "code": 400, "result": "error ocurred" })
-            //res.sendFile(path.resolve('public/admin/manage_order.html'), {"code": 400, 'storeNo': storeNo});
         } else {
             console.log(`get order info success`);
             res.json({"code": 200, "result": "get order info success", "orders": result})
-            // res.sendFile(path.resolve('public/admin/manage_order.html'), {"code": 200, 'storeNo': storeNo, "orders": result});
         }
     })
 });

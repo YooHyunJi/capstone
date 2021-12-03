@@ -52,22 +52,8 @@ router.get('/deleteCategory/:categoryNo', function (req, res) {
             console.log("error ocurred: ", err);
             res.json({ "code": 400, "result": "error ocurred" })
         } else {
-            // if (result.length == 0) { // 빈 카테고리의 경우
-            //     query = 'DELETE FROM category WHERE categoryNo = ?'; // 카테고리 삭제 쿼리문
-            //     // DB에서 카테고리 삭제
-            //     connection.query(query, categoryNo, function (err) {
-            //         if(err) { // 에러 발생시
-            //             console.log("error ocurred: ", err);
-            //             res.json({ "code": 400, "result": "error ocurred" })
-            //         } else {
-            //             console.log("delete category success");
-            //             res.json({"code": 200, "result": "delete category success"})
-            //         }
-            //     })
-            // }
-            // else { // 속한 메뉴가 있는 경우
-             res.json({"code": 200, "result": "delete category success"})
-            
+
+            res.json({"code": 200, "result": "delete category success"})
         }
     })
 
