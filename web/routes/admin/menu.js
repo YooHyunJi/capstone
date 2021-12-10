@@ -159,4 +159,27 @@ router.get('/deleteMenu/:menuNo', function (req, res) {
 
 });
 
+// 7. 메뉴 중복 검사
+router.post('/duplicateCheckMenu', function (req, res) {
+    var menuName = req.body.menuName; // 메뉴 명
+    // 같은 이름의 메뉴가 있는지 확인하는 쿼리문
+    var query = `SELECT * FROM menu WHERE menuName = ? AND storeNo = ${req.session.storeNo}`; 
+
+    connection.query(query, menuName, function (err, result) {
+        if(err) { // 에러 발생시
+            console.log("error ocurred: ", err);
+            res.json({ "code": 400, "result": "error ocurred" })
+        } else {
+            if (result.length == 0) {
+                res.json({"code": 200, "result": "해당 메뉴 명 사용 가능"})
+            }
+            else {
+                res.json({"code": 204, "result": "메뉴 중복"})
+            }
+            
+        }
+    })
+
+});
+
 module.exports = router;

@@ -25,6 +25,20 @@ function getAllCategories() {
     })  
 }
 
+function duplicateCheckCategory(categoryName) {
+    $.ajax({
+        type: 'POST',
+        url: '/admin/duplicateCheckCategory',
+        contentType: 'application/json', 
+        data: JSON.stringify({'categoryName': categoryName}),
+        success: function (result) {
+            //console.log(JSON.stringify(result.code));
+            return JSON.stringify(result.code);
+        }
+    })
+    
+}
+
 function addCategory() {
     let categoryName = $('#categoryName').val();
     if (!categoryName) {
@@ -32,20 +46,36 @@ function addCategory() {
         location.href="/manage_category";
         return;
     }
-    // 카테고리 등록 서버와 통신
     $.ajax({
         type: 'POST',
-        url: '/admin/addCategory',
+        url: '/admin/duplicateCheckCategory',
         contentType: 'application/json', 
         data: JSON.stringify({'categoryName': categoryName}),
         success: function (result) {
-            if (result.code == 200)
-                alert('카테고리 등록 성공');
-            else if (result.code == 400)
+            if (result.code == 400) {
                 alert('카테고리 등록 실패');
-            location.href="/manage_category";
+            }
+            else if (result.code == 204) {
+                alert('같은 이름의 카테고리가 있습니다.');
+            }
+            else if (result.code == 200) {
+                // 카테고리 등록 서버와 통신
+                $.ajax({
+                    type: 'POST',
+                    url: '/admin/addCategory',
+                    contentType: 'application/json', 
+                    data: JSON.stringify({'categoryName': categoryName}),
+                    success: function (result) {
+                        if (result.code == 200)
+                            alert('카테고리 등록 성공');
+                        else if (result.code == 400)
+                            alert('카테고리 등록 실패');
+                        location.href="/manage_category";
+                    }
+                })  
+            }
         }
-    })  
+    })
 }
 
 function deleteCategory(categoryNo) {
@@ -84,15 +114,33 @@ function updateCategory() {
 
     $.ajax({
         type: 'POST',
-        url: 'admin/updateCategory',
+        url: '/admin/duplicateCheckCategory',
         contentType: 'application/json', 
-        data: JSON.stringify({'category_name': categoryName, 'category_no': categoryNo}),
+        data: JSON.stringify({'categoryName': categoryName}),
         success: function (result) {
-            if (result.code == 200)
-                alert('수정되었습니다.');
-            else
-                alert('수정 실패');
-            location.href="/manage_category";
+            if (result.code == 400) {
+                alert('카테고리 수정 실패');
+            }
+            else if (result.code == 204) {
+                alert('같은 이름의 카테고리가 있습니다.');
+            }
+            else if (result.code == 200) {
+                // 카테고리 수정 서버와 통신
+                $.ajax({
+                    type: 'POST',
+                    url: 'admin/updateCategory',
+                    contentType: 'application/json', 
+                    data: JSON.stringify({'category_name': categoryName, 'category_no': categoryNo}),
+                    success: function (result) {
+                        if (result.code == 200)
+                            alert('수정되었습니다.');
+                        else
+                            alert('수정 실패');
+                        location.href="/manage_category";
+                    }
+                });
+            }
         }
-    });
+    })
+    
 }

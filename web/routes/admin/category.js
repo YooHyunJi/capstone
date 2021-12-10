@@ -81,4 +81,26 @@ router.post('/updateCategory', function (req, res) {
 
 });
 
+// 5. 카테고리 중복 검사
+router.post('/duplicateCheckCategory', function (req, res) {
+    var categoryName = req.body.categoryName; // 카테고리 명
+     // 같은 이름의 카테고리가 있는지 확인하는 쿼리문
+    var query = `SELECT * FROM category WHERE categoryName = ? AND storeNo=${req.session.storeNo}`;
+    connection.query(query, categoryName, function (err, result) {
+        if(err) { // 에러 발생시
+            console.log("error ocurred: ", err);
+            res.json({ "code": 400, "result": "error ocurred" })
+        } else {
+            if (result.length == 0) {
+                res.json({"code": 200, "result": "해당 카테고리명 사용 가능"})
+            }
+            else {
+                res.json({"code": 204, "result": "카테고리 중복"})
+            }
+            
+        }
+    })
+
+});
+
 module.exports = router;

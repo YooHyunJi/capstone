@@ -131,19 +131,37 @@ function addMenu() {
 
     var form = $('#add_menu_form')[0];
     var formData = new FormData(form);
-
-    $.ajax({
-        type: 'post',
-        url: 'admin/addMenu',
-        data: formData,
-        processData: false,
-        contentType: false,
+    var menuName = $('#menuName').val();
+    
+    $.ajax({
+        type: 'POST',
+        url: '/admin/duplicateCheckMenu',
+        contentType: 'application/json', 
+        data: JSON.stringify({'menuName': menuName}),
         success: function (result) {
-            if (result.code == 200)
-                alert('메뉴 추가 성공');
-            else
-                alert('메뉴 추가 실패');
-            location.href="/manage_menu";
+            if (result.code == 400) {
+                alert('메뉴 등록 실패');
+            }
+            else if (result.code == 204) {
+                alert('같은 이름의 메뉴가 있습니다.');
+            }
+            else if (result.code == 200) {
+                // 메뉴 등록 서버와 통신
+                $.ajax({
+                    type: 'post',
+                    url: 'admin/addMenu',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function (result) {
+                        if (result.code == 200)
+                            alert('메뉴 추가 성공');
+                        else
+                            alert('메뉴 추가 실패');
+                        location.href="/manage_menu";
+                    }
+                });
+            }
         }
     });
 }
@@ -182,18 +200,6 @@ function setValuesBeforeUpdateMenu(categoryName, menuNo, menuName, menuPrice, me
             $('#modify_menuImg_frame').attr('src', "/"+result.menuImg);
         }
     });
-    /*$.ajax({
-        url:`/admin/getMenuImg/`+menuNo,
-        cache:false,
-        xhr:function(){
-            var xhr = new XMLHttpRequest();
-            xhr.responseType= 'blob'
-            return xhr;
-        },
-        success: function(data){
-            menuImgPreview(modify_menuImg_frame, data)
-        }
-    });*/
 
 }
 
@@ -205,21 +211,42 @@ function updateMenu() {
 
     var form = $('#modify_menu_form')[0];
     var formData = new FormData(form);
+    var menuName = $('#menu_name').val();
 
-    $.ajax({
-        type: 'post',
-        url: 'admin/updateMenu',
-        data: formData,
-        processData: false,
-        contentType: false,
+    $.ajax({
+        type: 'POST',
+        url: '/admin/duplicateCheckMenu',
+        contentType: 'application/json', 
+        data: JSON.stringify({'menuName': menuName}),
         success: function (result) {
-            if (result.code == 200)
-                alert('메뉴 수정 성공');
-            else
+            console.log(result.code);
+            if (result.code == 400) {
                 alert('메뉴 수정 실패');
-            location.href="/manage_menu";
+            }
+            else if (result.code == 204) {
+                alert('같은 이름의 메뉴가 있습니다.');
+            }
+            else if (result.code == 200) {
+                // 메뉴 수정 서버와 통신
+                $.ajax({
+                    type: 'post',
+                    url: 'admin/updateMenu',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function (result) {
+                        console.log(result.code);
+                        if (result.code == 200)
+                            alert('메뉴 수정 성공');
+                        else
+                            alert('메뉴 수정 실패');
+                        location.href="/manage_menu";
+                    }
+                });
+            }
         }
     });
+    
 }
 
 // 선택된 메뉴 이미지를 삭제하는 메서드
